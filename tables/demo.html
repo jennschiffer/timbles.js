@@ -2,6 +2,7 @@
 <head>
   <meta charset="utf-8" />
   <title>What's In Jenn's Downloads Folder</title>
+
   <style>
     th { background: #ccc; }
     th, td { padding: 10px; }
@@ -43,7 +44,7 @@
     <tr>
       <td>.DS_Store</td>
       <td>25 KB</td>
-      <td>Document</td>
+      <td>Virus</td>
       <td>February 7, 2014, 10:59 PM</td>
       <td>lol</td>
     </tr>
@@ -76,6 +77,24 @@
       <td>c.s.s. is better that javascript</td>
     </tr>
   </table>
+
+<script type="text/javascript" src="../jquery.js"></script>
+<script type="text/javascript" src="../timbles.js"></script>
+
+<script type="text/javascript">
+$(function() {
+
+  var $table = $('table');
+
+  // call for allowing sorting
+  $table.timbles({
+    sorting: true,
+    sortById: 'someIdLOL',
+    sortByOrder: 'asc'
+  });
+
+});
+</script>
 
 </body>
 </html>
