@@ -1,0 +1,106 @@
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>What's In Jenn's Downloads Folder</title>
+
+  <style>
+    th { background: #ccc; }
+    th, td { padding: 10px; }
+  </style>
+</head>
+
+<body>
+
+  <div id="gridDiv"></div>
+
+<script>dojoConfig = {async: true, parseOnLoad: false}</script>
+<script src="//ajax.googleapis.com/ajax/libs/dojo/1.10.0/dojo/dojo.js"></script> 
+<script>
+require(['dojo/_base/lang', 'dojox/grid/DataGrid', 'dojo/data/ItemFileWriteStore', 'dojo/dom', 'dojo/domReady!'],
+  function(lang, DataGrid, ItemFileWriteStore, dom){
+
+  var data = {
+    identifier: "name",
+    items: []
+  };
+
+  var data_list = [
+    {
+      "name": "dhtmlconf.png",
+      "size": "77 KB",
+      "kind": "PNG Image",
+      "dateAdded": "August 31, 2014, 11:16 PM",
+      "notes": "dhtmlconf logo"
+    },
+    {
+      "name": "icla.pdf",
+      "size": "26 KB",
+      "kind": "Adobe PDF document",
+      "dateAdded": "August 27, 2014, 12:51 PM",
+      "notes": "Individual Contributor License Agreement"
+    },{
+      "name": "Slime Girls - Vacation Wasteland EP.zip",
+      "size": "72.9 MB",
+      "kind": "ZIP archive",
+      "dateAdded": "August 25, 2014, 9:40 PM",
+      "notes": "cool chiptunes from lwlvl"
+    },{
+      "name": ".DS_Store",
+      "size": "25 KB",
+      "kind": "Virus",
+      "dateAdded": "February 7, 2014, 10:59 PM",
+      "notes": "lol"
+    },{
+      "name": "No_Diggity.mid",
+      "size": "17 KB",
+      "kind": "MIDI file",
+      "dateAdded": "July 3, 2014, 11:34 PM",
+      "notes": "very important karaoke file"
+    },{
+      "name": "jorts.svg",
+      "size": "52 KB",
+      "kind": "Plain Text File",
+      "dateAdded": "May 24, 2014, 1:55 PM",
+      "notes": "logo for jort.technology"
+    },{
+      "name": "wordpress.sql",
+      "size": "418 KB",
+      "kind": "Plain Text File",
+      "dateAdded": "May 11, 2014, 11:15 PM",
+      "notes": "blog dump"
+    },{
+      "name": "foundation-compass-template-master.zip",
+      "size": "6 KB",
+      "kind": "ZIP archive",
+      "dateAdded": "April 21, 2014, 6:59 PM",
+      "notes": "c.s.s. is better that javascript"
+    }
+  ];
+
+  var rows = 60;
+  for(var i = 0, l = data_list.length; i < rows; i++){
+    data.items.push(lang.mixin({ id: i+1 }, data_list[i%l]));
+  }
+  var store = new ItemFileWriteStore({data: data});
+
+  /*set up layout*/
+  var layout = [
+    {'name': 'Name', 'field': 'name' },
+    {'name': 'Size', 'field': 'size' },
+    {'name': 'Kind', 'field': 'kind' },
+    {'name': 'Date Added', 'field': 'dateAdded' },
+    {'name': 'Notes', 'field': 'notes'}
+  ];
+
+  var grid = new DataGrid({
+    id: 'grid',
+    store: store,
+    structure: layout
+  });
+
+    grid.placeAt("gridDiv");
+    grid.startup();
+});
+</script>
+</body>
+</html>
