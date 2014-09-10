@@ -1,6 +1,7 @@
 /**
 * timbles.js
 * definitely the most lightweight jquery table plugin ever
+* like, all you can do is generate a table and allow sorting lol that's it
 * @author jenn schiffer http://jennmoney.biz
 */
 
@@ -67,24 +68,41 @@
       var $this = $(this);
       var data = $this.data(pluginName);
       if (!data) { return; }
-
-      console.log(data.dataConfig);
       
       $this.append('<tr class="' + classes.headerRow + '">');
 
       // generate and add cell headers to header row
-      $.each(data.dataConfig.columns, function( index, value ){
-        var $cell = $('<th id="' + value.id + '"><span class="' + classes.label + '">' + value.content + '</span></th>');
+      $.each(data.dataConfig.columns, function(index, value){
+        var $cell = $('<th id="' + value.id + '"><span class="' + classes.label + '">' + value.label + '</span></th>');
         $this.find('tr.' + classes.headerRow).append($cell);
+      });
+
+      // generate each row of data from json
+      var rows;
+      $.getJSON( data.dataConfig.json, function(data) {
+        rows = data;
+      }).then( function(){
+        
+        $.each(rows, function(index, file){
+
+          var $currentRow = $('<tr>');
+          $.each(file, function(property, value){
+            $currentRow.append('<td class="' + property + '">' + value + '</td>');
+          });
+
+          $this.append($currentRow);
+        });
+
+
       });
     },
 
     enableSorting : function() {
-      console.log( 'enableSorting' );
+      console.log( 'enableSorting soon' );
     },
 
     sortByColumn : function( key, order, attr) {
-      console.log( 'sortByColumn', key, order, attr);
+      console.log( 'sortByColumn', key, order, attr, ' soon');
     }
 
   };
