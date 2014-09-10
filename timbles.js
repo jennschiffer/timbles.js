@@ -28,11 +28,15 @@
         var options = $.extend({}, defaults, opts);
         data = {
           $this : $this,
-          sorting: options.sorting,
-          sortById: options.sortById,
-          sortByOrder: options.sortByOrder,
-          sortAttr: options.sortAttr
+          dataConfig: options.dataConfig,
+          sorting: options.sorting
         };
+        $this.data(pluginName, data);
+
+        // generate table from JSON
+        if ( data.dataConfig ) {
+          methods.generateTableFromJson.call($this);
+        }
 
         // save all rows to data
         data.$allRows = $this.find('tr');
@@ -56,6 +60,22 @@
           methods.sortByColumn.call($this, data.sortById, data.sortByOrder, data.sortAttr);
         }
 
+      });
+    },
+
+    generateTableFromJson : function() {
+      var $this = $(this);
+      var data = $this.data(pluginName);
+      if (!data) { return; }
+
+      console.log(data.dataConfig);
+      
+      $this.append('<tr class="' + classes.headerRow + '">');
+
+      // generate and add cell headers to header row
+      $.each(data.dataConfig.columns, function( index, value ){
+        var $cell = $('<th id="' + value.id + '"><span class="' + classes.label + '">' + value.content + '</span></th>');
+        $this.find('tr.' + classes.headerRow).append($cell);
       });
     },
 
