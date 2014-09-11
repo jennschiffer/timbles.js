@@ -90,6 +90,8 @@ var $table = $('table');
 // call timbles
 $table.timbles({ sorting: true });</code></pre>
 
+In order for sorting to work, the `<th>` cells need to have an `id` attribute, and the cells in that column need to have a `class` attribute that is identical to its column's header `id`. Notice how the date cells in the example have a class "date-added" and the header of that column as an id of the same value.
+
 If you want to initially sort your table on load, there are `sorting` properties you can set:
 
 <pre><code>// get your table
@@ -129,6 +131,10 @@ $table.timbles({
   // if you want sorting:
   sorting: true
 });</code></pre>
+
+## C.S.S.
+
+When you sort ascending, the `sort-asc` class is added to the `<th>` header. If you sort descending, the `sort-desc` class is added to the `<th>` header. So you can, like, use CSS to add arrows whenever those classes are set and that's p cool I think.
 
 ## Note
 
