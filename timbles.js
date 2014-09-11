@@ -15,9 +15,7 @@
   };
 
   var classes = {
-    headerRow : 'timbles-header',
-    rowEven : 'even',
-    rowOdd : 'odd',
+    headerRow : 'header-row',
     label : 'label',
     sortASC : 'sorted-asc',
     sortDESC : 'sorted-desc'
@@ -49,10 +47,6 @@
 
         // save all this great new data wowowow
         $this.data(pluginName, data);
-
-        // add even/odd classes to records
-        data.$records.filter(':odd').addClass(classes.rowOdd);
-        data.$records.filter(':even').addClass(classes.rowEven);
 
         // if sorting set to true, allow sorting
         if ( data.sorting ) {
@@ -120,25 +114,63 @@
       var $headers = $('th');
       var $sortHeader = $('#' + key);
 
-      // determine order
+      // determine order and clear header sort classes
       if ( !order ) {
         order = $sortHeader.hasClass(classes.sortASC) ? 'desc' : 'asc';
       }
+      $headers.removeClass(classes.sortASC).removeClass(classes.sortDESC);
 
-      // set classes to sorted headers
-      if ( order === 'desc' ) {
-        $headers.removeClass(classes.sortASC).removeClass(classes.sortDESC);
-        $sortHeader.addClass(classes.sortDESC);
-      }
-      else {
-        $headers.removeClass(classes.sortASC).removeClass(classes.sortDESC);
+      // literally sort non-header-row records
+      var $recordsToSort = $('tr').not('.' + classes.headerRow);
+      var $sortedRecords;
+
+      if (order === 'asc') {
         $sortHeader.addClass(classes.sortASC);
+          
+        $sortedRecords = $recordsToSort.sort( function(a, b) {
+          alpha = $(a).find('td.' + key).text().toLowerCase();
+          beta = $(b).find('td.' + key).text().toLowerCase();
+          if ( alpha < beta ) { 
+            return -1;
+          } 
+          else {
+            if ( alpha > beta ) { 
+              return 1;
+            } 
+            else {
+              return 0;
+            }
+          }
+        });
+      }
+       else {
+        $sortHeader.addClass(classes.sortDESC);
+        
+        $sortedRecords = $recordsToSort.sort( function(a, b) {
+          alpha = $(a).find('td.' + key).text().toLowerCase();
+          beta = $(b).find('td.' + key).text().toLowerCase();
+          if ( beta < alpha ) { 
+            return -1;
+          } 
+          else {
+            if ( beta > alpha ) { 
+              return 1;
+            } 
+            else {
+              return 0;
+            }
+          }
+        });    
       }
 
-      console.log('sorted by ' + key + ' and in ' + order + ' order');
+      // remove current unsorted records
+      if ( $recordsToSort ) {
+        $recordsToSort.remove();
+      }
 
+      // append sorted records
+      $this.append($sortedRecords);
     }
-
   };
 
   /** module definition */
