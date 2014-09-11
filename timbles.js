@@ -17,7 +17,10 @@
   var classes = {
     headerRow : 'timbles-header',
     rowEven : 'even',
-    rowOdd : 'odd'
+    rowOdd : 'odd',
+    label : 'label',
+    sortASC : 'sorted-asc',
+    sortDESC : 'sorted-desc'
   };
   
   var methods = {
@@ -56,9 +59,9 @@
           methods.enableSorting.call($this);
         }
 
-        // if sortKey is given, sort table by it and order
-        if ( data.sortById ) {
-          methods.sortByColumn.call($this, data.sortById, data.sortByOrder, data.sortAttr);
+        // if sorting is given, sort table by it and order
+        if ( data.sorting.keyId ) {
+          methods.sortColumn.call($this, data.sorting.keyId, data.sorting.order);
         }
 
       });
@@ -98,11 +101,42 @@
     },
 
     enableSorting : function() {
-      console.log( 'enableSorting soon' );
+      var $this = $(this);
+      var data = $this.data(pluginName);
+      if (!data) { return; }
+
+      $this.find('th').bind({
+        click: function(e) {
+          methods.sortColumn.call($this, $(this).attr('id'), false);
+        }
+      });
     },
 
-    sortByColumn : function( key, order, attr) {
-      console.log( 'sortByColumn', key, order, attr, ' soon');
+    sortColumn : function( key, order) {
+      var $this = $(this);
+      var data = $this.data(pluginName);
+      if (!data) { return; }
+
+      var $headers = $('th');
+      var $sortHeader = $('#' + key);
+
+      // determine order
+      if ( !order ) {
+        order = $sortHeader.hasClass(classes.sortASC) ? 'desc' : 'asc';
+      }
+
+      // set classes to sorted headers
+      if ( order === 'desc' ) {
+        $headers.removeClass(classes.sortASC).removeClass(classes.sortDESC);
+        $sortHeader.addClass(classes.sortDESC);
+      }
+      else {
+        $headers.removeClass(classes.sortASC).removeClass(classes.sortDESC);
+        $sortHeader.addClass(classes.sortASC);
+      }
+
+      console.log('sorted by ' + key + ' and in ' + order + ' order');
+
     }
 
   };
