@@ -57,7 +57,6 @@
         if ( data.sorting.keyId ) {
           methods.sortColumn.call($this, data.sorting.keyId, data.sorting.order);
         }
-
       });
     },
 
@@ -81,15 +80,13 @@
       }).then( function(){
         
         $.each(rows, function(index, file){
-
+          console.log(file);
           var $currentRow = $('<tr>');
           $.each(file, function(property, value){
             $currentRow.append('<td class="' + property + '">' + value + '</td>');
           });
-
           $this.append($currentRow);
         });
-
 
       });
     },
@@ -99,6 +96,7 @@
       var data = $this.data(pluginName);
       if (!data) { return; }
 
+      // bind sorting to header cells
       $this.find('th').bind({
         click: function(e) {
           methods.sortColumn.call($this, $(this).attr('id'), false);
@@ -125,8 +123,7 @@
       var $sortedRecords;
 
       if (order === 'asc') {
-        $sortHeader.addClass(classes.sortASC);
-          
+        $sortHeader.addClass(classes.sortASC);  
         $sortedRecords = $recordsToSort.sort( function(a, b) {
           alpha = $(a).find('td.' + key).text().toLowerCase();
           beta = $(b).find('td.' + key).text().toLowerCase();
@@ -143,9 +140,8 @@
           }
         });
       }
-       else {
+      else {
         $sortHeader.addClass(classes.sortDESC);
-        
         $sortedRecords = $recordsToSort.sort( function(a, b) {
           alpha = $(a).find('td.' + key).text().toLowerCase();
           beta = $(b).find('td.' + key).text().toLowerCase();

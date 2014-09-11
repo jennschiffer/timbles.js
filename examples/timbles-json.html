@@ -1,0 +1,58 @@
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>What's In Jenn's Downloads Folder</title>
+
+  <style>
+    th { background: #ccc; }
+    th, td { padding: 10px; }
+
+    /* timbles css */
+    .sorted-asc .label:after { content: '▲';}
+    .sorted-desc .label:after { content: '▼';}
+
+  </style>
+</head>
+<body>
+
+  <h1>What's in Jenn's Downloads folder? (timbles - json)</h1>
+
+  <table border="1"></table>
+
+<script type="text/javascript" src="../../jquery.js"></script>
+<script type="text/javascript" src="../../timbles.js"></script>
+
+<script type="text/javascript">
+$(function() {
+
+  var $table = $('table');
+
+  /* it's going down
+      i'm yellin' timbles! */
+
+  $table.timbles({
+
+    // if you are using json data and not an existing table:
+    dataConfig: {
+      json: 'data.json',
+      columns: [
+        { label: 'Name', id: 'name' },
+        { label: 'Size', id: 'size' },
+        { label: 'Kind', id: 'kind' },
+        { label: 'Date Added', id: 'dateAdded' },
+        { label: 'Notes', id: 'notes' }
+      ]
+    },
+
+    // if you want sorting:
+    sorting: {
+      order: 'asc',
+      keyId: 'name',
+    }
+  });
+
+});
+</script>
+
+</body>
+</html>
