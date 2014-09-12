@@ -1,7 +1,7 @@
 timbles.js
 ==========
 
-*timbles* is a very lightweight jQuery plugin (lol is than an oxymoron) that allows you to add sorting to an existing `<table>`. That's it. Actually, it can create the table for you with some JSON data and minimal configuration. It's p easy.
+*timbles* is a very lightweight jQuery plugin (lol is that an oxymoron) that allows you to add sorting to an existing `<table>`. That's it. Actually, it can create the table for you with some JSON data and minimal configuration. It's p easy.
 
 ## Install
 
