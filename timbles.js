@@ -7,6 +7,8 @@
 
 (function($) {
 
+  'use strict'; 
+
   var pluginName = 'timbles';
 
   var defaults = {
@@ -28,7 +30,7 @@
       return this.each(function() {
         var $this = $(this).addClass(pluginName);
         var options = $.extend({}, defaults, opts);
-        data = {
+        var data = {
           $this : $this,
           dataConfig: options.dataConfig,
           sorting: options.sorting
@@ -80,7 +82,6 @@
       }).then( function(){
         
         $.each(rows, function(index, file){
-          console.log(file);
           var $currentRow = $('<tr>');
           $.each(file, function(property, value){
             $currentRow.append('<td class="' + property + '">' + value + '</td>');
@@ -123,7 +124,9 @@
       var $sortedRecords;
 
       if (order === 'asc') {
-        $sortHeader.addClass(classes.sortASC);  
+        $sortHeader.addClass(classes.sortASC); 
+
+        var alpha, beta; 
         $sortedRecords = $recordsToSort.sort( function(a, b) {
           alpha = $(a).find('td.' + key).text().toLowerCase();
           beta = $(b).find('td.' + key).text().toLowerCase();
