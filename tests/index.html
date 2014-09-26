@@ -1,14 +1,101 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <title>timbles tests &bull; QUnit</title>
-    <link rel="stylesheet" href="qunit-1.15.0.css">
-  </head>
-  <body>
+<head>
+  <meta charset="utf-8">
+  <title>timbles tests &bull; QUnit</title>
+  <link rel="stylesheet" href="qunit-1.15.0.css">
+</head>
+<body>
+
   <div id="qunit"></div>
   <div id="qunit-fixture"></div>
+
+  <table border="1" style="display:none;">
+    <tr>
+      <th id="name"><span class="label">Name</span></th>
+      <th id="size"><span class="label">Size</span></th>
+      <th id="kind"><span class="label">Kind</span></th>
+      <th id="date-added"><span class="label">Date Added</span></th>
+      <th id="notes"><span class="label">Notes</span></th>
+    </tr>
+    <tr>
+      <td class="name">dhtmlconf.png</td>
+      <td class="size">77 KB</td>
+      <td class="kind">PNG Image</td>
+      <td class="date-added">August 31, 2014, 11:16 PM</td>
+      <td class="notes">dhtmlconf logo</td>
+    </tr>      
+    <tr>
+      <td class="name">icla.pdf</td>
+      <td class="size">26 KB</td>
+      <td class="kind">Adobe PDF document</td>
+      <td class="date-added">August 27, 2014, 12:51 PM</td>
+      <td class="notes">Individual Contributor License Agreement</td>
+    </tr>
+    <tr>
+      <td class="name">Slime Girls - Vacation Wasteland EP.zip</td>
+      <td class="size">72.9 MB</td>
+      <td class="kind">ZIP archive</td>
+      <td class="date-added">August 25, 2014, 9:40 PM</td>
+      <td class="notes">cool chiptunes from lwlvl</td>
+    </tr>
+    <tr>
+      <td class="name">.DS_Store</td>
+      <td class="size">25 KB</td>
+      <td class="kind">Virus</td>
+      <td class="date-added">February 7, 2014, 10:59 PM</td>
+      <td class="notes">lol</td>
+    </tr>
+    <tr>
+      <td class="name">No_Diggity.mid</td>
+      <td class="size">17 KB</td>
+      <td class="kind">MIDI file</td>
+      <td class="date-added">July 3, 2014, 11:34 PM</td>
+      <td class="notes">very important karaoke file</td>
+    </tr>
+    <tr>
+      <td class="name">jorts.svg</td>
+      <td class="size">52 KB</td>
+      <td class="kind">Plain Text File</td>
+      <td class="date-added">May 24, 2014, 1:55 PM</td>
+      <td class="notes">logo for jort.technology</td>
+    </tr>      
+    <tr>
+      <td class="name">wordpress.sql</td>
+      <td class="size">418 KB</td>
+      <td class="kind">Plain Text File</td>
+      <td class="date-added">May 11, 2014, 11:15 PM</td>
+      <td class="notes">blog dump</td>
+    </tr>      
+    <tr>
+      <td class="name">foundation-compass-template-master.zip</td>
+      <td class="size">6 KB</td>
+      <td class="kind">ZIP archive</td>
+      <td class="date-added">April 21, 2014, 6:59 PM</td>
+      <td class="notes">c.s.s. is better that javascript</td>
+    </tr>
+  </table>
+
+  <script type="text/javascript" src="../jquery.js"></script>
+  <script type="text/javascript" src="../timbles.js"></script>
+  <script type="text/javascript">
+    $(function() {
+
+      var $table = $('table');
+
+      /* it's going down
+          i'm yellin' timbles! */
+
+      $table.timbles({
+        sorting: true
+      });
+
+    });
+  </script>
+
+
   <script src="qunit-1.15.0.js"></script>
   <script src="tests.js"></script>
-  </body>
+
+</body>
 </html>
