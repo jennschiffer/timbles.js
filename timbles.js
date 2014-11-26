@@ -20,7 +20,8 @@
     headerRow : 'header-row',
     label : 'label',
     sortASC : 'sorted-asc',
-    sortDESC : 'sorted-desc'
+    sortDESC : 'sorted-desc',
+    noSort : 'no-sort'
   };
   
   var methods = {
@@ -71,7 +72,14 @@
 
       // generate and add cell headers to header row
       $.each(data.dataConfig.columns, function(index, value){
-        var $cell = $('<th id="' + value.id + '"><span class="' + classes.label + '">' + value.label + '</span></th>');
+        
+        // if noSorting is set for this column, add the no-sort class to it
+        var noSortClassString = '';
+        if ( value.noSorting ) {
+          noSortClassString = ' class="' + classes.noSort + '"';
+        }
+        
+        var $cell = $('<th id="' + value.id + '"' + noSortClassString +'><span class="' + classes.label + '">' + value.label + '</span></th>');
         $this.find('tr.' + classes.headerRow).append($cell);
       });
 
@@ -98,7 +106,7 @@
       if (!data) { return; }
 
       // bind sorting to header cells
-      $this.find('th').bind({
+      $this.find('th').not('.no-sort').bind({
         click: function(e) {
           methods.sortColumn.call($this, $(this).attr('id'), false);
         }

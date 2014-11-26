@@ -22,7 +22,7 @@ Let's say you have a table on your page already, all populated with data:
     <th id="size">Size</th>
     <th id="kind">Kind</th>
     <th id="date-added">Date Added</th>
-    <th id="notes">Notes</th>
+    <th id="notes" class="no-sort">Notes</th>
   </tr>
   <tr>
     <td class="name">dhtmlconf.png</td>
@@ -57,7 +57,7 @@ And here is the source code:
     &lt;th id="size">Size&lt;/th>
     &lt;th id="kind">Kind&lt;/th>
     &lt;th id="date-added">Date Added&lt;/th>
-    &lt;th id="notes">Notes&lt;/th>
+    &lt;th id="notes" class="no-sort">Notes&lt;/th>
   &lt;/tr>
   &lt;tr>
     &lt;td class="name">dhtmlconf.png&lt;/td>
@@ -105,6 +105,8 @@ $table.timbles(
   }
 });</code></pre>
 
+If you don't want all of the columns to be sortable, add the class `no-sort` to the &lt;th> element of the column you do not want to be sortable.
+
 ### Generating a table from a JSON file
 
 If your data is in a JSON file, add a `<table>` element to your page and then call `timbles` on it.
@@ -119,17 +121,28 @@ $table.timbles({
 
   dataConfig: {
     json: 'data.json', // the json file
+    sorting: true, // if you want columns to be sortable
     columns: [
-      { label: 'Name', id: 'name' },  // you have to set the column headers
-      { label: 'Size', id: 'size' },  // where "label" is the text betweent &lt;th> and &lt;/th>
-      { label: 'Kind', id: 'kind' },  // and "id" is the json object's property attributed to the column
+      
+      /**
+      * you have to set the column headers with the following required properties:
+      * - label (string), the text between &lt;th> and &lt;/th>
+      * - id (string), the json object property attributed to the column
+      * 
+      * and here are some optional properties:
+      * - noSorting (boolean), if set to true the column won't be sortable 
+      *   if you have the non-column property sorting set to true
+      *
+      */
+
+      { label: 'Name', id: 'name' },
+      { label: 'Size', id: 'size' },
+      { label: 'Kind', id: 'kind' },
       { label: 'Date Added', id: 'dateAdded' },
-      { label: 'Notes', id: 'notes' }
+      { label: 'Notes', id: 'notes', noSorting: true }
     ]
   },
 
-  // if you want sorting:
-  sorting: true
 });</code></pre>
 
 ## C.S.S.
