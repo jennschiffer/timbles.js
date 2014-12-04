@@ -118,8 +118,8 @@
       var data = $this.data(pluginName);
       if (!data) { return; }
 
-      var $headers = $('th');
-      var $sortHeader = $('#' + key);
+      var $headers = $this.find('th');
+      var $sortHeader = $this.find('#' + key);
 
       // determine order and clear header sort classes
       if ( !order ) {
@@ -128,7 +128,7 @@
       $headers.removeClass(classes.sortASC).removeClass(classes.sortDESC);
 
       // literally sort non-header-row records
-      var $recordsToSort = $('tr').not('.' + classes.headerRow);
+      var $recordsToSort = $this.find('tr').not('.' + classes.headerRow);
       var $sortedRecords;
 
       if (order === 'asc') {
