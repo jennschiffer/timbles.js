@@ -1,0 +1,30 @@
+{
+  "name": "timbles",
+  "version": "1.0.0",
+  "description": "a very simple jQuery plugin for tables, made by the person who literally did not invent tables",
+  "main": "timbles",
+  "directories": {
+    "example": "examples",
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jennschiffer/timbles.js.git"
+  },
+  "keywords": [
+    "tables",
+    "table",
+    "jquery",
+    "jqueries",
+    "seo"
+  ],
+  "author": "Jenn Schiffer <jenn@dotbiz.info> (http://jennmoney.biz)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jennschiffer/timbles.js/issues"
+  },
+  "homepage": "https://github.com/jennschiffer/timbles.js"
+}
