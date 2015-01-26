@@ -102,7 +102,7 @@
           noSortClassString = ' class="' + classes.noSort + '"';
         }
         
-        var $cell = $('<th id="' + value.id + '"' + noSortClassString +'><span class="' + classes.label + '">' + value.label + '</span></th>');
+        var $cell = $('<th id="' + value.id + '"' + noSortClassString +'>' + value.label + '</th>');
         $this.find('tr.' + classes.headerRow).append($cell);
       });
 
