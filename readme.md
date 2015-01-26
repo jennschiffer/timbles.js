@@ -1,7 +1,7 @@
 timbles.js
 ==========
 
-*timbles* is a very lightweight jQuery plugin (lol is that an oxymoron) that allows you to add sorting to an existing `<table>`. That's it. Actually, it can create the table for you with some JSON data and minimal configuration. It's p easy. I think it would make for a great base for table functionality you'd want to build into your apps.
+*timbles* is a very lightweight jQuery plugin (lol is that an oxymoron) that allows you to add sorting to an existing `<table>`. That's it. Actually, it can also create the table for you with some JSON data and minimal configuration. It's p easy. I think it would make for a great base for table functionality you'd want to build into your apps.
 
 ## Install
 
@@ -17,33 +17,35 @@ You need to enqueue jQuery (duh) and the *timbles.js* file.
 Let's say you have a table on your page already, all populated with data:
 
 <table border="1">
+  <thead>
+    <tr>
+      <th id="name">Name</th>
+      <th id="size">Size</th>
+      <th id="kind">Kind</th>
+      <th id="date-added">Date Added</th>
+      <th id="notes" class="no-sort">Notes</th>
+    </tr>
+  </thead>
   <tr>
-    <th id="name">Name</th>
-    <th id="size">Size</th>
-    <th id="kind">Kind</th>
-    <th id="date-added">Date Added</th>
-    <th id="notes" class="no-sort">Notes</th>
-  </tr>
-  <tr>
-    <td class="name">dhtmlconf.png</td>
-    <td class="size">77 KB</td>
-    <td class="kind">PNG Image</td>
-    <td class="date-added">August 31, 2014, 11:16 PM</td>
-    <td class="notes">dhtmlconf logo</td>
+    <td>dhtmlconf.png</td>
+    <td>77 KB</td>
+    <td>PNG Image</td>
+    <td>August 31, 2014, 11:16 PM</td>
+    <td>dhtmlconf logo</td>
   </tr>      
   <tr>
-    <td class="name">icla.pdf</td>
-    <td class="size">26 KB</td>
-    <td class="kind">Adobe PDF document</td>
-    <td class="date-added">August 27, 2014, 12:51 PM</td>
-    <td class="notes">Individual Contributor License Agreement</td>
+    <td>icla.pdf</td>
+    <td>26 KB</td>
+    <td>Adobe PDF document</td>
+    <td>August 27, 2014, 12:51 PM</td>
+    <td>Individual Contributor License Agreement</td>
   </tr>
   <tr>
-    <td class="name">Slime Girls - Vacation Wasteland EP.zip</td>
-    <td class="size">72.9 MB</td>
-    <td class="kind">ZIP archive</td>
-    <td class="date-added">August 25, 2014, 9:40 PM</td>
-    <td class="notes">cool chiptunes from lwlvl</td>
+    <td>Slime Girls - Vacation Wasteland EP.zip</td>
+    <td>72.9 MB</td>
+    <td>ZIP archive</td>
+    <td>August 25, 2014, 9:40 PM</td>
+    <td>cool chiptunes from lwlvl</td>
   </tr>
 </table>
 
@@ -52,33 +54,35 @@ And here is the source code:
 
 
 <pre><code>&lt;table border="1">
+  &lt;thead>
+    &lt;tr>
+      &lt;th id="name">Name&lt;/th>
+      &lt;th id="size">Size&lt;/th>
+      &lt;th id="kind">Kind&lt;/th>
+      &lt;th id="date-added">Date Added&lt;/th>
+      &lt;th id="notes" class="no-sort">Notes&lt;/th>
+    &lt;/tr>
+  &lt;/thead>
   &lt;tr>
-    &lt;th id="name">Name&lt;/th>
-    &lt;th id="size">Size&lt;/th>
-    &lt;th id="kind">Kind&lt;/th>
-    &lt;th id="date-added">Date Added&lt;/th>
-    &lt;th id="notes" class="no-sort">Notes&lt;/th>
-  &lt;/tr>
-  &lt;tr>
-    &lt;td class="name">dhtmlconf.png&lt;/td>
-    &lt;td class="size">77 KB&lt;/td>
-    &lt;td class="kind">PNG Image&lt;/td>
-    &lt;td class="date-added">August 31, 2014, 11:16 PM&lt;/td>
-    &lt;td class="notes">dhtmlconf logo&lt;/td>
+    &lt;td>dhtmlconf.png&lt;/td>
+    &lt;td>77 KB&lt;/td>
+    &lt;td>PNG Image&lt;/td>
+    &lt;td>August 31, 2014, 11:16 PM&lt;/td>
+    &lt;td>dhtmlconf logo&lt;/td>
   &lt;/tr>      
   &lt;tr>
-    &lt;td class="name">icla.pdf&lt;/td>
-    &lt;td class="size">26 KB&lt;/td>
-    &lt;td class="kind">Adobe PDF document&lt;/td>
-    &lt;td class="date-added">August 27, 2014, 12:51 PM&lt;/td>
-    &lt;td class="notes">Individual Contributor License Agreement&lt;/td>
+    &lt;td>icla.pdf&lt;/td>
+    &lt;td>26 KB&lt;/td>
+    &lt;td>Adobe PDF document&lt;/td>
+    &lt;td>August 27, 2014, 12:51 PM&lt;/td>
+    &lt;td>Individual Contributor License Agreement&lt;/td>
   &lt;/tr>
   &lt;tr>
-    &lt;td class="name">Slime Girls - Vacation Wasteland EP.zip&lt;/td>
-    &lt;td class="size">72.9 MB&lt;/td>
-    &lt;td class="kind">ZIP archive&lt;/td>
-    &lt;td class="date-added">August 25, 2014, 9:40 PM&lt;/td>
-    &lt;td class="notes">cool chiptunes from lwlvl&lt;/td>
+    &lt;td>Slime Girls - Vacation Wasteland EP.zip&lt;/td>
+    &lt;td>72.9 MB&lt;/td>
+    &lt;td>ZIP archive&lt;/td>
+    &lt;td>August 25, 2014, 9:40 PM&lt;/td>
+    &lt;td>cool chiptunes from lwlvl&lt;/td>
   &lt;/tr>
 &lt;/table></code></pre>
 
@@ -90,7 +94,7 @@ var $table = $('table');
 // call timbles
 $table.timbles({ sorting: true });</code></pre>
 
-In order for sorting to work, the `<th>` cells need to have an `id` attribute, and the cells in that column need to have a `class` attribute that is identical to its column's header `id`. Notice how the date cells in the example have a class "date-added" and the header of that column as an id of the same value.
+In order for sorting to work, the `<th>` cells need to have an `id` attribute and the parent `<tr>` of the header rows needs to be within a `<thead>` tag. Again, view the source above for the example.
 
 If you want to initially sort your table on load, there are `sorting` properties you can set:
 

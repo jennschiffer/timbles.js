@@ -34,22 +34,33 @@
         var data = {
           $this : $this,
           dataConfig: options.dataConfig,
-          sorting: options.sorting
+          sorting: options.sorting,
         };
         $this.data(pluginName, data);
 
-        // generate table from JSON
+         // generate table from JSON
         if ( data.dataConfig ) {
           methods.generateTableFromJson.call($this);
+          var tableSetup = true;
         }
 
         // save all rows to data
         data.$allRows = $this.find('tr');
-        data.$headerRow = $this.find('tr').eq(0).addClass(classes.headerRow);
+        data.$headerRow = $this.find('thead tr').eq(0).addClass(classes.headerRow);
         data.$records = $this.find('tr').not('.'+classes.headerRow);
+        
+        // if existing markup is used instead of generateTableFromJson, set it up
+        if ( !tableSetup ) {
+          methods.setupExistingTable.call($this);
+        }
 
         // save all this great new data wowowow
         $this.data(pluginName, data);
+        
+        // if pagination set to true, set pagination
+        if ( data.pagination ) {
+          methods.enablePagination.call($this);
+        }
 
         // if sorting set to true, allow sorting
         if ( data.sorting ) {
@@ -62,13 +73,25 @@
         }
       });
     },
+    
+    setupExistingTable : function() {
+      var $this = $(this);
+      var data = $this.data(pluginName);
+      if (!data) { return; }
+      
+      // for each header cell, get ID and set the records cells to have it as a class for sorting
+      data.$headerRow.find('th').each(function(i){
+        var headerId = $(this).attr('id');
+        data.$records.find('td:nth-child(' + (i + 1) + ')').addClass(headerId);
+      })
+    },
 
     generateTableFromJson : function() {
       var $this = $(this);
       var data = $this.data(pluginName);
       if (!data) { return; }
       
-      $this.append('<tr class="' + classes.headerRow + '">');
+      $this.append('<thead><tr class="' + classes.headerRow + '"></tr></thead>');
 
       // generate and add cell headers to header row
       $.each(data.dataConfig.columns, function(index, value){
