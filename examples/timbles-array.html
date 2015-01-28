@@ -1,0 +1,113 @@
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>What's In Jenn's Downloads Folder</title>
+
+  <style>
+    th { background: #ccc; }
+    th, td { padding: 10px; }
+
+    /* timbles css */
+    .sorted-asc:after { content: '▲';}
+    .sorted-desc:after { content: '▼';}
+
+  </style>
+</head>
+<body>
+
+  <h1>What's in Jenn's Downloads folder? (timbles - data as an array)</h1>
+
+  <table border="1"></table>
+
+<script type="text/javascript" src="../jquery.js"></script>
+<script type="text/javascript" src="../timbles.js"></script>
+
+<script type="text/javascript">
+$(function() {
+
+  var $table = $('table');
+
+  /* it's going down
+      i'm yellin' timbles! */
+      
+  var localData = [
+    {
+      name: "LOCAL dhtmlconf.png",
+      size: "77 KB",
+      kind: "PNG Image",
+      dateAdded: "August 31, 2014, 11:16 PM",
+      notes: "dhtmlconf logo"
+    },
+    {
+      name: "LOCAL icla.pdf",
+      size: "26 KB",
+      kind: "Adobe PDF document",
+      dateAdded: "August 27, 2014, 12:51 PM",
+      notes: "Individual Contributor License Agreement"
+    },{
+      name: "Slime Girls - Vacation Wasteland EP.zip",
+      size: "72.9 MB",
+      kind: "ZIP archive",
+      dateAdded: "August 25, 2014, 9:40 PM",
+      notes: "cool chiptunes from lwlvl"
+    },{
+      name: ".DS_Store",
+      size: "25 KB",
+      kind: "Virus",
+      dateAdded: "February 7, 2014, 10:59 PM",
+      notes: "lol"
+    },{
+      name: "No_Diggity.mid",
+      size: "17 KB",
+      kind: "MIDI file",
+      dateAdded: "July 3, 2014, 11:34 PM",
+      notes: "very important karaoke file"
+    },{
+      name: "jorts.svg",
+      size: "52 KB",
+      kind: "Plain Text File",
+      dateAdded: "May 24, 2014, 1:55 PM",
+      notes: "logo for jort.technology"
+    },{
+      name: "wordpress.sql",
+      size: "418 KB",
+      kind: "Plain Text File",
+      dateAdded: "May 11, 2014, 11:15 PM",
+      notes: "blog dump"
+    },{
+      name: "foundation-compass-template-master.zip",
+      size: "6 KB",
+      kind: "ZIP archive",
+      dateAdded: "April 21, 2014, 6:59 PM",
+      notes: "c.s.s. is better that javascript"
+    }
+  ];
+
+
+  $table.timbles({
+    
+    // if you are using json data and not an existing table:
+    dataConfig: {
+      dataType: 'array',
+      data: localData,
+      columns: [
+        { label: 'Name', id: 'name' },
+        { label: 'Size', id: 'size' },
+        { label: 'Kind', id: 'kind' },
+        { label: 'Date Added', id: 'dateAdded' },
+        { label: 'Notes', id: 'notes', noSorting: true }
+      ]
+    },
+
+    // if you want sorting:
+    sorting: {
+      order: 'asc',
+      keyId: 'name',
+    }
+  });
+
+});
+</script>
+
+</body>
+</html>

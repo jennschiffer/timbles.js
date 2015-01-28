@@ -108,19 +108,30 @@
 
       // generate each row of data from json
       var rows;
-      $.getJSON( data.dataConfig.json, function(data) {
-        rows = data;
-      }).then( function(){
-        
-        $.each(rows, function(index, file){
-          var $currentRow = $('<tr>');
-          $.each(file, function(property, value){
-            $currentRow.append('<td class="' + property + '">' + value + '</td>');
-          });
-          $this.append($currentRow);
+      
+      if ( data.dataConfig.dataType === 'array' ) {
+        // no need for ajax call if data is local array
+        methods.generateRowsFromData.call($this, data.dataConfig.data, $this)
+      }
+      else {
+        // get external json file given
+        $.getJSON( data.dataConfig.data, function(data) {
+          console.log('ok');
+          methods.generateRowsFromData.call($this, data, $this)
         });
-
+      }
+      
+    },
+    
+    generateRowsFromData : function(data, thisTable) {
+      $.each(data, function(index, file){
+        var $currentRow = $('<tr>');
+        $.each(file, function(property, value){
+          $currentRow.append('<td class="' + property + '">' + value + '</td>');
+        });
+        thisTable.append($currentRow);
       });
+
     },
 
     enableSorting : function() {

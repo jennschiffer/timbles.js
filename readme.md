@@ -111,9 +111,9 @@ $table.timbles(
 
 If you don't want all of the columns to be sortable, add the class `no-sort` to the &lt;th> element of the column you do not want to be sortable.
 
-### Generating a table from a JSON file
+### Generating a table from a JSON file or an array of row objects
 
-If your data is in a JSON file, add a `<table>` element to your page and then call `timbles` on it.
+If your data is in a JSON file or array, add a `<table>` element to your page and then call `timbles` on it.
 
 <pre><code>&lt;table id="example">&lt;/table></code></pre>
 
@@ -124,7 +124,19 @@ var $table = $('#example');
 $table.timbles({
 
   dataConfig: {
-    json: 'data.json', // the json file
+    
+      /**
+      * There are two types of data that timbles currently accepts:
+      * - a json filename
+      * - an array of row objects
+      * 
+      * by default, timbles will look for a json file name, 
+      * so dataType is not required unless you are giving an array.
+      * Then you will need to set it to 'array'.
+      */
+      
+    dataType: 'json', // right now data types can be 'array' or it defaults to 'json'
+    data: 'data.json', // the json file if dataType is 'json', an array if dataType is 'array'
     sorting: true, // if you want columns to be sortable
     columns: [
       
@@ -148,6 +160,61 @@ $table.timbles({
   },
 
 });</code></pre>
+
+Here is an example of an array of row objects:
+
+<pre><code>var localData = [
+  {
+    name: "dhtmlconf.png",
+    size: "77 KB",
+    kind: "PNG Image",
+    dateAdded: "August 31, 2014, 11:16 PM",
+    notes: "dhtmlconf logo"
+  },
+  {
+    name: "icla.pdf",
+    size: "26 KB",
+    kind: "Adobe PDF document",
+    dateAdded: "August 27, 2014, 12:51 PM",
+    notes: "Individual Contributor License Agreement"
+  },{
+    name: "Slime Girls - Vacation Wasteland EP.zip",
+    size: "72.9 MB",
+    kind: "ZIP archive",
+    dateAdded: "August 25, 2014, 9:40 PM",
+    notes: "cool chiptunes from lwlvl"
+  },{
+    name: ".DS_Store",
+    size: "25 KB",
+    kind: "Virus",
+    dateAdded: "February 7, 2014, 10:59 PM",
+    notes: "lol"
+  },{
+    name: "No_Diggity.mid",
+    size: "17 KB",
+    kind: "MIDI file",
+    dateAdded: "July 3, 2014, 11:34 PM",
+    notes: "very important karaoke file"
+  },{
+    name: "jorts.svg",
+    size: "52 KB",
+    kind: "Plain Text File",
+    dateAdded: "May 24, 2014, 1:55 PM",
+    notes: "logo for jort.technology"
+  },{
+    name: "wordpress.sql",
+    size: "418 KB",
+    kind: "Plain Text File",
+    dateAdded: "May 11, 2014, 11:15 PM",
+    notes: "blog dump"
+  },{
+    name: "foundation-compass-template-master.zip",
+    size: "6 KB",
+    kind: "ZIP archive",
+    dateAdded: "April 21, 2014, 6:59 PM",
+    notes: "c.s.s. is better that javascript"
+  }
+];</code></pre>
 
 ## C.S.S.
 
