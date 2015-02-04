@@ -1,6 +1,6 @@
 {
   "name": "timbles",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "a very simple jQuery plugin for tables, made by the person who literally did not invent tables",
   "main": "timbles",
   "directories": {
@@ -19,7 +19,8 @@
     "table",
     "jquery",
     "jqueries",
-    "seo"
+    "seo",
+    "jquery-plugin"
   ],
   "author": "Jenn Schiffer <jenn@dotbiz.info> (http://jennmoney.biz)",
   "license": "MIT",

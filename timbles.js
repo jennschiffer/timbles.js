@@ -127,7 +127,7 @@
       $.each(data, function(index, file){
         var $currentRow = $('<tr>');
         $.each(file, function(property, value){
-          $currentRow.append('<td class="' + property + '">' + value + '</td>');
+          $currentRow.append('<td class="' + property + '" data-value="' + value + '">' + value + '</td>');
         });
         thisTable.append($currentRow);
       });
@@ -170,8 +170,8 @@
 
         var alpha, beta; 
         $sortedRecords = $recordsToSort.sort( function(a, b) {
-          alpha = $(a).find('td.' + key).text().toLowerCase();
-          beta = $(b).find('td.' + key).text().toLowerCase();
+          alpha = $(a).find('td.' + key).data('value');
+          beta = $(b).find('td.' + key).data('value');
           if ( alpha < beta ) { 
             return -1;
           } 
@@ -188,8 +188,8 @@
       else {
         $sortHeader.addClass(classes.sortDESC);
         $sortedRecords = $recordsToSort.sort( function(a, b) {
-          alpha = $(a).find('td.' + key).text().toLowerCase();
-          beta = $(b).find('td.' + key).text().toLowerCase();
+          alpha = $(a).find('td.' + key).data('value');
+          beta = $(b).find('td.' + key).data('value');
           if ( beta < alpha ) { 
             return -1;
           } 
