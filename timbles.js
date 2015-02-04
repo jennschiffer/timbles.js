@@ -115,14 +115,14 @@
       }
       else {
         // get external json file given
-        $.getJSON( data.dataConfig.data, function(data) {
-          methods.generateRowsFromData.call($this, data, $this)
+        $.getJSON( data.dataConfig.data, function(json) {
+          methods.generateRowsFromData.call($this, json, data.dataConfig.columns, $this)
         });
       }
       
     },
     
-    generateRowsFromData : function(data, columnConfig,thisTable) {
+    generateRowsFromData : function(data, columnConfig, thisTable) {
       $.each(data, function(index, row){
         var $currentRow = $('<tr>');
         $.each(columnConfig, function(property, value){    

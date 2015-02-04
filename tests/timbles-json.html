@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>timbles tests &bull; QUnit</title>
+  <link rel="stylesheet" href="qunit-1.15.0.css">
+</head>
+<body>
+
+  <div id="qunit"></div>
+  <div id="qunit-fixture"></div>
+
+  <table border="1" style="display:none;"></table>
+
+<script type="text/javascript" src="../jquery.js"></script>
+<script type="text/javascript" src="../timbles.js"></script>
+
+<script type="text/javascript">
+$(function() {
+
+  var $table = $('table');
+
+  /* it's going down
+      i'm yellin' timbles! */
+
+  $table.timbles({
+
+    // if you are using json data and not an existing table:
+    dataConfig: {
+      data: 'data.json',
+      columns: [
+        { label: 'Name', id: 'name' },
+        { label: 'Size', id: 'size' },
+        { label: 'Kind', id: 'kind' },
+        { label: 'Date Added', id: 'dateAdded' },
+        { label: 'Notes', id: 'notes', noSorting: true }
+      ]
+    },
+
+    // if you want sorting:
+    sorting: {
+      order: 'asc',
+      keyId: 'name',
+    }
+  });
+
+});
+</script>
+
+  <script src="qunit-1.15.0.js"></script>
+  <script src="tests.js"></script>
+
+</body>
+</html>
