@@ -111,23 +111,27 @@
       
       if ( data.dataConfig.dataType === 'array' ) {
         // no need for ajax call if data is local array
-        methods.generateRowsFromData.call($this, data.dataConfig.data, $this)
+        methods.generateRowsFromData.call($this, data.dataConfig.data, data.dataConfig.columns, $this)
       }
       else {
         // get external json file given
         $.getJSON( data.dataConfig.data, function(data) {
-          console.log('ok');
           methods.generateRowsFromData.call($this, data, $this)
         });
       }
       
     },
     
-    generateRowsFromData : function(data, thisTable) {
-      $.each(data, function(index, file){
+    generateRowsFromData : function(data, columnConfig,thisTable) {
+      $.each(data, function(index, row){
         var $currentRow = $('<tr>');
-        $.each(file, function(property, value){
-          $currentRow.append('<td class="' + property + '" data-value="' + value + '">' + value + '</td>');
+        $.each(columnConfig, function(property, value){    
+          
+          // if there is a dataFilter function given, apply it to the value to display      
+          var displayValue = ( value.dataFilter ) ? value.dataFilter(row[value.id]) : row[value.id];
+          
+          // append new cell to the row
+          $currentRow.append('<td class="' + value.id + '" data-value="' + row[value.id] + '">' + displayValue + '</td>');
         });
         thisTable.append($currentRow);
       });

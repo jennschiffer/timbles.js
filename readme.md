@@ -137,7 +137,6 @@ $table.timbles({
       
     dataType: 'json', // right now data types can be 'array' or it defaults to 'json'
     data: 'data.json', // the json file if dataType is 'json', an array if dataType is 'array'
-    sorting: true, // if you want columns to be sortable
     columns: [
       
       /**
@@ -148,7 +147,8 @@ $table.timbles({
       * and here are some optional properties:
       * - noSorting (boolean), if set to true the column won't be sortable 
       *   if you have the non-column property sorting set to true
-      *
+      * - dataFilter (function), this function will be applied to the cell value, 
+      *   useful for when you want to add currency symbols, html, etc
       */
 
       { label: 'Name', id: 'name' },
@@ -156,8 +156,10 @@ $table.timbles({
       { label: 'Kind', id: 'kind' },
       { label: 'Date Added', id: 'dateAdded' },
       { label: 'Notes', id: 'notes', noSorting: true }
+      { label: 'Price', id: 'price', dataFilter: function(value) { return '$' + value; } }
     ]
-  },
+  }
+  sorting: true, // if you want columns to be sortable
 
 });</code></pre>
 
@@ -222,6 +224,6 @@ When you sort ascending, the `sort-asc` class is added to the `<th>` header. If 
 
 ## Note
 
-This was made within a few days for jqCon Chicago on 9/12/2014 and therefore is incomplete and not well documented. This is what I get for having to launch something whenever I give a talk. I'll refine this and add more features while retaining the philosophy of staying simple. 
+This was made within a few days for jqCon Chicago on 9/12/2014 and therefore is incomplete and not documented as well as I'd like. This is what I get for having to launch something whenever I give a talk. I'll refine this and add more features while retaining the philosophy of staying simple. 
 
 **MOST IMPORTANTLY: HAVE FUN.**
