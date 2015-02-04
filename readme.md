@@ -102,7 +102,7 @@ If you want to initially sort your table on load, there are `sorting` properties
 var $table = $('table');
 
 // call timbles with sorting property
-$table.timbles(
+$table.timbles({
   sorting: {
     order: 'asc', // 'asc' for ascending sort, 'desc' for descending
     keyId: 'name', // the id of the column you want to initially sort by
