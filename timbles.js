@@ -30,7 +30,7 @@
     prevPage : ' < ',
     nextPage : ' > ',
     lastPage : ' [&raquo;] '
-  }
+  };
 
   var methods = {
 
@@ -74,7 +74,7 @@
       data.$headerRow.find('th').each(function(i){
         var headerId = $(this).attr('id');
         data.$records.find('td:nth-child(' + (i + 1) + ')').addClass(headerId);
-      })
+      });
 
       // start enabling any given features
       methods.enableFeaturesSetup.call($this);
@@ -105,12 +105,12 @@
 
       if ( data.dataConfig.dataType === 'array' ) {
         // no need for ajax call if data is local array
-        methods.generateRowsFromData.call($this, data.dataConfig.data, data.dataConfig.columns, $this)
+        methods.generateRowsFromData.call($this, data.dataConfig.data, data.dataConfig.columns, $this);
       }
       else {
         // get external json file given
         $.getJSON( data.dataConfig.data, function(json) {
-          methods.generateRowsFromData.call($this, json, data.dataConfig.columns, $this)
+          methods.generateRowsFromData.call($this, json, data.dataConfig.columns, $this);
         }).then(function(){
           // set up existing html table
           data.$allRows = $this.find('tr');
@@ -295,10 +295,9 @@
 			data.$footerRow = $this.find('tfoot');
 
 			if ( data.$footerRow.length === 0 ) {
-  			var $footer = $('<tfoot>');
-  			$this.find('tbody').after($footer);
-  			data.$footerRow = $footer;
-			}
+        var $footer = $('<tfoot>');
+        data.$footerRow = $footer;
+      }
 
 			// create tools if they don't exist already
 			if ( !data.$paginationToolsContainer ) {
@@ -306,7 +305,7 @@
 			}
 
 			// save it all
-		  $this.data(pluginName, data);
+      $this.data(pluginName, data);
     },
 
     generatePaginationTools : function() {
@@ -314,10 +313,10 @@
       var data = $this.data(pluginName);
       if (!data) { return; }
 
-      data.$paginationToolsContainer = $('<div class="' + classes.paginationTools + '">'),
-      data.$linkFirstPage = $('<a href="#">' + copy.firstPage + '</a>'),
-      data.$linkPrevPage = $('<a href="#">' + copy.prevPage + '</a>'),
-      data.$linkNextPage = $('<a href="#">' + copy.nextPage + '</a>'),
+      data.$paginationToolsContainer = $('<div class="' + classes.paginationTools + '">');
+      data.$linkFirstPage = $('<a href="#">' + copy.firstPage + '</a>');
+      data.$linkPrevPage = $('<a href="#">' + copy.prevPage + '</a>');
+      data.$linkNextPage = $('<a href="#">' + copy.nextPage + '</a>');
       data.$linkLastPage = $('<a href="#">' + copy.lastPage + '</a>');
 
       data.$paginationToolsContainer
@@ -346,7 +345,7 @@
       $this.after(data.$paginationToolsContainer);
 
       // save it all
-		  $this.data(pluginName, data);
+      $this.data(pluginName, data);
     },
 
     goToPage : function(page) {
@@ -366,8 +365,8 @@
 			$this.find('tr').not('.'+classes.headerRow).remove();
 
 			var paginatedRecordsArray = [];
- 			var newFirstRowNum = (page - 1) * (data.pagination.recordsPerPage) + 1,
-			    newLastRowNum = page * data.pagination.recordsPerPage;
+      var newFirstRowNum = (page - 1) * (data.pagination.recordsPerPage) + 1,
+          newLastRowNum = page * data.pagination.recordsPerPage;
 
 			if ( newLastRowNum > data.$records.length ) {
 				newLastRowNum = data.$records.length;
