@@ -1,24 +1,17 @@
-<html lang="en">
+<!DOCTYPE html>
+<html>
 <head>
-  <meta charset="utf-8" />
-  <title>What's In Jenn's Downloads Folder</title>
-  <style>
-    th { background: #ccc; }
-    th, td { padding: 10px; }
-
-    /* timbles css */
-    .sorted-asc:after { content: '▲';}
-    .sorted-desc:after { content: '▼';}
-    .pagination a { display: inline-block; text-decoration: none; padding: 5px; margin: 0 5px; }
-  </style>
+  <meta charset="utf-8">
+  <title>timbles tests &bull; QUnit</title>
+  <link rel="stylesheet" href="qunit-1.15.0.css">
 </head>
 <body>
 
-  <h1>What's in Jenn's Downloads folder? (timbles - pagination)</h1>
+  <div id="qunit"></div>
+  <div id="qunit-fixture"></div>
 
-  <table border="1">
+  <table border="1" style=""></table>
 
-  </table>
 <script type="text/javascript" src="../jquery.js"></script>
 <script type="text/javascript" src="../timbles.js"></script>
 
@@ -31,6 +24,8 @@ $(function() {
       i'm yellin' timbles! */
 
   $table.timbles({
+
+    // if you are using json data and not an existing table:
     dataConfig: {
       data: 'data.json',
       columns: [
@@ -42,7 +37,13 @@ $(function() {
       ]
     },
 
-    sorting: true,
+    // if you want sorting:
+    sorting: {
+      order: 'asc',
+      keyId: 'name',
+    },
+    
+    // pagination
     pagination: {
       recordsPerPage: 3,
     }
@@ -50,5 +51,9 @@ $(function() {
 
 });
 </script>
+
+  <script src="qunit-1.15.0.js"></script>
+  <script src="tests-pagination.js"></script>
+
 </body>
 </html>
