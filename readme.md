@@ -218,6 +218,22 @@ Here is an example of an array of row objects:
   }
 ];</code></pre>
 
+## Pagination
+
+If you want to have your table split into pages, COOL YOU CAN DO THAT. Just add the `pagination` property to your `timbles` call, just like you do for data and/or sorting.
+
+<pre><code>// get your table
+var $table = $('table');
+
+// call timbles with sorting property
+$table.timbles(
+  pagination: {
+    recordsPerPage: 5, // an integer value for how many records per page, for example 5
+  }
+});</code></pre>
+
+It will add a very simple first/prev/next/last pagination navigation on the bottom of the table. In the very near future I'll have more options for this.
+
 ## C.S.S.
 
 When you sort ascending, the `sort-asc` class is added to the `<th>` header. If you sort descending, the `sort-desc` class is added to the `<th>` header. So you can, like, use CSS to add arrows whenever those classes are set and that's p cool I think.
