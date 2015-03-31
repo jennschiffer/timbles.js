@@ -73,7 +73,9 @@
       // for each header cell, get ID and set the records cells to have it as a class for sorting
       data.$headerRow.find('th').each(function(i){
         var headerId = $(this).attr('id');
-        data.$records.find('td:nth-child(' + (i + 1) + ')').addClass(headerId);
+        data.$records.each(function(j){
+          $(this).find('td').eq(i).addClass(headerId);
+        });
       });
 
       // start enabling any given features
