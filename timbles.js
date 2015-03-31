@@ -316,10 +316,10 @@
       if (!data) { return; }
 
       data.$paginationToolsContainer = $('<div class="' + classes.paginationTools + '">');
-      data.$linkFirstPage = $('<a href="#">' + copy.firstPage + '</a>');
-      data.$linkPrevPage = $('<a href="#">' + copy.prevPage + '</a>');
-      data.$linkNextPage = $('<a href="#">' + copy.nextPage + '</a>');
-      data.$linkLastPage = $('<a href="#">' + copy.lastPage + '</a>');
+      data.$linkFirstPage = $('<button role="button">' + copy.firstPage + '</button>');
+      data.$linkPrevPage = $('<button role="button">' + copy.prevPage + '</a>');
+      data.$linkNextPage = $('<button role="button">' + copy.nextPage + '</a>');
+      data.$linkLastPage = $('<button role="button">' + copy.lastPage + '</a>');
 
       data.$paginationToolsContainer
         .append(data.$linkFirstPage)
