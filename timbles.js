@@ -1,7 +1,9 @@
 /**
 * timbles.js
 * definitely the most lightweight jquery table plugin ever
-* like, all you can do is generate a table and allow sorting lol that's it
+* except probably not
+*
+* @version 1.0.5
 * @author jenn schiffer http://jennmoney.biz
 */
 
@@ -293,20 +295,27 @@
 			// show first page
 			$this.append(paginatedRecordsArray);
 
-			// create footer to hold tools
-			data.$footerRow = $this.find('tfoot');
+      // set current page
+      data.pagination.currentPage = 1;
 
-			if ( data.$footerRow.length === 0 ) {
+      // create footer to hold tools
+      data.$footerRow = $this.find('tfoot');
+
+      if ( data.$footerRow.length === 0 ) {
         var $footer = $('<tfoot>');
         data.$footerRow = $footer;
       }
 
-			// create tools if they don't exist already
-			if ( !data.$paginationToolsContainer ) {
+      // create tools if they don't exist already
+      if ( !data.$paginationToolsContainer ) {
         methods.generatePaginationTools.call($this);
-			}
+      }
+      else {
+        // update existing pagination tools
+        methods.updatePaginationTools.call($this);
+      }
 
-			// save it all
+      // save it all
       $this.data(pluginName, data);
     },
 
@@ -333,11 +342,19 @@
       });
 
       data.$linkPrevPage.click(function(){
-        methods.goToPage.call($this, data.pagination.currentPage - 1);
+        var newPage = data.pagination.currentPage - 1;
+
+        if ( newPage >= 1 ) {
+          methods.goToPage.call($this, newPage);
+        }
       });
 
       data.$linkNextPage.click(function(){
-        methods.goToPage.call($this, data.pagination.currentPage + 1);
+        var newPage = data.pagination.currentPage + 1;
+
+        if ( newPage <= Math.ceil(data.$records.length / data.pagination.recordsPerPage) ) {
+          methods.goToPage.call($this, newPage);
+        }
       });
 
       data.$linkLastPage.click(function(){
@@ -348,6 +365,38 @@
 
       // save it all
       $this.data(pluginName, data);
+
+      // update tools
+      methods.updatePaginationTools.call($this);
+    },
+
+    updatePaginationTools : function() {
+      var $this = $(this);
+      var data = $this.data(pluginName);
+      if (!data) { return; }
+
+      var min = 1;
+      var max = Math.ceil(data.$records.length / data.pagination.recordsPerPage);
+
+      // set buttons inactive if appropriate
+      if ( data.pagination.currentPage === min ) {
+        data.$linkFirstPage.attr('disabled', true);
+        data.$linkPrevPage.attr('disabled', true);
+      }
+      else {
+        data.$linkFirstPage.attr('disabled', false);
+        data.$linkPrevPage.attr('disabled', false);
+      }
+
+      if ( data.pagination.currentPage === max ) {
+        data.$linkLastPage.attr('disabled', true);
+        data.$linkNextPage.attr('disabled', true);
+      }
+      else {
+        data.$linkLastPage.attr('disabled', false);
+        data.$linkNextPage.attr('disabled', false);
+      }
+
     },
 
     goToPage : function(page) {
@@ -355,34 +404,37 @@
       var data = $this.data(pluginName);
       if (!data) { return; }
 
-			// check for valid page number
-			var pageCount = Math.ceil(data.$records.length / data.pagination.recordsPerPage);
-			if ( page < 1 || page > pageCount ) {
-				return;
-			}
+      // check for valid page number
+      var pageCount = Math.ceil(data.$records.length / data.pagination.recordsPerPage);
+      if ( page < 1 || page > pageCount ) {
+        return;
+      }
 
       // move to next page
-			data.pagination.currentPage = page;
+      data.pagination.currentPage = page;
 
-			$this.find('tr').not('.'+classes.headerRow).remove();
+      $this.find('tr').not('.'+classes.headerRow).remove();
 
-			var paginatedRecordsArray = [];
+      var paginatedRecordsArray = [];
       var newFirstRowNum = (page - 1) * (data.pagination.recordsPerPage) + 1,
           newLastRowNum = page * data.pagination.recordsPerPage;
 
-			if ( newLastRowNum > data.$records.length ) {
-				newLastRowNum = data.$records.length;
-			}
+      if ( newLastRowNum > data.$records.length ) {
+        newLastRowNum = data.$records.length;
+      }
 
-			// get new page's records
-			for ( var i = newFirstRowNum - 1; i < newLastRowNum; i++ ) {
-				if ( data.$records[i] ) {
-					paginatedRecordsArray.push(data.$records[i]);
-				}
-			}
+      // get new page's records
+      for ( var i = newFirstRowNum - 1; i < newLastRowNum; i++ ) {
+        if ( data.$records[i] ) {
+          paginatedRecordsArray.push(data.$records[i]);
+        }
+      }
 
-			// add rows to table
-			data.$headerRow.after(paginatedRecordsArray);
+      // add rows to table
+      data.$headerRow.after(paginatedRecordsArray);
+
+			// update pagination tools
+      methods.updatePaginationTools.call($this);
 
 			// update data
 			$this.data(pluginName, data);
