@@ -3,7 +3,7 @@
 * definitely the most lightweight jquery table plugin ever
 * except probably not
 *
-* @version 1.0.5
+* @version 1.0.7
 * @author jenn schiffer http://jennmoney.biz
 */
 
@@ -19,6 +19,8 @@
   };
 
   var classes = {
+    disabled : 'disabled',
+    active : 'active',
     headerRow : 'header-row',
     label : 'label',
     sortASC : 'sorted-asc',
@@ -422,6 +424,10 @@
 			
 			// event listeners
 			data.$paginationNavRowCountChoice.find('button').click(function(){
+  			
+  			data.$paginationNavRowCountChoice.find('button').removeClass(classes.active);
+  			$(this).addClass(classes.active);
+  			
 		  	var newRowCount = $(this).text();
 		  	if ( newRowCount.toLowerCase() == 'all' ) {
 		  		newRowCount = data.$records.length;
@@ -445,21 +451,21 @@
 
       // set buttons inactive if appropriate
       if ( data.pagination.currentPage === min ) {
-        data.$linkFirstPage.attr('disabled', true);
-        data.$linkPrevPage.attr('disabled', true);
+        data.$linkFirstPage.attr('disabled', true).addClass(classes.disabled);
+        data.$linkPrevPage.attr('disabled', true).addClass(classes.disabled);
       }
       else {
-        data.$linkFirstPage.attr('disabled', false);
-        data.$linkPrevPage.attr('disabled', false);
+        data.$linkFirstPage.attr('disabled', false).removeClass(classes.disabled);
+        data.$linkPrevPage.attr('disabled', false).removeClass(classes.disabled);
       }
 
       if ( data.pagination.currentPage === max ) {
-        data.$linkLastPage.attr('disabled', true);
-        data.$linkNextPage.attr('disabled', true);
+        data.$linkLastPage.attr('disabled', true).addClass(classes.disabled);
+        data.$linkNextPage.attr('disabled', true).addClass(classes.disabled);
       }
       else {
-        data.$linkLastPage.attr('disabled', false);
-        data.$linkNextPage.attr('disabled', false);
+        data.$linkLastPage.attr('disabled', false).removeClass(classes.disabled);
+        data.$linkNextPage.attr('disabled', false).removeClass(classes.disabled);
       }
 
     },
