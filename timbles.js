@@ -496,7 +496,7 @@
       }
 
       // add rows to table
-      data.$headerRow.after(paginatedRecordsArray);
+      $this.find('tbody').append(paginatedRecordsArray);
 
 			// update pagination tools
       methods.updatePaginationTools.call($this);
