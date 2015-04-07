@@ -229,6 +229,12 @@ var $table = $('table');
 $table.timbles(
   pagination: {
     recordsPerPage: 5, // an integer value for how many records per page, for example 5
+    
+    // for navigation tools, each nav object is appended to a "pagination" div container below the table in the order they are listed
+    nav: {
+      arrows: true, // the default first/prev/next/last arrow buttons for navigating
+      rowCountChoice: [1, 2, 3, 4, 5, 10] // shows a button for each row count choice that repaginates the table
+    }
   }
 });</code></pre>
 
@@ -240,6 +246,6 @@ When you sort ascending, the `sort-asc` class is added to the `<th>` header. If 
 
 ## Note
 
-This was made within a few days for jqCon Chicago on 9/12/2014 and therefore is incomplete and not documented as well as I'd like. This is what I get for having to launch something whenever I give a talk. I'll refine this and add more features while retaining the philosophy of staying simple. 
+This was made within a few days for jqCon Chicago on 9/12/2014 and is currently being worked on as I use it for another soon-to-be open source project. I'm not taking feature requests on it unless they pertain to just sorting and pagination at the moment! 
 
 **MOST IMPORTANTLY: HAVE FUN.**
