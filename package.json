@@ -1,7 +1,7 @@
 {
   "name": "timbles",
-  "version": "1.0.7",
-  "description": "an p chill jQuery table plugin, made by someone who literally did not invent tables",
+  "version": "1.0.8",
+  "description": "a p chill jQuery table plugin, made by someone who literally did not invent tables",
   "main": "timbles",
   "directories": {
     "example": "examples",

@@ -3,7 +3,7 @@
 * definitely the most lightweight jquery table plugin ever
 * except probably not
 *
-* @version 1.0.7
+* @version 1.0.8
 * @author jenn schiffer http://jennmoney.biz
 */
 
@@ -32,10 +32,12 @@
   };
 
   var copy = {
-    firstPage : ' << ',
-    prevPage : ' < ',
-    nextPage : ' > ',
-    lastPage : ' >> '
+    firstPageArrow : ' << ',
+    prevPageArrow : ' < ',
+    nextPageArrow : ' > ',
+    lastPageArrow : ' >> ',
+    page : 'page',
+    of : 'of'
   };
 
   var methods = {
@@ -211,7 +213,7 @@
       // literally sort non-header-row records
       var $recordsToSort = data.$records;
       var $sortedRecords;
-      
+
       if (order === 'asc') {
         $sortHeader.addClass(classes.sortASC);
 
@@ -258,7 +260,7 @@
           }
         });
       }
-      
+
       // remove current unsorted records
       if ( $recordsToSort ) {
         $recordsToSort.remove();
@@ -266,7 +268,7 @@
 
       // append sorted records
       $this.append($sortedRecords);
-      
+
       // if table was paginated, reenable
       if ( data.pagination ) {
         data.pagination.currentPage = 1;
@@ -277,27 +279,27 @@
 
     enablePagination : function(count) {
       var $this = $(this);
-			var data = $this.data(pluginName);
-			// don't paginate if there are no records
-			if (!data || !data.$records || data.$records.length === 0 ) { return; }
+      var data = $this.data(pluginName);
+      // don't paginate if there are no records
+      if (!data || !data.$records || data.$records.length === 0 ) { return; }
 
       data.pagination.recordsPerPage = count;
-			var $recordsToPaginate = data.$records;
-			var paginatedRecordsArray = [];
-			
-			for ( var i = 0; i < count; i++ ) {
-				if ( data.$records[i] ) {
-					paginatedRecordsArray.push(data.$records[i]);
-				}
-			}
+      var $recordsToPaginate = data.$records;
+      var paginatedRecordsArray = [];
 
-			// remove records if they exist
-			if ( $recordsToPaginate ) {
-				$recordsToPaginate.remove();
-			}
+      for ( var i = 0; i < count; i++ ) {
+        if ( data.$records[i] ) {
+          paginatedRecordsArray.push(data.$records[i]);
+        }
+      }
 
-			// show first page
-			$this.append(paginatedRecordsArray);
+      // remove records if they exist
+      if ( $recordsToPaginate ) {
+        $recordsToPaginate.remove();
+      }
+
+      // show first page
+      $this.append(paginatedRecordsArray);
 
       // set current page
       data.pagination.currentPage = 1;
@@ -327,14 +329,14 @@
       var $this = $(this);
       var data = $this.data(pluginName);
       if (!data) { return; }
-      
+
       // create pagination container and place after table
       data.$paginationToolsContainer = $('<div class="' + classes.paginationToolsContainer + '">');
       $this.after(data.$paginationToolsContainer);
-      
+
       // save it all
       $this.data(pluginName, data);
-      
+
       if ( !data.pagination.nav ) {
         // by default, just show arrow nav
         methods.generatePaginationNavArrows.call($this);
@@ -347,32 +349,37 @@
             case "arrows":
               methods.generatePaginationNavArrows.call($this);
               break;
-            // row count choice 
+            // row count choice
             case "rowCountChoice":
               methods.generatePaginationNavRowCountChoice.call($this);
               break;
-          };
+          }
         }
       }
 
       // update tools
       methods.updatePaginationTools.call($this);
     },
-    
+
     generatePaginationNavArrows : function() {
       var $this = $(this);
       var data = $this.data(pluginName);
       if (!data) { return; }
-      
+
+      var thisPage = 1;
+      var lastPage = Math.ceil(data.$records.length / data.pagination.recordsPerPage);
+
       data.$paginationNavArrows = $('<div class="' + classes.paginationNavArrows + '">');
-      data.$linkFirstPage = $('<button role="button">' + copy.firstPage + '</button>');
-      data.$linkPrevPage = $('<button role="button">' + copy.prevPage + '</a>');
-      data.$linkNextPage = $('<button role="button">' + copy.nextPage + '</a>');
-      data.$linkLastPage = $('<button role="button">' + copy.lastPage + '</a>');
+      data.$linkFirstPage = $('<button role="button">' + copy.firstPageArrow + '</button>');
+      data.$linkPrevPage = $('<button role="button">' + copy.prevPageArrow + '</a>');
+      data.$linkNextPage = $('<button role="button">' + copy.nextPageArrow + '</a>');
+      data.$linkLastPage = $('<button role="button">' + copy.lastPageArrow + '</a>');
+      data.$pageNumberTracker = $('<span class="page-number-tracker">' + copy.page + ' <span class="pointer-this-page">' + thisPage + '</span> ' + copy.of + ' <span class="pointer-last-page">' + lastPage + '</span></span>');
 
       data.$paginationNavArrows
         .append(data.$linkFirstPage)
         .append(data.$linkPrevPage)
+        .append(data.$pageNumberTracker)
         .append(data.$linkNextPage)
         .append(data.$linkLastPage);
 
@@ -402,43 +409,47 @@
       });
 
       data.$paginationToolsContainer.append(data.$paginationNavArrows);
+      data.$pointerThisPage = data.$paginationToolsContainer.find('.pointer-this-page');
+      data.$pointerLastPage = data.$paginationToolsContainer.find('.pointer-last-page');
+
+      console.log(data.$pointerThisPage, data.$pointerLastPage);
 
       // save it all
       $this.data(pluginName, data);
 
     },
-    
+
     generatePaginationNavRowCountChoice : function() {
       var $this = $(this);
       var data = $this.data(pluginName);
       if (!data) { return; }
-      
+
       var optionCount = data.pagination.nav.rowCountChoice.length;
-			var arrayOfChoices = [];
+      var arrayOfChoices = [];
 
-			for ( var i = 0; i < optionCount; i++ ) {
-				arrayOfChoices.push('<button role="button">' + data.pagination.nav.rowCountChoice[i] + '</button>');
-			}
+      for ( var i = 0; i < optionCount; i++ ) {
+        arrayOfChoices.push('<button role="button">' + data.pagination.nav.rowCountChoice[i] + '</button>');
+      }
 
-			data.$paginationNavRowCountChoice = $('<div>').attr('class', classes.paginationNavRowCountChoice).append(arrayOfChoices);
-			
-			// event listeners
-			data.$paginationNavRowCountChoice.find('button').click(function(){
-  			
-  			data.$paginationNavRowCountChoice.find('button').removeClass(classes.active);
-  			$(this).addClass(classes.active);
-  			
-		  	var newRowCount = $(this).text();
-		  	if ( newRowCount.toLowerCase() == 'all' ) {
-		  		newRowCount = data.$records.length;
-		  	}
-		  	methods.enablePagination.call($this, newRowCount);
-		  });
+      data.$paginationNavRowCountChoice = $('<div>').attr('class', classes.paginationNavRowCountChoice).append(arrayOfChoices);
+
+      // event listeners
+      data.$paginationNavRowCountChoice.find('button').click(function(){
+
+        data.$paginationNavRowCountChoice.find('button').removeClass(classes.active);
+        $(this).addClass(classes.active);
+
+        var newRowCount = $(this).text();
+        if ( newRowCount.toLowerCase() == 'all' ) {
+          newRowCount = data.$records.length;
+        }
+        methods.enablePagination.call($this, newRowCount);
+      });
 
       data.$paginationToolsContainer.append(data.$paginationNavRowCountChoice);
-      
+
       // save it all
-			$this.data(pluginName, data);
+      $this.data(pluginName, data);
     },
 
     updatePaginationTools : function() {
@@ -468,6 +479,9 @@
         data.$linkNextPage.attr('disabled', false).removeClass(classes.disabled);
       }
 
+      // update page number tracker
+      data.$pointerThisPage.text(data.pagination.currentPage);
+      data.$pointerLastPage.text(max);
     },
 
     goToPage : function(page) {
@@ -504,11 +518,11 @@
       // add rows to table
       $this.find('tbody').append(paginatedRecordsArray);
 
-			// update pagination tools
+      // update pagination tools
       methods.updatePaginationTools.call($this);
 
-			// update data
-			$this.data(pluginName, data);
+      // update data
+      $this.data(pluginName, data);
     },
 
   };

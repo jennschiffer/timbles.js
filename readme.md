@@ -244,6 +244,18 @@ It will add a very simple first/prev/next/last pagination navigation on the bott
 
 When you sort ascending, the `sort-asc` class is added to the `<th>` header. If you sort descending, the `sort-desc` class is added to the `<th>` header. So you can, like, use CSS to add arrows whenever those classes are set and that's p cool I think.
 
+## Changelog
+
+* 1.0.8 adds page number tracker to pagination tools
+* 1.0.7 bug fix
+* 1.0.6 adds pagination tools
+* 1.0.5 bug fix
+* 1.0.4 bug fix
+* 1.0.3 adds data-filter property to columns, sort by data-value if exists
+* 1.0.2 bug fix
+* 1.0.1 bug fix
+* 1.0.0 a baby is born
+
 ## Note
 
 This was made within a few days for jqCon Chicago on 9/12/2014 and is currently being worked on as I use it for another soon-to-be open source project. I'm not taking feature requests on it unless they pertain to just sorting and pagination at the moment! 
