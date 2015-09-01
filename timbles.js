@@ -78,6 +78,10 @@
       var data = $this.data(pluginName);
       if (!data) { return; }
 
+      // ensure all header cells have a legit id
+      data.$headerRow.find('th').not('.no-sort').each(function(i, th) {
+          th.id = th.id || 'timbles-anon-' + $.timblesAnonCount++;
+      });
       // for each header cell, get ID and set the records cells to have it as a class for sorting
       data.$headerRow.find('th').each(function(i){
         var headerId = $(this).attr('id');
@@ -528,6 +532,7 @@
   };
 
   /** module definition */
+  $.timblesAnonCount = 0;
   $.fn[pluginName] = function (method) {
     if ( methods[method] ) {
       return methods[method].apply(this, Array.prototype.slice.call(arguments, 1));
