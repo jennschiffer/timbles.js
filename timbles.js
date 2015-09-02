@@ -78,13 +78,10 @@
       var data = $this.data(pluginName);
       if (!data) { return; }
 
-      // ensure all header cells have a legit id
-      data.$headerRow.find('th').not('.no-sort').each(function(i, th) {
-          th.id = th.id || 'timbles-anon-' + $.timblesAnonCount++;
-      });
       // for each header cell, get ID and set the records cells to have it as a class for sorting
       data.$headerRow.find('th').each(function(i){
-        var headerId = $(this).attr('id');
+        // ensure all header cells have a legit id
+        var headerId = this.id = this.id || 'timbles-anon-' + $.timblesAnonCount++;
         data.$records.each(function(j){
           $(this).find('td').eq(i).addClass(headerId);
         });
