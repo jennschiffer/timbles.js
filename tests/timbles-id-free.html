@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>timbles tests &bull; QUnit</title>
+  <link rel="stylesheet" href="qunit-1.15.0.css">
+</head>
+<body>
+
+  <div id="qunit"></div>
+  <div id="qunit-fixture"></div>
+
+  <table border="1" style="display:none;">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Size</th>
+        <th>Kind</th>
+        <th>Date Added</th>
+        <th>Notes</th>
+      </tr>
+    </thead>
+    <tr>
+      <td>dhtmlconf.png</td>
+      <td>77 KB</td>
+      <td>PNG Image</td>
+      <td>August 31, 2014, 11:16 PM</td>
+      <td>dhtmlconf logo</td>
+    </tr>      
+    <tr>
+      <td>icla.pdf</td>
+      <td>26 KB</td>
+      <td>Adobe PDF document</td>
+      <td>August 27, 2014, 12:51 PM</td>
+      <td>Individual Contributor License Agreement</td>
+    </tr>
+    <tr>
+      <td>Slime Girls - Vacation Wasteland EP.zip</td>
+      <td>72.9 MB</td>
+      <td>ZIP archive</td>
+      <td>August 25, 2014, 9:40 PM</td>
+      <td>cool chiptunes from lwlvl</td>
+    </tr>
+    <tr>
+      <td>.DS_Store</td>
+      <td>25 KB</td>
+      <td>Virus</td>
+      <td>February 7, 2014, 10:59 PM</td>
+      <td>lol</td>
+    </tr>
+    <tr>
+      <td>No_Diggity.mid</td>
+      <td>17 KB</td>
+      <td>MIDI file</td>
+      <td>July 3, 2014, 11:34 PM</td>
+      <td>very important karaoke file</td>
+    </tr>
+    <tr>
+      <td>jorts.svg</td>
+      <td>52 KB</td>
+      <td>Plain Text File</td>
+      <td>May 24, 2014, 1:55 PM</td>
+      <td>logo for jort.technology</td>
+    </tr>      
+    <tr>
+      <td>wordpress.sql</td>
+      <td>418 KB</td>
+      <td>Plain Text File</td>
+      <td>May 11, 2014, 11:15 PM</td>
+      <td>blog dump</td>
+    </tr>      
+    <tr>
+      <td>foundation-compass-template-master.zip</td>
+      <td>6 KB</td>
+      <td>ZIP archive</td>
+      <td>April 21, 2014, 6:59 PM</td>
+      <td>c.s.s. is better that javascript</td>
+    </tr>
+  </table>
+
+<script type="text/javascript" src="../jquery.js"></script>
+<script type="text/javascript" src="../timbles.js"></script>
+
+<script type="text/javascript">
+$(function() {
+
+  var $table = $('table');
+
+  /* it's going down
+      i'm yellin' timbles! */
+
+  $table.timbles({
+    sorting: true
+  });
+
+});
+</script>
+
+  <script src="qunit-1.15.0.js"></script>
+  <script src="tests.js"></script>
+
+</body>
+</html>
