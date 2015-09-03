@@ -94,7 +94,7 @@ var $table = $('table');
 // call timbles
 $table.timbles({ sorting: true });</code></pre>
 
-In order for sorting to work, the `<th>` cells need to have an `id` attribute and the parent `<tr>` of the header rows needs to be within a `<thead>` tag. Again, view the source above for the example.
+In order for sorting to work, the parent `<tr>` of the header rows needs to be within a `<thead>` tag. The `<th>` cells should to have an `id` attribute, like in the example above, but if they are left out then Timbles will assign some ugly id attribute values for you.
 
 If you want to initially sort your table on load, there are `sorting` properties you can set:
 
