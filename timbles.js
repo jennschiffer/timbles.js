@@ -440,7 +440,7 @@
         $(this).addClass(classes.active);
 
         var newRowCount = $(this).text();
-        if ( newRowCount.toLowerCase() == 'all' ) {
+        if ( newRowCount.toLowerCase() === 'all' ) {
           newRowCount = data.$records.length;
         }
         methods.enablePagination.call($this, newRowCount);
