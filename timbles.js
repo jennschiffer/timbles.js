@@ -86,7 +86,7 @@
           headerId = 'timbles-anon-' + $.timblesAnonCount++;
           $(this).attr('id',headerId);
         }
-        
+
         data.$records.each(function(j){
           $(this).find('td').eq(i).addClass(headerId);
         });
@@ -207,22 +207,21 @@
       var data = $this.data(pluginName);
       if (!data) { return; }
 
-      var $headers = $this.find('th');
+      // determine order and update header sort classes
       var $sortHeader = $this.find('#' + key);
-
-      // determine order and clear header sort classes
       if ( !order ) {
         order = $sortHeader.hasClass(classes.sortASC) ? 'desc' : 'asc';
       }
-      $headers.removeClass(classes.sortASC).removeClass(classes.sortDESC);
+      data.$headerRow.find('th')
+          .removeClass(classes.sortASC)
+          .removeClass(classes.sortDESC);
+      $sortHeader.addClass((order === 'asc') ? classes.sortASC : classes.sortDESC);
 
       // literally sort non-header-row records
       var $recordsToSort = data.$records;
       var $sortedRecords;
 
       if (order === 'asc') {
-        $sortHeader.addClass(classes.sortASC);
-
         var alpha, beta;
         $sortedRecords = $recordsToSort.sort( function(a, b) {
           alpha = $(a).find('td.' + key).data('value');
@@ -245,7 +244,6 @@
         });
       }
       else {
-        $sortHeader.addClass(classes.sortDESC);
         $sortedRecords = $recordsToSort.sort( function(a, b) {
           alpha = $(a).find('td.' + key).data('value');
           beta = $(b).find('td.' + key).data('value');
