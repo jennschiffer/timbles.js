@@ -217,61 +217,31 @@
           .removeClass(classes.sortDESC);
       $sortHeader.addClass((order === 'asc') ? classes.sortASC : classes.sortDESC);
 
-      // literally sort non-header-row records
-      var $recordsToSort = data.$records;
-      var $sortedRecords;
+      // determine column values to actually sort by
+      var sortMap = data.$records.map(function(index) {
+        var $cell = $(this).find('td.' + key);
+        return {
+            index: index,
+            value: $cell.data('value') || $cell.text()
+        };
+      });
 
-      if (order === 'asc') {
-        var alpha, beta;
-        $sortedRecords = $recordsToSort.sort( function(a, b) {
-          alpha = $(a).find('td.' + key).data('value');
-          beta = $(b).find('td.' + key).data('value');
+      // sort the mapping by the extract column values
+      sortMap.sort(function(a, b) {
+        if (a.value > b.value) {
+          return (order === 'asc') ? 1 : -1;
+        }
+        if (a.value < b.value) {
+          return (order === 'asc') ? -1 : 1;
+        }
+        return 0;
+      });
 
-          alpha = (alpha) ? alpha : $(a).find('td.' + key).text();
-          beta = (beta) ? beta : $(b).find('td.' + key).text();
-
-          if ( alpha < beta ) {
-            return -1;
-          }
-          else {
-            if ( alpha > beta ) {
-              return 1;
-            }
-            else {
-              return 0;
-            }
-          }
-        });
+      // use sortMap to shuffle table rows to the correct order
+      var tableBody = $this.find('tbody').get(0);
+      for (var i = 0; i < sortMap.length; i++) {
+        tableBody.appendChild(data.$records[sortMap[i].index]);
       }
-      else {
-        $sortedRecords = $recordsToSort.sort( function(a, b) {
-          alpha = $(a).find('td.' + key).data('value');
-          beta = $(b).find('td.' + key).data('value');
-
-          alpha = (alpha) ? alpha : $(a).find('td.' + key).text();
-          beta = (beta) ? beta : $(b).find('td.' + key).text();
-
-          if ( beta < alpha ) {
-            return -1;
-          }
-          else {
-            if ( beta > alpha ) {
-              return 1;
-            }
-            else {
-              return 0;
-            }
-          }
-        });
-      }
-
-      // remove current unsorted records
-      if ( $recordsToSort ) {
-        $recordsToSort.remove();
-      }
-
-      // append sorted records
-      $this.append($sortedRecords);
 
       // if table was paginated, reenable
       if ( data.pagination ) {
