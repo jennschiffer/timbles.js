@@ -238,10 +238,12 @@
       });
 
       // use sortMap to shuffle table rows to the correct order
-      var tableBody = $this.find('tbody').get(0);
+      // work on detached DOM for improved performance on large tables
+      var tableBody = $this.find('tbody').detach().get(0);
       for (var i = 0; i < sortMap.length; i++) {
         tableBody.appendChild(data.$records[sortMap[i].index]);
       }
+      $(tableBody).appendTo($this);
 
       // if table was paginated, reenable
       if ( data.pagination ) {
