@@ -243,7 +243,12 @@
       for (var i = 0; i < sortMap.length; i++) {
         tableBody.appendChild(data.$records[sortMap[i].index]);
       }
+      
       $(tableBody).appendTo($this);
+      
+      data.$allRows = $this.find('tr');
+      data.$records = data.$allRows.not('.' + classes.headerRow);
+      $this.data(pluginName, data);
 
       // if table was paginated, reenable
       if ( data.pagination ) {
@@ -387,8 +392,6 @@
       data.$paginationToolsContainer.append(data.$paginationNavArrows);
       data.$pointerThisPage = data.$paginationToolsContainer.find('.pointer-this-page');
       data.$pointerLastPage = data.$paginationToolsContainer.find('.pointer-last-page');
-
-      console.log(data.$pointerThisPage, data.$pointerLastPage);
 
       // save it all
       $this.data(pluginName, data);
