@@ -3,7 +3,7 @@
 * definitely the most lightweight jquery table plugin ever
 * except probably not
 *
-* @version 1.0.8
+* @version 1.0.9
 * @author jenn schiffer http://jennmoney.biz
 */
 

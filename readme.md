@@ -246,6 +246,7 @@ When you sort ascending, the `sort-asc` class is added to the `<th>` header. If 
 
 ## Changelog
 
+* 1.0.9 column sorting refactor that [makes it *so* much faster](https://github.com/jennschiffer/timbles.js/pull/4), thanks @edelooff
 * 1.0.8 adds page number tracker to pagination tools
 * 1.0.7 bug fix
 * 1.0.6 adds pagination tools
