@@ -86,7 +86,7 @@
           headerId = 'timbles-anon-' + $.timblesAnonCount++;
           $(this).attr('id',headerId);
         }
-        
+
         data.$records.each(function(j){
           $(this).find('td').eq(i).addClass(headerId);
         });
@@ -207,73 +207,48 @@
       var data = $this.data(pluginName);
       if (!data) { return; }
 
-      var $headers = $this.find('th');
+      // determine order and update header sort classes
       var $sortHeader = $this.find('#' + key);
-
-      // determine order and clear header sort classes
       if ( !order ) {
         order = $sortHeader.hasClass(classes.sortASC) ? 'desc' : 'asc';
       }
-      $headers.removeClass(classes.sortASC).removeClass(classes.sortDESC);
+      data.$headerRow.find('th')
+          .removeClass(classes.sortASC)
+          .removeClass(classes.sortDESC);
+      $sortHeader.addClass((order === 'asc') ? classes.sortASC : classes.sortDESC);
 
-      // literally sort non-header-row records
-      var $recordsToSort = data.$records;
-      var $sortedRecords;
+      // determine column values to actually sort by
+      var sortMap = data.$records.map(function(index) {
+        var $cell = $(this).find('td.' + key);
+        return {
+            index: index,
+            value: $cell.data('value') || $cell.text()
+        };
+      });
 
-      if (order === 'asc') {
-        $sortHeader.addClass(classes.sortASC);
+      // sort the mapping by the extract column values
+      sortMap.sort(function(a, b) {
+        if (a.value > b.value) {
+          return (order === 'asc') ? 1 : -1;
+        }
+        if (a.value < b.value) {
+          return (order === 'asc') ? -1 : 1;
+        }
+        return 0;
+      });
 
-        var alpha, beta;
-        $sortedRecords = $recordsToSort.sort( function(a, b) {
-          alpha = $(a).find('td.' + key).data('value');
-          beta = $(b).find('td.' + key).data('value');
-
-          alpha = (alpha) ? alpha : $(a).find('td.' + key).text();
-          beta = (beta) ? beta : $(b).find('td.' + key).text();
-
-          if ( alpha < beta ) {
-            return -1;
-          }
-          else {
-            if ( alpha > beta ) {
-              return 1;
-            }
-            else {
-              return 0;
-            }
-          }
-        });
+      // use sortMap to shuffle table rows to the correct order
+      // work on detached DOM for improved performance on large tables
+      var tableBody = $this.find('tbody').detach().get(0);
+      for (var i = 0; i < sortMap.length; i++) {
+        tableBody.appendChild(data.$records[sortMap[i].index]);
       }
-      else {
-        $sortHeader.addClass(classes.sortDESC);
-        $sortedRecords = $recordsToSort.sort( function(a, b) {
-          alpha = $(a).find('td.' + key).data('value');
-          beta = $(b).find('td.' + key).data('value');
-
-          alpha = (alpha) ? alpha : $(a).find('td.' + key).text();
-          beta = (beta) ? beta : $(b).find('td.' + key).text();
-
-          if ( beta < alpha ) {
-            return -1;
-          }
-          else {
-            if ( beta > alpha ) {
-              return 1;
-            }
-            else {
-              return 0;
-            }
-          }
-        });
-      }
-
-      // remove current unsorted records
-      if ( $recordsToSort ) {
-        $recordsToSort.remove();
-      }
-
-      // append sorted records
-      $this.append($sortedRecords);
+      
+      $(tableBody).appendTo($this);
+      
+      data.$allRows = $this.find('tr');
+      data.$records = data.$allRows.not('.' + classes.headerRow);
+      $this.data(pluginName, data);
 
       // if table was paginated, reenable
       if ( data.pagination ) {
@@ -417,8 +392,6 @@
       data.$paginationToolsContainer.append(data.$paginationNavArrows);
       data.$pointerThisPage = data.$paginationToolsContainer.find('.pointer-this-page');
       data.$pointerLastPage = data.$paginationToolsContainer.find('.pointer-last-page');
-
-      console.log(data.$pointerThisPage, data.$pointerLastPage);
 
       // save it all
       $this.data(pluginName, data);
