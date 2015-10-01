@@ -195,20 +195,26 @@
       if (!data) { return; }
 
       // bind sorting to header cells
-      $this.find('th').not('.no-sort').bind({
-        click: function(e) {
-          methods.sortColumn.call($this, $(this).attr('id'), false);
-        }
-      });
+      $this.find('th').not('.no-sort').on(
+          'click', methods.sortColumnEvent.bind($this));
     },
 
     sortColumn : function(key, order) {
+      // Sort a column identified by its key in a given order
+      // If `order` is not given, this will do the same as clicking the header
+      var $this = $(this);
+      $this.find('#' + key).trigger('click', order);
+    },
+
+    sortColumnEvent : function(event, order) {
       var $this = $(this);
       var data = $this.data(pluginName);
       if (!data) { return; }
 
       // determine order and update header sort classes
-      var $sortHeader = $this.find('#' + key);
+      var $sortHeader = $(event.target);
+      var key = $sortHeader.attr('id');
+
       if ( !order ) {
         order = $sortHeader.hasClass(classes.sortASC) ? 'desc' : 'asc';
       }
