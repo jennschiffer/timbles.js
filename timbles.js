@@ -223,10 +223,14 @@
 
       // determine column values to actually sort by
       var sortMap = data.$records.map(function(index) {
-        var cell = this.children[sortColumn];
+        var cell = this.children[sortColumn],
+            dataValue = cell.getAttribute('data-value');
+        if (parseFloat(dataValue).toString() == dataValue) {
+          dataValue = parseFloat(dataValue);
+        }
         return {
             index: index,
-            value: cell.getAttribute('data-value') || cell.textContent || cell.innerText
+            value: dataValue || cell.textContent || cell.innerText
         };
       });
 
