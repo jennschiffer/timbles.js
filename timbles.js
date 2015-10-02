@@ -201,9 +201,16 @@
 
     sortColumn : function(key, order) {
       // Sort a column identified by its key in a given order
+      // If `key` is numeric, it is treated as the column index to sort
       // If `order` is not given, this will do the same as clicking the header
       var $this = $(this);
-      $this.find('#' + key).trigger('click', order);
+      if (typeof key === "number") {
+        var data = $this.data(pluginName);
+        data.$headerRow.find('th').eq(key).trigger('click', order);
+      }
+      else {
+        $this.find('#' + key).trigger('click', order);
+      }
     },
 
     sortColumnEvent : function(event, order) {
