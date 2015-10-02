@@ -78,18 +78,9 @@
       var data = $this.data(pluginName);
       if (!data) { return; }
 
-      // for each header cell, get ID and set the records cells to have it as a class for sorting
+      // for each header cell, store its column number
       data.$headerRow.find('th').each(function(i){
-        // ensure all header cells have a legit id
-        var headerId = $(this).attr('id');
-        if ( !headerId ) {
-          headerId = 'timbles-anon-' + $.timblesAnonCount++;
-          $(this).attr('id',headerId);
-        }
-
-        data.$records.each(function(j){
-          $(this).find('td').eq(i).addClass(headerId);
-        });
+        $(this).data('timbles-column-index', i);
       });
 
       // start enabling any given features
@@ -220,7 +211,7 @@
 
       // determine order and update header sort classes
       var $sortHeader = $(event.target);
-      var key = $sortHeader.attr('id');
+      var sortColumn = $sortHeader.data('timbles-column-index');
 
       if ( !order ) {
         order = $sortHeader.hasClass(classes.sortASC) ? 'desc' : 'asc';
@@ -232,7 +223,7 @@
 
       // determine column values to actually sort by
       var sortMap = data.$records.map(function(index) {
-        var $cell = $(this).find('td.' + key);
+        var $cell = $(this).children().eq(sortColumn);
         return {
             index: index,
             value: $cell.data('value') || $cell.text()
@@ -520,7 +511,6 @@
   };
 
   /** module definition */
-  $.timblesAnonCount = 0;
   $.fn[pluginName] = function (method) {
     if ( methods[method] ) {
       return methods[method].apply(this, Array.prototype.slice.call(arguments, 1));
