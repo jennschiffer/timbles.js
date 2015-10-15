@@ -222,14 +222,14 @@
       $sortHeader.addClass((order === 'asc') ? classes.sortASC : classes.sortDESC);
 
       // determine column values to actually sort by
-      var sortMap = data.$records.map(function(index) {
+      var sortMap = data.$records.map(function() {
         var cell = this.children[sortColumn],
             dataValue = cell.getAttribute('data-value');
         if (parseFloat(dataValue).toString() == dataValue) {
           dataValue = parseFloat(dataValue);
         }
         return {
-            index: index,
+            node: this,
             value: dataValue || cell.textContent || cell.innerText
         };
       });
@@ -248,12 +248,12 @@
       // use sortMap to shuffle table rows to the correct order
       // work on detached DOM for improved performance on large tables
       var tableBody = $this.find('tbody').detach().get(0);
-      for (var i = 0; i < sortMap.length; i++) {
-        tableBody.appendChild(data.$records[sortMap[i].index]);
-      }
-      
+      sortMap.each(function() {
+        tableBody.appendChild(this.node);
+      });
+
       $(tableBody).appendTo($this);
-      
+
       data.$allRows = $this.find('tr');
       data.$records = data.$allRows.not('.' + classes.headerRow);
       $this.data(pluginName, data);
