@@ -104,6 +104,7 @@
         }
 
         var $cell = $('<th id="' + value.id + '"' + noSortClassString +'>' + value.label + '</th>');
+        $cell.data('timbles-column-index', index);
         $this.find('tr.' + classes.headerRow).append($cell);
       });
 
@@ -146,7 +147,7 @@
           var displayValue = ( value.dataFilter ) ? value.dataFilter(row[value.id]) : row[value.id];
 
           // append new cell to the row
-          $currentRow.append('<td class="' + value.id + '" data-value="' + row[value.id] + '">' + displayValue + '</td>');
+          $currentRow.append('<td data-value="' + row[value.id] + '">' + displayValue + '</td>');
         });
         thisTable.append($currentRow);
       });
