@@ -78,18 +78,9 @@
       var data = $this.data(pluginName);
       if (!data) { return; }
 
-      // for each header cell, get ID and set the records cells to have it as a class for sorting
+      // for each header cell, store its column number
       data.$headerRow.find('th').each(function(i){
-        // ensure all header cells have a legit id
-        var headerId = $(this).attr('id');
-        if ( !headerId ) {
-          headerId = 'timbles-anon-' + $.timblesAnonCount++;
-          $(this).attr('id',headerId);
-        }
-
-        data.$records.each(function(j){
-          $(this).find('td').eq(i).addClass(headerId);
-        });
+        $(this).data('timbles-column-index', i);
       });
 
       // start enabling any given features
@@ -113,6 +104,7 @@
         }
 
         var $cell = $('<th id="' + value.id + '"' + noSortClassString +'>' + value.label + '</th>');
+        $cell.data('timbles-column-index', index);
         $this.find('tr.' + classes.headerRow).append($cell);
       });
 
@@ -155,7 +147,7 @@
           var displayValue = ( value.dataFilter ) ? value.dataFilter(row[value.id]) : row[value.id];
 
           // append new cell to the row
-          $currentRow.append('<td class="' + value.id + '" data-value="' + row[value.id] + '">' + displayValue + '</td>');
+          $currentRow.append('<td data-value="' + row[value.id] + '">' + displayValue + '</td>');
         });
         thisTable.append($currentRow);
       });
@@ -195,20 +187,33 @@
       if (!data) { return; }
 
       // bind sorting to header cells
-      $this.find('th').not('.no-sort').bind({
-        click: function(e) {
-          methods.sortColumn.call($this, $(this).attr('id'), false);
-        }
-      });
+      $this.find('th').not('.no-sort').on(
+          'click', methods.sortColumnEvent.bind($this));
     },
 
     sortColumn : function(key, order) {
+      // Sort a column identified by its key in a given order
+      // If `key` is numeric, it is treated as the column index to sort
+      // If `order` is not given, this will do the same as clicking the header
+      var $this = $(this);
+      if (typeof key === "number") {
+        var data = $this.data(pluginName);
+        data.$headerRow.find('th').eq(key).trigger('click', order);
+      }
+      else {
+        $this.find('#' + key).trigger('click', order);
+      }
+    },
+
+    sortColumnEvent : function(event, order) {
       var $this = $(this);
       var data = $this.data(pluginName);
       if (!data) { return; }
 
       // determine order and update header sort classes
-      var $sortHeader = $this.find('#' + key);
+      var $sortHeader = $(event.target);
+      var sortColumn = $sortHeader.data('timbles-column-index');
+
       if ( !order ) {
         order = $sortHeader.hasClass(classes.sortASC) ? 'desc' : 'asc';
       }
@@ -218,11 +223,15 @@
       $sortHeader.addClass((order === 'asc') ? classes.sortASC : classes.sortDESC);
 
       // determine column values to actually sort by
-      var sortMap = data.$records.map(function(index) {
-        var $cell = $(this).find('td.' + key);
+      var sortMap = data.$records.map(function() {
+        var cell = this.children[sortColumn],
+            dataValue = cell.getAttribute('data-value');
+        if (parseFloat(dataValue).toString() == dataValue) {
+          dataValue = parseFloat(dataValue);
+        }
         return {
-            index: index,
-            value: $cell.data('value') || $cell.text()
+            node: this,
+            value: dataValue || cell.textContent || cell.innerText
         };
       });
 
@@ -240,12 +249,12 @@
       // use sortMap to shuffle table rows to the correct order
       // work on detached DOM for improved performance on large tables
       var tableBody = $this.find('tbody').detach().get(0);
-      for (var i = 0; i < sortMap.length; i++) {
-        tableBody.appendChild(data.$records[sortMap[i].index]);
-      }
-      
+      sortMap.each(function() {
+        tableBody.appendChild(this.node);
+      });
+
       $(tableBody).appendTo($this);
-      
+
       data.$allRows = $this.find('tr');
       data.$records = data.$allRows.not('.' + classes.headerRow);
       $this.data(pluginName, data);
@@ -507,7 +516,6 @@
   };
 
   /** module definition */
-  $.timblesAnonCount = 0;
   $.fn[pluginName] = function (method) {
     if ( methods[method] ) {
       return methods[method].apply(this, Array.prototype.slice.call(arguments, 1));
