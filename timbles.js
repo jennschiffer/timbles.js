@@ -3,7 +3,7 @@
 * definitely the most lightweight jquery table plugin ever
 * except probably not
 *
-* @version 1.0.9
+* @version 1.1.0
 * @author jenn schiffer http://jennmoney.biz
 */
 
@@ -187,8 +187,7 @@
       if (!data) { return; }
 
       // bind sorting to header cells
-      $this.find('th').not('.no-sort').on(
-          'click', methods.sortColumnEvent.bind($this));
+      $this.find('th').not('.no-sort').on('click', methods.sortColumnEvent.bind($this));
     },
 
     sortColumn : function(key, order) {
@@ -218,20 +217,20 @@
         order = $sortHeader.hasClass(classes.sortASC) ? 'desc' : 'asc';
       }
       data.$headerRow.find('th')
-          .removeClass(classes.sortASC)
-          .removeClass(classes.sortDESC);
+        .removeClass(classes.sortASC)
+        .removeClass(classes.sortDESC);
       $sortHeader.addClass((order === 'asc') ? classes.sortASC : classes.sortDESC);
 
       // determine column values to actually sort by
       var sortMap = data.$records.map(function() {
         var cell = this.children[sortColumn],
-            dataValue = cell.getAttribute('data-value');
-        if (parseFloat(dataValue).toString() == dataValue) {
+          dataValue = cell.getAttribute('data-value');
+        if (parseFloat(dataValue).toString() === dataValue) {
           dataValue = parseFloat(dataValue);
         }
         return {
-            node: this,
-            value: dataValue || cell.textContent || cell.innerText
+          node: this,
+          value: dataValue || cell.textContent || cell.innerText
         };
       });
 

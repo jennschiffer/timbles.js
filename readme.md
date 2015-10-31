@@ -7,8 +7,10 @@ timbles.js
 
 You need to enqueue jQuery (duh) and the *timbles.js* file.
 
-<pre><code>&lt;script src="jquery.js">&lt;/script>
-&lt;script src="timbles.js">&lt;/script></code></pre>
+```html
+<script src="jquery.js"></script>
+<script src="timbles.js"></script>
+```
 
 ## Configure *timbles*
 
@@ -53,38 +55,40 @@ Let's say you have a table on your page already, all populated with data:
 And here is the source code:
 
 
-<pre><code>&lt;table border="1">
-  &lt;thead>
-    &lt;tr>
-      &lt;th id="name">Name&lt;/th>
-      &lt;th id="size">Size&lt;/th>
-      &lt;th id="kind">Kind&lt;/th>
-      &lt;th id="date-added">Date Added&lt;/th>
-      &lt;th id="notes" class="no-sort">Notes&lt;/th>
-    &lt;/tr>
-  &lt;/thead>
-  &lt;tr>
-    &lt;td>dhtmlconf.png&lt;/td>
-    &lt;td>77 KB&lt;/td>
-    &lt;td>PNG Image&lt;/td>
-    &lt;td>August 31, 2014, 11:16 PM&lt;/td>
-    &lt;td>dhtmlconf logo&lt;/td>
-  &lt;/tr>      
-  &lt;tr>
-    &lt;td>icla.pdf&lt;/td>
-    &lt;td>26 KB&lt;/td>
-    &lt;td>Adobe PDF document&lt;/td>
-    &lt;td>August 27, 2014, 12:51 PM&lt;/td>
-    &lt;td>Individual Contributor License Agreement&lt;/td>
-  &lt;/tr>
-  &lt;tr>
-    &lt;td>Slime Girls - Vacation Wasteland EP.zip&lt;/td>
-    &lt;td>72.9 MB&lt;/td>
-    &lt;td>ZIP archive&lt;/td>
-    &lt;td>August 25, 2014, 9:40 PM&lt;/td>
-    &lt;td>cool chiptunes from lwlvl&lt;/td>
-  &lt;/tr>
-&lt;/table></code></pre>
+```html
+<table border="1">
+  <thead>
+    <tr>
+      <th id="name">Name</th>
+      <th id="size">Size</th>
+      <th id="kind">Kind</th>
+      <th id="date-added">Date Added</th>
+      <th id="notes" class="no-sort">Notes</th>
+    </tr>
+  </thead>
+  <tr>
+    <td>dhtmlconf.png</td>
+    <td>77 KB</td>
+    <td>PNG Image</td>
+    <td>August 31, 2014, 11:16 PM</td>
+    <td>dhtmlconf logo</td>
+  </tr>      
+  <tr>
+    <td>icla.pdf</td>
+    <td>26 KB</td>
+    <td>Adobe PDF document</td>
+    <td>August 27, 2014, 12:51 PM</td>
+    <td>Individual Contributor License Agreement</td>
+  </tr>
+  <tr>
+    <td>Slime Girls - Vacation Wasteland EP.zip</td>
+    <td>72.9 MB</td>
+    <td>ZIP archive</td>
+    <td>August 25, 2014, 9:40 PM</td>
+    <td>cool chiptunes from lwlvl</td>
+  </tr>
+</table><
+```
 
 You don't need to generate a new table with JSON because your table is there already. And you just want to be able to make it sortable. Then just call this after you enqueued *timbles.js* as per the above install directions:
 
@@ -98,7 +102,8 @@ In order for sorting to work, the parent `<tr>` of the header rows needs to be w
 
 If you want to initially sort your table on load, there are `sorting` properties you can set:
 
-<pre><code>// get your table
+```js
+// get your table
 var $table = $('table');
 
 // call timbles with sorting property
@@ -107,17 +112,21 @@ $table.timbles({
     order: 'asc', // 'asc' for ascending sort, 'desc' for descending
     keyId: 'name', // the id of the column you want to initially sort by
   }
-});</code></pre>
+});
+```
 
-If you don't want all of the columns to be sortable, add the class `no-sort` to the &lt;th> element of the column you do not want to be sortable.
+If you don't want all of the columns to be sortable, add the class `no-sort` to the <th> element of the column you do not want to be sortable.
 
 ### Generating a table from a JSON file or an array of row objects
 
 If your data is in a JSON file or array, add a `<table>` element to your page and then call `timbles` on it.
 
-<pre><code>&lt;table id="example">&lt;/table></code></pre>
+```html
+<table id="example"></table>
+```
 
-<pre><code>// get your table
+```js
+// get your table
 var $table = $('#example');
 
 // call timbles with dataConfig property
@@ -141,7 +150,7 @@ $table.timbles({
       
       /**
       * you have to set the column headers with the following required properties:
-      * - label (string), the text between &lt;th> and &lt;/th>
+      * - label (string), the text between <th> and </th>
       * - id (string), the json object property attributed to the column
       * 
       * and here are some optional properties:
@@ -161,11 +170,13 @@ $table.timbles({
   }
   sorting: true, // if you want columns to be sortable
 
-});</code></pre>
+});
+```
 
 Here is an example of an array of row objects:
 
-<pre><code>var localData = [
+```js
+var localData = [
   {
     name: "dhtmlconf.png",
     size: "77 KB",
@@ -179,50 +190,58 @@ Here is an example of an array of row objects:
     kind: "Adobe PDF document",
     dateAdded: "August 27, 2014, 12:51 PM",
     notes: "Individual Contributor License Agreement"
-  },{
+  },
+  {
     name: "Slime Girls - Vacation Wasteland EP.zip",
     size: "72.9 MB",
     kind: "ZIP archive",
     dateAdded: "August 25, 2014, 9:40 PM",
     notes: "cool chiptunes from lwlvl"
-  },{
+  },
+  {
     name: ".DS_Store",
     size: "25 KB",
     kind: "Virus",
     dateAdded: "February 7, 2014, 10:59 PM",
     notes: "lol"
-  },{
+  },
+  {
     name: "No_Diggity.mid",
     size: "17 KB",
     kind: "MIDI file",
     dateAdded: "July 3, 2014, 11:34 PM",
     notes: "very important karaoke file"
-  },{
+  },
+  {
     name: "jorts.svg",
     size: "52 KB",
     kind: "Plain Text File",
     dateAdded: "May 24, 2014, 1:55 PM",
     notes: "logo for jort.technology"
-  },{
+  },
+  {
     name: "wordpress.sql",
     size: "418 KB",
     kind: "Plain Text File",
     dateAdded: "May 11, 2014, 11:15 PM",
     notes: "blog dump"
-  },{
+  },
+  {
     name: "foundation-compass-template-master.zip",
     size: "6 KB",
     kind: "ZIP archive",
     dateAdded: "April 21, 2014, 6:59 PM",
     notes: "c.s.s. is better that javascript"
   }
-];</code></pre>
+];
+```
 
 ## Pagination
 
 If you want to have your table split into pages, COOL YOU CAN DO THAT. Just add the `pagination` property to your `timbles` call, just like you do for data and/or sorting.
 
-<pre><code>// get your table
+```js
+// get your table
 var $table = $('table');
 
 // call timbles with sorting property
@@ -236,7 +255,8 @@ $table.timbles(
       rowCountChoice: [1, 2, 3, 4, 5, 10] // shows a button for each row count choice that repaginates the table
     }
   }
-});</code></pre>
+});
+```
 
 It will add a very simple first/prev/next/last pagination navigation on the bottom of the table. In the very near future I'll have more options for this.
 
@@ -259,6 +279,4 @@ When you sort ascending, the `sort-asc` class is added to the `<th>` header. If 
 
 ## Note
 
-This was made within a few days for jqCon Chicago on 9/12/2014 and is currently being worked on as I use it for another soon-to-be open source project. I'm not taking feature requests on it unless they pertain to just sorting and pagination at the moment! 
-
-**MOST IMPORTANTLY: HAVE FUN.**
+**HAVE FUN.**
