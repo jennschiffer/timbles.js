@@ -265,6 +265,7 @@ It will add a very simple first/prev/next/last pagination navigation on the bott
 When you sort ascending, the `sort-asc` class is added to the `<th>` header. If you sort descending, the `sort-desc` class is added to the `<th>` header. So you can, like, use CSS to add arrows whenever those classes are set and that's p cool I think.
 
 ## Changelog
+* 1.1.0.1 array data bug fix
 * 1.1.0 another sorting refactor to speed things up even more
 * 1.0.9 column sorting refactor that [makes it *so* much faster](https://github.com/jennschiffer/timbles.js/pull/4), thanks @edelooff
 * 1.0.8 adds page number tracker to pagination tools
