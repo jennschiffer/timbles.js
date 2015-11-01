@@ -1,9 +1,9 @@
 /* testing sorting of timbles tables */
 
 QUnit.test( 'Clicking a column header sorts table by that column', function( assert) {
-  var $aColumnHeader = $('#kind');
+  var $aColumnHeader = $('thead tr').eq(0).find('th').eq(2);
   $aColumnHeader.click();
-  assert.ok( $('tbody tr').eq(0).find('td').eq(2).attr('data-value') === 'Adobe PDF document', 'Passed!' );
+  assert.ok( $('tbody tr').eq(0).find('td').eq(2).text() === 'Adobe PDF document', 'Passed!' );
 });
 
 
