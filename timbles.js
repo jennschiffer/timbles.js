@@ -157,6 +157,9 @@
       data.$records = data.$allRows.not('.' + classes.headerRow);
 
       $this.data(pluginName, data);
+      
+      // start enabling any given features
+      methods.enableFeaturesSetup.call($this);
     },
 
     enableFeaturesSetup : function() {
