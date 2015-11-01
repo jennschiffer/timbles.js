@@ -114,6 +114,9 @@
       if ( data.dataConfig.dataType === 'array' ) {
         // no need for ajax call if data is local array
         methods.generateRowsFromData.call($this, data.dataConfig.data, data.dataConfig.columns, $this);
+        
+        // start enabling any given features
+        methods.enableFeaturesSetup.call($this);
       }
       else {
         // get external json file given
@@ -157,9 +160,6 @@
       data.$records = data.$allRows.not('.' + classes.headerRow);
 
       $this.data(pluginName, data);
-      
-      // start enabling any given features
-      methods.enableFeaturesSetup.call($this);
     },
 
     enableFeaturesSetup : function() {
