@@ -114,7 +114,7 @@
       if ( data.dataConfig.dataType === 'array' ) {
         // no need for ajax call if data is local array
         methods.generateRowsFromData.call($this, data.dataConfig.data, data.dataConfig.columns, $this);
-        
+
         // start enabling any given features
         methods.enableFeaturesSetup.call($this);
       }
@@ -227,13 +227,16 @@
       // determine column values to actually sort by
       var sortMap = data.$records.map(function() {
         var cell = this.children[sortColumn],
-          dataValue = cell.getAttribute('data-value');
-        if (parseFloat(dataValue).toString() === dataValue) {
+            dataValue = cell.getAttribute('data-value');
+        if (dataValue === null) {
+          dataValue = cell.textContent || cell.innerText
+        }
+        else if (parseFloat(dataValue).toString() === dataValue) {
           dataValue = parseFloat(dataValue);
         }
         return {
           node: this,
-          value: dataValue || cell.textContent || cell.innerText
+          value: dataValue
         };
       });
 
