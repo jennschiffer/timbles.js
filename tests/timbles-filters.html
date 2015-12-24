@@ -10,7 +10,7 @@
   <div id="qunit"></div>
   <div id="qunit-fixture"></div>
 
-  <table border="1" style="display:none;"></table>
+  <table id="target" border="1" style="display:none;"></table>
 
 <script type="text/javascript" src="../jquery.js"></script>
 <script type="text/javascript" src="../timbles.js"></script>
@@ -22,7 +22,7 @@ $(function() {
 
   /* it's going down
       i'm yellin' timbles! */
-      
+
   var localData = [
     {
       name: "LOCAL dhtmlconf.png",
@@ -77,7 +77,7 @@ $(function() {
   ];
 
   $table.timbles({
-    
+
     // if you are using json data and not an existing table:
     dataConfig: {
       dataType: 'array',

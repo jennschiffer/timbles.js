@@ -1,9 +1,31 @@
 /* testing sorting of timbles tables */
 
-QUnit.test( 'Clicking a column header sorts table by that column', function( assert) {
-  var $aColumnHeader = $('thead tr').eq(0).find('th').eq(2);
-  $aColumnHeader.click();
-  assert.equal($('tbody tr').eq(0).find('td').eq(2).text(), 'Adobe PDF document');
+var target = $('#target');
+
+QUnit.test('Clicking a column header sorts table by that column', function( assert) {
+  var $firstColumnHeader = target.find('thead tr th').eq(0);
+  assert.ok(!$firstColumnHeader.hasClass('sorted-asc'), 'Not pre-sorted');
+  $firstColumnHeader.click();
+  assert.ok($firstColumnHeader.hasClass('sorted-asc'), 'Ascending');
+  assert.equal(target.find('.sorted-asc').length, 1, 'One ascending sorted col');
+  assert.equal(target.find('.sorted-desc').length, 0, 'No descdending sorted cols');
+  $firstColumnHeader.click();
+  assert.ok($firstColumnHeader.hasClass('sorted-desc'), 'Descending');
+  assert.equal(target.find('.sorted-desc').length, 1, 'One descdending sorted col');
+  assert.equal(target.find('.sorted-asc').length, 0, 'No ascdending sorted cols');
+});
+
+QUnit.test('Applying sortColumn on a header sorted table by that column', function(assert) {
+  var $firstColumnHeader = target.find('thead tr th').eq(0);
+  assert.ok(!$firstColumnHeader.hasClass('sorted-asc'), 'Not pre-sorted');
+  target.timbles('sortColumn', 0)
+  assert.ok($firstColumnHeader.hasClass('sorted-asc'), 'Ascending');
+  assert.equal(target.find('.sorted-asc').length, 1, 'One ascending sorted col');
+  assert.equal(target.find('.sorted-desc').length, 0, 'No descdending sorted cols');
+  target.timbles('sortColumn', 0)
+  assert.ok($firstColumnHeader.hasClass('sorted-desc'), 'Descending');
+  assert.equal(target.find('.sorted-desc').length, 1, 'One descdending sorted col');
+  assert.equal(target.find('.sorted-asc').length, 0, 'No ascdending sorted cols');
 });
 
 QUnit.test('There is one unsortable header and sorting by it does nothing', function(assert) {
