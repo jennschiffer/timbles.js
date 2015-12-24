@@ -123,14 +123,6 @@
         $.getJSON( data.dataConfig.data, function(json) {
           methods.generateRowsFromData.call($this, json, data.dataConfig.columns, $this);
         }).then(function(){
-          // set up existing html table
-          data.$allRows = $this.find('tr');
-          data.$headerRow = $this.find('thead tr').eq(0).addClass(classes.headerRow);
-          data.$records = data.$allRows.not('.' + classes.headerRow);
-
-          // save all this great new data wowowow
-          $this.data(pluginName, data);
-
           // start enabling any given features
           methods.enableFeaturesSetup.call($this);
         });
