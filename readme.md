@@ -151,16 +151,20 @@ $table.timbles({
       * and here are some optional properties:
       * - noSorting (boolean), if set to true the column won't be sortable
       *   if you have the non-column property sorting set to true
-      * - dataFilter (function), this function will be applied to the cell value,
-      *   useful for when you want to add currency symbols, html, etc
+      * - textTransform (function), this function will be applied to the cell text
+      *   content. useful for when you want to add currency symbols, html, etc
+      *   (the old name for this function is `dataFilter`, we still support that one)
+      * - valueTransform (function), this function will be applied to the data-value
+      *   attribute, which is used for sorting. Useful if you want a column to
+      *   sort case insensitively.
       */
 
-      { label: 'Name', id: 'name' },
+      { label: 'Name', id: 'name', valueTransform: function(value) { return value.toLowerCase(); } },
       { label: 'Size', id: 'size' },
       { label: 'Kind', id: 'kind' },
       { label: 'Date Added', id: 'dateAdded' },
       { label: 'Notes', id: 'notes', noSorting: true }
-      { label: 'Price', id: 'price', dataFilter: function(value) { return '$' + value; } }
+      { label: 'Price', id: 'price', textTransform: function(value) { return '$' + value; } }
     ]
   }
   sorting: true, // if you want columns to be sortable
