@@ -17,29 +17,32 @@
 
 <script type="text/javascript">
 $(function() {
-
-  var $table = $('table');
-
   /* it's going down
       i'm yellin' timbles! */
 
-  $table.timbles({
+  var stringLower = function(obj) {
+    // Turn strings into lowercase
+    return obj.toLowerCase();
+  }
+  var stringNumber = function(obj) {
+    // Force lexicographical sorting for numbers by prefixing a common string
+    return 'num ' + obj;
+  }
 
+  $('#target').timbles({
     // if you are using json data and not an existing table:
     dataConfig: {
       data: 'data.json',
       columns: [
         { label: 'Name', id: 'name' },
-        { label: 'Size', id: 'size' },
-        { label: 'Kind', id: 'kind' },
-        { label: 'Date Added', id: 'dateAdded' },
-        { label: 'Notes', id: 'notes', noSorting: true }
+        { label: 'CI Name', id: 'lowerName', valueTransform: stringLower },
+        { label: 'Text Number', id: 'textNumber', valueTransform: stringNumber},
+        { label: 'Natural number', id: 'naturalNumber' },
+        { label: 'Unsortable pets', id: 'pets', noSorting: true }
       ]
     },
-
     // if you want sorting:
     sorting: true,
-
     // pagination
     pagination: {
       recordsPerPage: 3,
