@@ -1,19 +1,16 @@
 /* testing pagination of timbles tables */
 
-QUnit.test( 'Correct Number of Table Rows Showing on Page', function( assert ) {
+QUnit.test('Correct number of table rows showing on page', function(assert) {
   var numRows = $('table').find('tr').length;
-  console.log('# rows altogether', numRows);
-  assert.ok( numRows === 4, 'Passed!' );
-}); 
+  assert.equal(numRows, 4);
+});
 
-QUnit.test( 'Detect single Header Row', function( assert ) {
+QUnit.test( 'Detect single header row', function( assert ) {
   var numRows = $('table').find('tr.header-row').length;
-  console.log('# header rows', numRows);
-  assert.ok( numRows === 1, 'Passed!' );
-}); 
+  assert.equal(numRows, 1);
+});
 
-QUnit.test( 'Correct Number of Non-header Record Rows', function( assert ) {
+QUnit.test('Correct number of non-header record rows', function( assert ) {
   var numRows = $('table').find('tr').not('.header-row').length;
-  console.log('# records', numRows);
-  assert.ok( numRows === 3, 'Passed!' );
+  assert.ok(numRows, 3);
 });
