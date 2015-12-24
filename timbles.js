@@ -49,7 +49,7 @@
         var options = $.extend({}, defaults, opts);
         var data = {
           $this : $this,
-          dataConfig: options.dataConfig,
+          dataConfig: methods.parseDataConfig(options.dataConfig),
           sorting: options.sorting,
           pagination: options.pagination,
         };
@@ -71,6 +71,31 @@
           methods.setupExistingTable.call($this);
         }
       });
+    },
+
+    parseDataConfig : function(dataConfig) {
+      if (!(dataConfig instanceof Object)) {
+        return dataConfig;
+      }
+      else if (dataConfig.hasOwnProperty('columns')) {
+        $.each(dataConfig.columns, function(index, columnConfig) {
+          if (columnConfig.hasOwnProperty('dataFilter') &&
+              !columnConfig.hasOwnProperty('textTransform')) {
+            // If a dataFilter is defined (old-style) and no textTransform,
+            // use the dataFilter as textTransform
+            columnConfig.textTransform = columnConfig.dataFilter;
+          }
+          else {
+            // Add a do-nothing textTransform if none is provided
+            columnConfig.textTransform = function (obj) {return obj;};
+          }
+          if (!columnConfig.hasOwnProperty('valueTransform')) {
+            // Add a do-nothing valueTransform if none is provided
+            columnConfig.valueTransform = function (obj) {return obj;};
+          }
+        });
+      }
+      return dataConfig;
     },
 
     setupExistingTable : function() {
@@ -134,17 +159,16 @@
       var data = $this.data(pluginName);
       if (!data) { return; }
 
-      $.each(rowData, function(index, row){
+      $.each(rowData, function(index, row) {
         var $currentRow = $('<tr>');
-        $.each(columnConfig, function(property, value){
-
-          // if there is a dataFilter function given, apply it to the value to display
-          var displayValue = ( value.dataFilter ) ? value.dataFilter(row[value.id]) : row[value.id];
-
-          // append new cell to the row
-          $currentRow.append('<td data-value="' + row[value.id] + '">' + displayValue + '</td>');
+        $.each(columnConfig, function(index, column) {
+          var cellValue = row[column.id],
+              $currentCell = $('<td>');
+          $currentCell.attr('data-value', column.valueTransform(cellValue));
+          $currentCell.text(column.textTransform(cellValue));
+          $currentCell.appendTo($currentRow);
         });
-        thisTable.append($currentRow);
+        $currentRow.appendTo(thisTable);
       });
 
       data.$allRows = $this.find('tr');
