@@ -111,10 +111,10 @@
       // generate each row of data from json
       var rows;
 
-      if ( data.dataConfig.dataType === 'array' ) {
+      if ($.isArray(data.dataConfig.data)) {
         // no need for ajax call if data is local array
         methods.generateRowsFromData.call($this, data.dataConfig.data, data.dataConfig.columns, $this);
-        
+
         // start enabling any given features
         methods.enableFeaturesSetup.call($this);
       }
