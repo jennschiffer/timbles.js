@@ -10,6 +10,15 @@ function sortedColumnContent(columnIndex, order) {
   }).get();
 }
 
+function sliceForPagination(elements) {
+  // Returns the correct number of elements to compare when pagination is defined
+  if (target.data('timbles').pagination !== undefined) {
+    var recordCount = target.data('timbles').pagination.recordsPerPage;
+    return elements.slice(0, recordCount);
+  }
+  return elements;
+}
+
 QUnit.test('Clicking a column header sorts table by that column', function( assert) {
   var $firstColumnHeader = target.find('thead tr th').eq(0);
   assert.ok(!$firstColumnHeader.hasClass('sorted-asc'), 'Not pre-sorted');
@@ -53,10 +62,14 @@ QUnit.test('Sorting names with case as written', function(assert) {
       'e e cummings',
   ];
   assert.deepEqual(
-      sortedColumnContent(0), expected, 'Ascending order');
+      sortedColumnContent(0),
+      sliceForPagination(expected),
+      'Ascending order');
   expected.reverse();
   assert.deepEqual(
-      sortedColumnContent(0, 'desc'), expected, 'Descending order');
+      sortedColumnContent(0, 'desc'),
+      sliceForPagination(expected),
+      'Descending order');
 });
 
 QUnit.test('Sorting names as lowercase data-values', function(assert) {
@@ -68,26 +81,38 @@ QUnit.test('Sorting names as lowercase data-values', function(assert) {
       'Robert Frost',
   ];
   assert.deepEqual(
-      sortedColumnContent(1), expected, 'Ascending order');
+      sortedColumnContent(1),
+      sliceForPagination(expected),
+      'Ascending order');
   expected.reverse();
   assert.deepEqual(
-      sortedColumnContent(1, 'desc'), expected, 'Descending order');
+      sortedColumnContent(1, 'desc'),
+      sliceForPagination(expected),
+      'Descending order');
 });
 
 QUnit.test('Sorting numbers lexicographically', function(assert) {
   var expected = ['11', '120', '19', '5', '500'];
   assert.deepEqual(
-      sortedColumnContent(2), expected, 'Ascending order');
+      sortedColumnContent(2),
+      sliceForPagination(expected),
+      'Ascending order');
   expected.reverse();
   assert.deepEqual(
-      sortedColumnContent(2, 'desc'), expected, 'Descending order');
+      sortedColumnContent(2, 'desc'),
+      sliceForPagination(expected),
+      'Descending order');
 });
 
 QUnit.test('Sorting numbers naturally', function(assert) {
   var expected = ['5', '11', '19', '120', '500'];
   assert.deepEqual(
-      sortedColumnContent(3), expected, 'Ascending order');
+      sortedColumnContent(3),
+      sliceForPagination(expected),
+      'Ascending order');
   expected.reverse();
   assert.deepEqual(
-      sortedColumnContent(3, 'desc'), expected, 'Descending order');
+      sortedColumnContent(3, 'desc'),
+      sliceForPagination(expected),
+      'Descending order');
 });
