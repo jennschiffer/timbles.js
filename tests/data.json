@@ -4,6 +4,7 @@
     "lowerName": "e e cummings",
     "textNumber": "#11",
     "naturalNumber": 11,
+    "percentage": 1,
     "pets": "Gold fish"
   },
   {
@@ -11,6 +12,7 @@
     "lowerName": "Arthur fforde",
     "textNumber": "#120",
     "naturalNumber": 120,
+    "percentage": 0.05,
     "pets": "Crickets"
   },
   {
@@ -18,6 +20,7 @@
     "lowerName": "Ezra Pound",
     "textNumber": "#5",
     "naturalNumber": 5,
+    "percentage": 0,
     "pets": "Rabbit"
   },
   {
@@ -25,6 +28,7 @@
     "lowerName": "Robert Frost",
     "textNumber": "#500",
     "naturalNumber": 500,
+    "percentage": 0.4545,
     "pets": "Dog"
   },
   {
@@ -32,6 +36,7 @@
     "lowerName": "Arthur Rimbaud",
     "textNumber": "#19",
     "naturalNumber": 19,
+    "percentage": -1,
     "pets": "Cat"
   }
 ]

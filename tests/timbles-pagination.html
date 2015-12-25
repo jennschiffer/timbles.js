@@ -28,6 +28,13 @@ $(function() {
     // Prefix an octothorpe to the number to indicate ranking
     return '#' + obj;
   }
+  var percentageMarkup = function(percentage) {
+    // Mark up percentages nicely
+    if (percentage < 0) {
+      return 'N/A';
+    }
+    return percentage * 100 + '%';
+  }
 
   $('#target').timbles({
     // if you are using json data and not an existing table:
@@ -38,6 +45,7 @@ $(function() {
         { label: 'CI Name', id: 'lowerName', valueTransform: stringLower },
         { label: 'Text Number', id: 'textNumber'},
         { label: 'Natural number', id: 'naturalNumber', textTransform: numberRanking },
+        { label: 'Percentage', id: 'percentage', textTransform: percentageMarkup },
         { label: 'Unsortable pets', id: 'pets', noSorting: true }
       ]
     },

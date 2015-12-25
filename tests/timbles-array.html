@@ -26,12 +26,14 @@ $(function() {
       lowerName: "e e cummings",
       textNumber: "#11",
       naturalNumber: 11,
+      percentage: 1,
       pets: "Gold fish"
     }, {
       name: "Arthur fforde",
       lowerName: "Arthur fforde",
       textNumber: "#120",
       naturalNumber: 120,
+      percentage: 0.05,
       pets: "Crickets"
     },
     {
@@ -39,6 +41,7 @@ $(function() {
       lowerName: "Ezra Pound",
       textNumber: "#5",
       naturalNumber: 5,
+      percentage: 0,
       pets: "Rabbit"
     },
     {
@@ -46,6 +49,7 @@ $(function() {
       lowerName: "Robert Frost",
       textNumber: "#500",
       naturalNumber: 500,
+      percentage: 0.4545,
       pets: "Dog"
     },
     {
@@ -53,6 +57,7 @@ $(function() {
       lowerName: "Arthur Rimbaud",
       textNumber: "#19",
       naturalNumber: 19,
+      percentage: -1,
       pets: "Cat"
     }
   ];
@@ -65,6 +70,13 @@ $(function() {
     // Prefix an octothorpe to the number to indicate ranking
     return '#' + obj;
   }
+  var percentageMarkup = function(percentage) {
+    // Mark up percentages nicely
+    if (percentage < 0) {
+      return 'N/A';
+    }
+    return percentage * 100 + '%';
+  }
 
   $('#target').timbles({
     // if you are using json data and not an existing table:
@@ -75,6 +87,7 @@ $(function() {
         { label: 'CI Name', id: 'lowerName', valueTransform: stringLower },
         { label: 'Text Number', id: 'textNumber'},
         { label: 'Natural number', id: 'naturalNumber', textTransform: numberRanking },
+        { label: 'Percentage', id: 'percentage', textTransform: percentageMarkup },
         { label: 'Unsortable pets', id: 'pets', noSorting: true }
       ]
     },

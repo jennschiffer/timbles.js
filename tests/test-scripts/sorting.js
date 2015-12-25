@@ -116,3 +116,16 @@ QUnit.test('Sorting numbers naturally', function(assert) {
       sliceForPagination(expected),
       'Descending order');
 });
+
+QUnit.test('Sorting reals with zero (percentages)', function(assert) {
+  var expected = ['N/A', '0%', '5%', '45.45%', '100%'];
+  assert.deepEqual(
+      sortedColumnContent(4),
+      sliceForPagination(expected),
+      'Ascending order');
+  expected.reverse();
+  assert.deepEqual(
+      sortedColumnContent(4, 'desc'),
+      sliceForPagination(expected),
+      'Descending order');
+});
