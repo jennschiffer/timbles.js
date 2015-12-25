@@ -2,35 +2,35 @@
   {
     "name": "e e cummings",
     "lowerName": "e e cummings",
-    "textNumber": 11,
+    "textNumber": "#11",
     "naturalNumber": 11,
     "pets": "Gold fish"
   },
   {
     "name": "Arthur fforde",
     "lowerName": "Arthur fforde",
-    "textNumber": 120,
+    "textNumber": "#120",
     "naturalNumber": 120,
     "pets": "Crickets"
   },
   {
     "name": "Ezra Pound",
     "lowerName": "Ezra Pound",
-    "textNumber": 5,
+    "textNumber": "#5",
     "naturalNumber": 5,
     "pets": "Rabbit"
   },
   {
     "name": "Robert Frost",
     "lowerName": "Robert Frost",
-    "textNumber": 500,
+    "textNumber": "#500",
     "naturalNumber": 500,
     "pets": "Dog"
   },
   {
     "name": "Arthur Rimbaud",
     "lowerName": "Arthur Rimbaud",
-    "textNumber": 19,
+    "textNumber": "#19",
     "naturalNumber": 19,
     "pets": "Cat"
   }

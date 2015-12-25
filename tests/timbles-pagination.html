@@ -24,9 +24,9 @@ $(function() {
     // Turn strings into lowercase
     return obj.toLowerCase();
   }
-  var stringNumber = function(obj) {
-    // Force lexicographical sorting for numbers by prefixing a common string
-    return 'num ' + obj;
+  var numberRanking = function(obj) {
+    // Prefix an octothorpe to the number to indicate ranking
+    return '#' + obj;
   }
 
   $('#target').timbles({
@@ -36,8 +36,8 @@ $(function() {
       columns: [
         { label: 'Name', id: 'name' },
         { label: 'CI Name', id: 'lowerName', valueTransform: stringLower },
-        { label: 'Text Number', id: 'textNumber', valueTransform: stringNumber},
-        { label: 'Natural number', id: 'naturalNumber' },
+        { label: 'Text Number', id: 'textNumber'},
+        { label: 'Natural number', id: 'naturalNumber', textTransform: numberRanking },
         { label: 'Unsortable pets', id: 'pets', noSorting: true }
       ]
     },

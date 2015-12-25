@@ -24,34 +24,34 @@ $(function() {
     {
       name: "e e cummings",
       lowerName: "e e cummings",
-      textNumber: 11,
+      textNumber: "#11",
       naturalNumber: 11,
       pets: "Gold fish"
     }, {
       name: "Arthur fforde",
       lowerName: "Arthur fforde",
-      textNumber: 120,
+      textNumber: "#120",
       naturalNumber: 120,
       pets: "Crickets"
     },
     {
       name: "Ezra Pound",
       lowerName: "Ezra Pound",
-      textNumber: 5,
+      textNumber: "#5",
       naturalNumber: 5,
       pets: "Rabbit"
     },
     {
       name: "Robert Frost",
       lowerName: "Robert Frost",
-      textNumber: 500,
+      textNumber: "#500",
       naturalNumber: 500,
       pets: "Dog"
     },
     {
       name: "Arthur Rimbaud",
       lowerName: "Arthur Rimbaud",
-      textNumber: 19,
+      textNumber: "#19",
       naturalNumber: 19,
       pets: "Cat"
     }
@@ -61,9 +61,9 @@ $(function() {
     // Turn strings into lowercase
     return obj.toLowerCase();
   }
-  var stringNumber = function(obj) {
-    // Force lexicographical sorting for numbers by prefixing a common string
-    return 'num ' + obj;
+  var numberRanking = function(obj) {
+    // Prefix an octothorpe to the number to indicate ranking
+    return '#' + obj;
   }
 
   $('#target').timbles({
@@ -73,8 +73,8 @@ $(function() {
       columns: [
         { label: 'Name', id: 'name' },
         { label: 'CI Name', id: 'lowerName', valueTransform: stringLower },
-        { label: 'Text Number', id: 'textNumber', valueTransform: stringNumber},
-        { label: 'Natural number', id: 'naturalNumber' },
+        { label: 'Text Number', id: 'textNumber'},
+        { label: 'Natural number', id: 'naturalNumber', textTransform: numberRanking },
         { label: 'Unsortable pets', id: 'pets', noSorting: true }
       ]
     },

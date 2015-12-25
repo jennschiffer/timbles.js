@@ -92,7 +92,7 @@ QUnit.test('Sorting names as lowercase data-values', function(assert) {
 });
 
 QUnit.test('Sorting numbers lexicographically', function(assert) {
-  var expected = ['11', '120', '19', '5', '500'];
+  var expected = ['#11', '#120', '#19', '#5', '#500'];
   assert.deepEqual(
       sortedColumnContent(2),
       sliceForPagination(expected),
@@ -105,7 +105,7 @@ QUnit.test('Sorting numbers lexicographically', function(assert) {
 });
 
 QUnit.test('Sorting numbers naturally', function(assert) {
-  var expected = ['5', '11', '19', '120', '500'];
+  var expected = ['#5', '#11', '#19', '#120', '#500'];
   assert.deepEqual(
       sortedColumnContent(3),
       sliceForPagination(expected),
