@@ -6,7 +6,7 @@ function sortedColumnContent(columnIndex, order) {
   // Sorts by the given column and returns an array with the column contents
   target.timbles('sortColumn', columnIndex, order || 'asc');
   return target.find('tbody tr').map(function () {
-    return $(this).children().eq(columnIndex).text()
+    return $(this).children().eq(columnIndex).text();
   }).get();
 }
 
@@ -35,11 +35,11 @@ QUnit.test('Clicking a column header sorts table by that column', function( asse
 QUnit.test('Applying sortColumn on a header sorted table by that column', function(assert) {
   var $firstColumnHeader = target.find('thead tr th').eq(0);
   assert.ok(!$firstColumnHeader.hasClass('sorted-asc'), 'Not pre-sorted');
-  target.timbles('sortColumn', 0)
+  target.timbles('sortColumn', 0);
   assert.ok($firstColumnHeader.hasClass('sorted-asc'), 'Ascending');
   assert.equal(target.find('.sorted-asc').length, 1, 'One ascending sorted col');
   assert.equal(target.find('.sorted-desc').length, 0, 'No descdending sorted cols');
-  target.timbles('sortColumn', 0)
+  target.timbles('sortColumn', 0);
   assert.ok($firstColumnHeader.hasClass('sorted-desc'), 'Descending');
   assert.equal(target.find('.sorted-desc').length, 1, 'One descdending sorted col');
   assert.equal(target.find('.sorted-asc').length, 0, 'No ascdending sorted cols');
