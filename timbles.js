@@ -85,7 +85,7 @@
             // use the dataFilter as textTransform
             columnConfig.textTransform = columnConfig.dataFilter;
           }
-          else {
+          else if (!columnConfig.hasOwnProperty('textTransform')) {
             // Add a do-nothing textTransform if none is provided
             columnConfig.textTransform = function (obj) {return obj;};
           }
