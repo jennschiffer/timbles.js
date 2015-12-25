@@ -7,7 +7,7 @@ QUnit.test('Correct number of table rows showing on page', function(assert) {
   assert.equal(numRows, 4);
 });
 
-QUnit.test( 'Detect single header row', function(assert) {
+QUnit.test('Detect single header row', function(assert) {
   var numRows = target.find('tr.header-row').length;
   assert.equal(numRows, 1);
 });
