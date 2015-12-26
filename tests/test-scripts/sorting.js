@@ -12,11 +12,15 @@ function sortedColumnContent(columnIndex, order) {
 
 function sliceForPagination(elements) {
   // Returns the correct number of elements to compare when pagination is defined
+  return elements.slice(0, tablePageSize());
+}
+
+function tablePageSize() {
+  // Returns the size of the table's pagination, or infinity if not paginated
   if (target.data('timbles').pagination !== undefined) {
-    var recordCount = target.data('timbles').pagination.recordsPerPage;
-    return elements.slice(0, recordCount);
+    return target.data('timbles').pagination.recordsPerPage;
   }
-  return elements;
+  return Infinity;
 }
 
 QUnit.test('Detect single header row', function(assert) {
@@ -26,7 +30,7 @@ QUnit.test('Detect single header row', function(assert) {
 
 QUnit.test('Correct number of non-header record rows', function(assert) {
   var numRows = target.find('tr').not('.header-row').length;
-  assert.equal(numRows, 5);
+  assert.equal(numRows, Math.min(tablePageSize(), 5));
 });
 
 QUnit.test('Clicking a column header sorts table by that column', function(assert) {
