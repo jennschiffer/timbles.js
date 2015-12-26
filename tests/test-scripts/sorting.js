@@ -19,6 +19,16 @@ function sliceForPagination(elements) {
   return elements;
 }
 
+QUnit.test('Detect single header row', function(assert) {
+  var numRows = target.find('tr.header-row').length;
+  assert.equal(numRows, 1);
+});
+
+QUnit.test('Correct number of non-header record rows', function(assert) {
+  var numRows = target.find('tr').not('.header-row').length;
+  assert.equal(numRows, 5);
+});
+
 QUnit.test('Clicking a column header sorts table by that column', function(assert) {
   var $firstColumnHeader = target.find('thead tr th').eq(0);
   assert.notOk($firstColumnHeader.hasClass('sorted-asc'), 'Not pre-sorted');
