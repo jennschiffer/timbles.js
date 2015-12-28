@@ -60,12 +60,6 @@
         }
         else {
           // set up existing html table
-          data.$headerRow = $this.find('thead tr').eq(0).addClass(classes.headerRow);
-          data.$records = $this.find('tr').not('.' + classes.headerRow);
-
-          // save all this great new data wowowow
-          $this.data(pluginName, data);
-
           methods.setupExistingTable.call($this);
         }
       });
@@ -102,8 +96,10 @@
       if (!data) { return; }
 
       // for each header cell, store its column number
-      data.$headerRow.find('th').each(function(i){
-        $(this).data('timbles-column-index', i);
+      var $headerRow = data.$headerRow = $this.find('thead tr').eq(0)
+        .addClass(classes.headerRow);
+      $headerRow.find('th').each(function(index) {
+        $(this).data('timbles-column-index', index);
       });
 
       // start enabling any given features
@@ -116,6 +112,7 @@
       if (!data) { return; }
 
       $this.append('<thead><tr class="' + classes.headerRow + '"></tr></thead>');
+      data.$headerRow = $this.find('tr.' + classes.headerRow);
 
       // generate and add cell headers to header row
       $.each(data.dataConfig.columns, function(index, value){
@@ -128,7 +125,7 @@
 
         var $cell = $('<th id="' + value.id + '"' + noSortClassString +'>' + value.label + '</th>');
         $cell.data('timbles-column-index', index);
-        $this.find('tr.' + classes.headerRow).append($cell);
+        data.$headerRow.append($cell);
       });
 
       // generate each row of data from json
@@ -168,17 +165,13 @@
         });
         $currentRow.appendTo(thisTable);
       });
-
-      data.$headerRow = $this.find('thead tr').eq(0).addClass(classes.headerRow);
-      data.$records = $this.find('tr').not('.' + classes.headerRow);
-
-      $this.data(pluginName, data);
     },
 
     enableFeaturesSetup : function() {
       var $this = $(this);
       var data = $this.data(pluginName);
       if (!data) { return; }
+      data.$records = this.find('tbody tr');
 
      // if sorting set to true, allow sorting
       if ( data.sorting ) {
@@ -273,14 +266,10 @@
 
       $(tableBody).appendTo($this);
 
-      data.$records = $this.find('tr').not('.' + classes.headerRow);
-      $this.data(pluginName, data);
-
       // if table was paginated, reenable
       if ( data.pagination ) {
-        data.pagination.currentPage = 1;
-        $this.data(pluginName, data);
-        methods.enablePagination.call($this, data.pagination.recordsPerPage);
+        data.$records = this.find('tbody tr');
+        methods.goToPage.call(this, 1);
       }
     },
 
