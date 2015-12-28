@@ -184,7 +184,7 @@
       }
 
       // if pagination set to true, set pagination
-      if ( data.pagination && data.$records ) {
+      if ( data.pagination ) {
         methods.enablePagination.call($this, data.pagination.recordsPerPage);
       }
 
