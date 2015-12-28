@@ -48,7 +48,6 @@
         var $this = $(this).addClass(pluginName);
         var options = $.extend({}, defaults, opts);
         var data = {
-          $this : $this,
           dataConfig: methods.parseDataConfig(options.dataConfig),
           sorting: options.sorting,
           pagination: options.pagination,
@@ -61,9 +60,8 @@
         }
         else {
           // set up existing html table
-          data.$allRows = $this.find('tr');
           data.$headerRow = $this.find('thead tr').eq(0).addClass(classes.headerRow);
-          data.$records = data.$allRows.not('.' + classes.headerRow);
+          data.$records = $this.find('tr').not('.' + classes.headerRow);
 
           // save all this great new data wowowow
           $this.data(pluginName, data);
@@ -171,9 +169,8 @@
         $currentRow.appendTo(thisTable);
       });
 
-      data.$allRows = $this.find('tr');
       data.$headerRow = $this.find('thead tr').eq(0).addClass(classes.headerRow);
-      data.$records = data.$allRows.not('.' + classes.headerRow);
+      data.$records = $this.find('tr').not('.' + classes.headerRow);
 
       $this.data(pluginName, data);
     },
@@ -276,8 +273,7 @@
 
       $(tableBody).appendTo($this);
 
-      data.$allRows = $this.find('tr');
-      data.$records = data.$allRows.not('.' + classes.headerRow);
+      data.$records = $this.find('tr').not('.' + classes.headerRow);
       $this.data(pluginName, data);
 
       // if table was paginated, reenable
