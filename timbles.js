@@ -309,9 +309,6 @@
         // update existing pagination tools
         methods.updatePaginationTools.call($this);
       }
-
-      // save it all
-      $this.data(pluginName, data);
     },
 
     generatePaginationTools : function() {
@@ -322,9 +319,6 @@
       // create pagination container and place after table
       data.$paginationToolsContainer = $('<div class="' + classes.paginationToolsContainer + '">');
       $this.after(data.$paginationToolsContainer);
-
-      // save it all
-      $this.data(pluginName, data);
 
       if ( !data.pagination.nav ) {
         // by default, just show arrow nav
@@ -400,10 +394,6 @@
       data.$paginationToolsContainer.append(data.$paginationNavArrows);
       data.$pointerThisPage = data.$paginationToolsContainer.find('.pointer-this-page');
       data.$pointerLastPage = data.$paginationToolsContainer.find('.pointer-last-page');
-
-      // save it all
-      $this.data(pluginName, data);
-
     },
 
     generatePaginationNavRowCountChoice : function() {
@@ -434,9 +424,6 @@
       });
 
       data.$paginationToolsContainer.append(data.$paginationNavRowCountChoice);
-
-      // save it all
-      $this.data(pluginName, data);
     },
 
     updatePaginationTools : function() {
@@ -507,9 +494,6 @@
 
       // update pagination tools
       methods.updatePaginationTools.call($this);
-
-      // update data
-      $this.data(pluginName, data);
     },
 
   };
