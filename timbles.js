@@ -280,7 +280,6 @@
       if (!data || !data.$records || data.$records.length === 0 ) { return; }
 
       data.pagination.recordsPerPage = count;
-      var $recordsToPaginate = data.$records;
       var paginatedRecordsArray = [];
 
       for ( var i = 0; i < count; i++ ) {
@@ -289,16 +288,10 @@
         }
       }
 
-      // remove records if they exist
-      if ( $recordsToPaginate ) {
-        $recordsToPaginate.remove();
-      }
-
-      // show first page
-      $this.append(paginatedRecordsArray);
-
-      // set current page
+      // show the first page and set page counter
+      data.$records.remove();
       data.pagination.currentPage = 1;
+      $this.append(paginatedRecordsArray);
 
       // create footer to hold tools
       data.$footerRow = $this.find('tfoot');
