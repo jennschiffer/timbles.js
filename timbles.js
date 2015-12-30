@@ -147,21 +147,19 @@
       }
     },
 
-    generateRowsFromData : function(rowData, columnConfig, thisTable) {
-      var $this = $(this);
-      var data = $this.data(pluginName);
-
+    generateRowsFromData : function(rowData, columnConfig) {
       $.each(rowData, function(index, row) {
-        var $currentRow = $('<tr>');
+        // Add rows to the current table
+        var $newRow = $('<tr>').appendTo(this);
         $.each(columnConfig, function(index, column) {
-          var cellValue = row[column.id],
-              $currentCell = $('<td>');
-          $currentCell.attr('data-value', column.valueTransform(cellValue));
-          $currentCell.text(column.textTransform(cellValue));
-          $currentCell.appendTo($currentRow);
-        });
-        $currentRow.appendTo(thisTable);
-      });
+          // Add cells to the current row
+          var cellValue = row[column.id];
+          $('<td>')
+            .attr('data-value', column.valueTransform(cellValue))
+            .text(column.textTransform(cellValue))
+            .appendTo(this);
+        }.bind($newRow));
+      }.bind(this));
     },
 
     enableFeaturesSetup : function() {
