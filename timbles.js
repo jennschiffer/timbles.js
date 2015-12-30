@@ -93,7 +93,6 @@
     setupExistingTable : function() {
       var $this = $(this);
       var data = $this.data(pluginName);
-      if (!data) { return; }
 
       // for each header cell, store its column number
       var $headerRow = data.$headerRow = $this.find('thead tr').eq(0)
@@ -109,7 +108,6 @@
     generateTableFromJson : function() {
       var $this = $(this);
       var data = $this.data(pluginName);
-      if (!data) { return; }
 
       $this.append('<thead><tr class="' + classes.headerRow + '"></tr></thead>');
       data.$headerRow = $this.find('tr.' + classes.headerRow);
@@ -152,7 +150,6 @@
     generateRowsFromData : function(rowData, columnConfig, thisTable) {
       var $this = $(this);
       var data = $this.data(pluginName);
-      if (!data) { return; }
 
       $.each(rowData, function(index, row) {
         var $currentRow = $('<tr>');
@@ -170,7 +167,6 @@
     enableFeaturesSetup : function() {
       var $this = $(this);
       var data = $this.data(pluginName);
-      if (!data) { return; }
       data.$records = this.find('tbody tr');
 
      // if sorting set to true, allow sorting
@@ -193,7 +189,6 @@
     enableSorting : function() {
       var $this = $(this);
       var data = $this.data(pluginName);
-      if (!data) { return; }
 
       // bind sorting to header cells
       $this.find('th').not('.no-sort').on('click', methods.sortColumnEvent.bind($this));
@@ -216,7 +211,6 @@
     sortColumnEvent : function(event, order) {
       var $this = $(this);
       var data = $this.data(pluginName);
-      if (!data) { return; }
 
       // determine order and update header sort classes
       var $sortHeader = $(event.target);
@@ -277,7 +271,7 @@
       var $this = $(this);
       var data = $this.data(pluginName);
       // don't paginate if there are no records
-      if (!data || !data.$records || data.$records.length === 0 ) { return; }
+      if (!data.$records || data.$records.length === 0 ) { return; }
 
       data.pagination.recordsPerPage = count;
       var paginatedRecordsArray = [];
@@ -314,7 +308,6 @@
     generatePaginationTools : function() {
       var $this = $(this);
       var data = $this.data(pluginName);
-      if (!data) { return; }
 
       // create pagination container and place after table
       data.$paginationToolsContainer = $('<div class="' + classes.paginationToolsContainer + '">');
@@ -347,7 +340,6 @@
     generatePaginationNavArrows : function() {
       var $this = $(this);
       var data = $this.data(pluginName);
-      if (!data) { return; }
 
       var thisPage = 1;
       var lastPage = Math.ceil(data.$records.length / data.pagination.recordsPerPage);
@@ -399,7 +391,6 @@
     generatePaginationNavRowCountChoice : function() {
       var $this = $(this);
       var data = $this.data(pluginName);
-      if (!data) { return; }
 
       var optionCount = data.pagination.nav.rowCountChoice.length;
       var arrayOfChoices = [];
@@ -429,7 +420,6 @@
     updatePaginationTools : function() {
       var $this = $(this);
       var data = $this.data(pluginName);
-      if (!data) { return; }
 
       var min = 1;
       var max = Math.ceil(data.$records.length / data.pagination.recordsPerPage);
@@ -461,7 +451,6 @@
     goToPage : function(page) {
       var $this = $(this);
       var data = $this.data(pluginName);
-      if (!data) { return; }
 
       // check for valid page number
       var pageCount = Math.ceil(data.$records.length / data.pagination.recordsPerPage);
