@@ -177,11 +177,8 @@
     },
 
     enableSorting : function() {
-      var $this = $(this);
-      var data = $this.data(pluginName);
-
-      // bind sorting to header cells
-      $this.find('th').not('.no-sort').on('click', methods.sortColumnEvent.bind($this));
+      this.find('th').not('.no-sort').on(
+        'click', methods.sortColumnEvent.bind(this));
     },
 
     sortColumn : function(key, order) {
