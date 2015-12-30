@@ -106,44 +106,36 @@
     },
 
     generateTableFromJson : function() {
-      var $this = $(this);
-      var data = $this.data(pluginName);
-
-      $this.append('<thead><tr class="' + classes.headerRow + '"></tr></thead>');
-      data.$headerRow = $this.find('tr.' + classes.headerRow);
+      var data = this.data(pluginName);
+      var $headerRow = data.$headerRow = $('<tr>')
+        .addClass(classes.headerRow)
+        .appendTo($('<thead>').appendTo(this));
 
       // generate and add cell headers to header row
-      $.each(data.dataConfig.columns, function(index, value){
-
-        // if noSorting is set for this column, add the no-sort class to it
-        var noSortClassString = '';
-        if ( value.noSorting ) {
-          noSortClassString = ' class="' + classes.noSort + '"';
-        }
-
-        var $cell = $('<th id="' + value.id + '"' + noSortClassString +'>' + value.label + '</th>');
-        $cell.data('timbles-column-index', index);
-        data.$headerRow.append($cell);
+      $.each(data.dataConfig.columns, function(index, value) {
+        $('<th>')
+          .attr('id', value.id)
+          .addClass(value.noSorting ? classes.noSort : null)
+          .data('timbles-column-index', index)
+          .text(value.label)
+          .appendTo($headerRow);
       });
-
-      // generate each row of data from json
-      var rows;
 
       if ($.isArray(data.dataConfig.data)) {
         // no need for ajax call if data is local array
-        methods.generateRowsFromData.call($this, data.dataConfig.data, data.dataConfig.columns, $this);
+        methods.generateRowsFromData.call(this, data.dataConfig.data, data.dataConfig.columns);
 
         // start enabling any given features
-        methods.enableFeaturesSetup.call($this);
+        methods.enableFeaturesSetup.call(this);
       }
       else {
         // get external json file given
         $.getJSON( data.dataConfig.data, function(json) {
-          methods.generateRowsFromData.call($this, json, data.dataConfig.columns, $this);
-        }).then(function(){
+          methods.generateRowsFromData.call(this, json, data.dataConfig.columns);
+        }.bind(this)).then(function(){
           // start enabling any given features
-          methods.enableFeaturesSetup.call($this);
-        });
+          methods.enableFeaturesSetup.call(this);
+        }.bind(this));
       }
     },
 
