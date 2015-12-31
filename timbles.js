@@ -256,26 +256,13 @@
       data.pagination.recordsPerPage = count;
       data.pagination.lastPage = Math.ceil(data.$records.length / count);
 
-      var paginatedRecordsArray = [];
-
-      for ( var i = 0; i < count; i++ ) {
-        if ( data.$records[i] ) {
-          paginatedRecordsArray.push(data.$records[i]);
-        }
-      }
-
-      // show the first page and set page counter
-      data.$records.remove();
-      this.append(paginatedRecordsArray);
-
-      // create tools if they don't exist already
+      // Create tools if they don't exist yet
       if ( !data.$paginationToolsContainer ) {
         methods.generatePaginationTools.call(this);
       }
-      else {
-        // update existing pagination tools
-        methods.updatePaginationTools.call(this);
-      }
+
+      // Actually place records for the first page
+      methods.goToPage.call(this, 1);
     },
 
     generatePaginationTools : function() {
