@@ -319,14 +319,19 @@
       var thisPage = 1;
       var lastPage = Math.ceil(data.$records.length / data.pagination.recordsPerPage);
 
-      data.$paginationNavArrows = $('<div class="' + classes.paginationNavArrows + '">');
-      data.$linkFirstPage = $('<button role="button">' + copy.firstPageArrow + '</button>');
-      data.$linkPrevPage = $('<button role="button">' + copy.prevPageArrow + '</a>');
-      data.$linkNextPage = $('<button role="button">' + copy.nextPageArrow + '</a>');
-      data.$linkLastPage = $('<button role="button">' + copy.lastPageArrow + '</a>');
-      data.$pageNumberTracker = $('<span class="page-number-tracker">' + copy.page + ' <span class="pointer-this-page">' + thisPage + '</span> ' + copy.of + ' <span class="pointer-last-page">' + lastPage + '</span></span>');
+      data.$linkFirstPage = $('<button role="button">').text(copy.firstPageArrow);
+      data.$linkPrevPage = $('<button role="button">').text(copy.prevPageArrow);
+      data.$linkNextPage = $('<button role="button">').text(copy.nextPageArrow);
+      data.$linkLastPage = $('<button role="button">').text(copy.lastPageArrow);
+      data.$pageNumberTracker = $('<span>')
+        .addClass('page-number-tracker')
+        .text(copy.page + ' ')
+        .append($('<span>').addClass('pointer-this-page').text(thisPage))
+        .append(' ' + copy.of + ' ')
+        .append($('<span>').addClass('pointer-last-page').text(lastPage));
 
-      data.$paginationNavArrows
+      data.$paginationNavArrows = $('<div>')
+        .addClass(classes.paginationNavArrows)
         .append(data.$linkFirstPage)
         .append(data.$linkPrevPage)
         .append(data.$pageNumberTracker)
