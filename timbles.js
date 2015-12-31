@@ -401,24 +401,20 @@
       var min = 1;
       var max = Math.ceil(data.$records.length / data.pagination.recordsPerPage);
 
+      function toggleButtons(disabled, buttons) {
+        $.each(buttons, function() {
+          var classToggler = (disabled) ? this.addClass : this.removeClass;
+          classToggler(classes.disabled);
+          this.attr('disabled', disabled);
+        });
+      }
       // set buttons inactive if appropriate
-      if ( data.pagination.currentPage === min ) {
-        data.$linkFirstPage.attr('disabled', true).addClass(classes.disabled);
-        data.$linkPrevPage.attr('disabled', true).addClass(classes.disabled);
-      }
-      else {
-        data.$linkFirstPage.attr('disabled', false).removeClass(classes.disabled);
-        data.$linkPrevPage.attr('disabled', false).removeClass(classes.disabled);
-      }
-
-      if ( data.pagination.currentPage === max ) {
-        data.$linkLastPage.attr('disabled', true).addClass(classes.disabled);
-        data.$linkNextPage.attr('disabled', true).addClass(classes.disabled);
-      }
-      else {
-        data.$linkLastPage.attr('disabled', false).removeClass(classes.disabled);
-        data.$linkNextPage.attr('disabled', false).removeClass(classes.disabled);
-      }
+      toggleButtons(
+        data.pagination.currentPage === min,
+        [data.$linkFirstPage, data.$linkPrevPage]);
+      toggleButtons(
+        data.pagination.currentPage === max,
+        [data.$linkLastPage, data.$linkNextPage]);
 
       // update page number tracker
       data.$pointerThisPage.text(data.pagination.currentPage);
