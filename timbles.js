@@ -457,19 +457,16 @@
     },
   };
 
-  /** module definition */
+  // Install timbles jQuery plugin
   $.fn[pluginName] = function (method) {
-    if ( methods[method] ) {
-      return methods[method].apply(this, Array.prototype.slice.call(arguments, 1));
+    if ( methods.hasOwnProperty(method) ) {
+      var methodArgs = Array.prototype.slice.call(arguments, 1);
+      return methods[method].apply(this, methodArgs);
     }
-    else {
-      if ( typeof method === 'object' || !method ) {
-        return methods.init.apply(this, arguments);
-      }
-      else {
-        $.error('The method ' + method + ' literally does not exist. Good job.');
-      }
+    if ( typeof method === 'object' || !method ) {
+      return methods.init.apply(this, arguments);
     }
+    $.error('The method ' + method + ' literally does not exist. Good job.');
   };
 
 })( jQuery );
