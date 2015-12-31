@@ -251,7 +251,11 @@
       // don't paginate if there are no records
       if (!data.$records || data.$records.length === 0 ) { return; }
 
+      // Update pagination page size and count
+      data.pagination.currentPage = 1;
       data.pagination.recordsPerPage = count;
+      data.pagination.lastPage = Math.ceil(data.$records.length / count);
+
       var paginatedRecordsArray = [];
 
       for ( var i = 0; i < count; i++ ) {
@@ -262,7 +266,6 @@
 
       // show the first page and set page counter
       data.$records.remove();
-      data.pagination.currentPage = 1;
       this.append(paginatedRecordsArray);
 
       // create footer to hold tools
@@ -316,8 +319,6 @@
 
     generatePaginationNavArrows : function() {
       var data = this.data(pluginName);
-      var thisPage = 1;
-      var lastPage = Math.ceil(data.$records.length / data.pagination.recordsPerPage);
 
       data.$linkFirstPage = $('<button role="button">').text(copy.firstPageArrow);
       data.$linkPrevPage = $('<button role="button">').text(copy.prevPageArrow);
@@ -326,9 +327,9 @@
       data.$pageNumberTracker = $('<span>')
         .addClass('page-number-tracker')
         .text(copy.page + ' ')
-        .append($('<span>').addClass('pointer-this-page').text(thisPage))
+        .append($('<span>').addClass('pointer-this-page').text(data.pagination.currentPage))
         .append(' ' + copy.of + ' ')
-        .append($('<span>').addClass('pointer-last-page').text(lastPage));
+        .append($('<span>').addClass('pointer-last-page').text(data.pagination.lastPage));
 
       data.$paginationNavArrows = $('<div>')
         .addClass(classes.paginationNavArrows)
@@ -344,23 +345,19 @@
       }.bind(this));
 
       data.$linkPrevPage.click(function(){
-        var newPage = data.pagination.currentPage - 1;
-
-        if ( newPage >= 1 ) {
-          methods.goToPage.call(this, newPage);
+        if ( data.pagination.currentPage > 1) {
+          methods.goToPage.call(this, data.pagination.currentPage - 1);
         }
       }.bind(this));
 
       data.$linkNextPage.click(function(){
-        var newPage = data.pagination.currentPage + 1;
-
-        if ( newPage <= Math.ceil(data.$records.length / data.pagination.recordsPerPage) ) {
-          methods.goToPage.call(this, newPage);
+        if ( data.pagination.currentPage < data.pagination.lastPage ) {
+          methods.goToPage.call(this, data.pagination.currentPage + 1);
         }
       }.bind(this));
 
       data.$linkLastPage.click(function(){
-        methods.goToPage.call(this, Math.ceil(data.$records.length / data.pagination.recordsPerPage));
+        methods.goToPage.call(this, data.pagination.lastPage);
       }.bind(this));
 
       data.$paginationToolsContainer.append(data.$paginationNavArrows);
@@ -390,7 +387,7 @@
         if ( newRowCount.toLowerCase() === 'all' ) {
           newRowCount = data.$records.length;
         }
-        methods.enablePagination.call(this, newRowCount);
+        methods.enablePagination.call(this, parseInt(newRowCount));
       }.bind(this));
 
       data.$paginationToolsContainer.append(data.$paginationNavRowCountChoice);
@@ -398,8 +395,6 @@
 
     updatePaginationTools : function() {
       var data = this.data(pluginName);
-      var min = 1;
-      var max = Math.ceil(data.$records.length / data.pagination.recordsPerPage);
 
       function toggleButtons(disabled, buttons) {
         $.each(buttons, function() {
@@ -410,23 +405,22 @@
       }
       // set buttons inactive if appropriate
       toggleButtons(
-        data.pagination.currentPage === min,
+        data.pagination.currentPage === 1,
         [data.$linkFirstPage, data.$linkPrevPage]);
       toggleButtons(
-        data.pagination.currentPage === max,
+        data.pagination.currentPage === data.pagination.lastPage,
         [data.$linkLastPage, data.$linkNextPage]);
 
       // update page number tracker
       data.$pointerThisPage.text(data.pagination.currentPage);
-      data.$pointerLastPage.text(max);
+      data.$pointerLastPage.text(data.pagination.lastPage);
     },
 
     goToPage : function(page) {
       var data = this.data(pluginName);
 
       // check for valid page number
-      var pageCount = Math.ceil(data.$records.length / data.pagination.recordsPerPage);
-      if ( page < 1 || page > pageCount ) {
+      if ( page < 1 || page > data.pagination.lastPage ) {
         return;
       }
 
