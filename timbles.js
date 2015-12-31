@@ -268,14 +268,6 @@
       data.$records.remove();
       this.append(paginatedRecordsArray);
 
-      // create footer to hold tools
-      data.$footerRow = this.find('tfoot');
-
-      if ( data.$footerRow.length === 0 ) {
-        var $footer = $('<tfoot>');
-        data.$footerRow = $footer;
-      }
-
       // create tools if they don't exist already
       if ( !data.$paginationToolsContainer ) {
         methods.generatePaginationTools.call(this);
