@@ -397,34 +397,21 @@
 
     goToPage : function(page) {
       var data = this.data(pluginName);
+      var newFirstRowNum = (page - 1) * data.pagination.recordsPerPage;
+      var newLastRowNum = Math.min(
+        newFirstRowNum + data.pagination.recordsPerPage,
+        data.$records.length);
 
       // check for valid page number
       if ( page < 1 || page > data.pagination.lastPage ) {
         return;
       }
 
-      // move to next page
+      // update page number and display page's rows
       data.pagination.currentPage = page;
-
-      this.find('tr').not('.'+classes.headerRow).remove();
-
-      var paginatedRecordsArray = [];
-      var newFirstRowNum = (page - 1) * (data.pagination.recordsPerPage) + 1,
-          newLastRowNum = page * data.pagination.recordsPerPage;
-
-      if ( newLastRowNum > data.$records.length ) {
-        newLastRowNum = data.$records.length;
-      }
-
-      // get new page's records
-      for ( var i = newFirstRowNum - 1; i < newLastRowNum; i++ ) {
-        if ( data.$records[i] ) {
-          paginatedRecordsArray.push(data.$records[i]);
-        }
-      }
-
-      // add rows to table
-      this.find('tbody').append(paginatedRecordsArray);
+      data.$records.remove();
+      this.find('tbody').append(
+        data.$records.slice(newFirstRowNum, newLastRowNum));
 
       // update pagination tools
       methods.updatePaginationTools.call(this);
