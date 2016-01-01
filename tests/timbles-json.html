@@ -10,33 +10,45 @@
   <div id="qunit"></div>
   <div id="qunit-fixture"></div>
 
-  <table border="1" style="display:none;"></table>
+  <table id="target" border="1" style="display:none;"></table>
 
 <script type="text/javascript" src="../jquery.js"></script>
 <script type="text/javascript" src="../timbles.js"></script>
 
 <script type="text/javascript">
 $(function() {
-
-  var $table = $('table');
-
   /* it's going down
       i'm yellin' timbles! */
 
-  $table.timbles({
+  var stringLower = function(obj) {
+    // Turn strings into lowercase
+    return obj.toLowerCase();
+  }
+  var numberRanking = function(obj) {
+    // Prefix an octothorpe to the number to indicate ranking
+    return '#' + obj;
+  }
+  var percentageMarkup = function(percentage) {
+    // Mark up percentages nicely
+    if (percentage < 0) {
+      return 'N/A';
+    }
+    return percentage * 100 + '%';
+  }
 
+  $('#target').timbles({
     // if you are using json data and not an existing table:
     dataConfig: {
       data: 'data.json',
       columns: [
         { label: 'Name', id: 'name' },
-        { label: 'Size', id: 'size' },
-        { label: 'Kind', id: 'kind' },
-        { label: 'Date Added', id: 'dateAdded' },
-        { label: 'Notes', id: 'notes', noSorting: true }
+        { label: 'CI Name', id: 'lowerName', valueTransform: stringLower },
+        { label: 'Text Number', id: 'textNumber'},
+        { label: 'Natural number', id: 'naturalNumber', textTransform: numberRanking },
+        { label: 'Percentage', id: 'percentage', textTransform: percentageMarkup },
+        { label: 'Unsortable pets', id: 'pets', noSorting: true }
       ]
     },
-
     // if you want sorting:
     sorting: true
   });

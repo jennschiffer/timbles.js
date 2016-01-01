@@ -10,88 +10,87 @@
   <div id="qunit"></div>
   <div id="qunit-fixture"></div>
 
-
-  <table border="1" style="display:none;"></table>
+  <table id="target" border="1" style="display:none;"></table>
 
 <script type="text/javascript" src="../jquery.js"></script>
 <script type="text/javascript" src="../timbles.js"></script>
 
 <script type="text/javascript">
 $(function() {
-
-  var $table = $('table');
-
   /* it's going down
       i'm yellin' timbles! */
 
   var localData = [
     {
-      name: "LOCAL dhtmlconf.png",
-      size: 77,
-      kind: "PNG Image",
-      dateAdded: "August 31, 2014, 11:16 PM",
-      notes: "dhtmlconf logo"
+      name: "e e cummings",
+      lowerName: "e e cummings",
+      textNumber: "#11",
+      naturalNumber: 11,
+      percentage: 1,
+      pets: "Gold fish"
+    }, {
+      name: "Arthur fforde",
+      lowerName: "Arthur fforde",
+      textNumber: "#120",
+      naturalNumber: 120,
+      percentage: 0.05,
+      pets: "Crickets"
     },
     {
-      name: "LOCAL icla.pdf",
-      size: 26,
-      kind: "Adobe PDF document",
-      dateAdded: "August 27, 2014, 12:51 PM",
-      notes: "Individual Contributor License Agreement"
-    },{
-      name: "Slime Girls - Vacation Wasteland EP.zip",
-      size: 72,
-      kind: "ZIP archive",
-      dateAdded: "August 25, 2014, 9:40 PM",
-      notes: "cool chiptunes from lwlvl"
-    },{
-      name: ".DS_Store",
-      size: 25,
-      kind: "Virus",
-      dateAdded: "February 7, 2014, 10:59 PM",
-      notes: "lol"
-    },{
-      name: "No_Diggity.mid",
-      size: 17,
-      kind: "MIDI file",
-      dateAdded: "July 3, 2014, 11:34 PM",
-      notes: "very important karaoke file"
-    },{
-      name: "jorts.svg",
-      size: 52,
-      kind: "Plain Text File",
-      dateAdded: "May 24, 2014, 1:55 PM",
-      notes: "logo for jort.technology"
-    },{
-      name: "wordpress.sql",
-      size: 418,
-      kind: "Plain Text File",
-      dateAdded: "May 11, 2014, 11:15 PM",
-      notes: "blog dump"
-    },{
-      name: "foundation-compass-template-master.zip",
-      size: 6,
-      kind: "ZIP archive",
-      dateAdded: "April 21, 2014, 6:59 PM",
-      notes: "c.s.s. is better that javascript"
+      name: "Ezra Pound",
+      lowerName: "Ezra Pound",
+      textNumber: "#5",
+      naturalNumber: 5,
+      percentage: 0,
+      pets: "Rabbit"
+    },
+    {
+      name: "Robert Frost",
+      lowerName: "Robert Frost",
+      textNumber: "#500",
+      naturalNumber: 500,
+      percentage: 0.4545,
+      pets: "Dog"
+    },
+    {
+      name: "Arthur Rimbaud",
+      lowerName: "Arthur Rimbaud",
+      textNumber: "#19",
+      naturalNumber: 19,
+      percentage: -1,
+      pets: "Cat"
     }
   ];
 
+  var stringLower = function(obj) {
+    // Turn strings into lowercase
+    return obj.toLowerCase();
+  }
+  var numberRanking = function(obj) {
+    // Prefix an octothorpe to the number to indicate ranking
+    return '#' + obj;
+  }
+  var percentageMarkup = function(percentage) {
+    // Mark up percentages nicely
+    if (percentage < 0) {
+      return 'N/A';
+    }
+    return percentage * 100 + '%';
+  }
 
-  $table.timbles({
-
+  $('#target').timbles({
     // if you are using json data and not an existing table:
     dataConfig: {
       data: localData,
       columns: [
         { label: 'Name', id: 'name' },
-        { label: 'Size', id: 'size' },
-        { label: 'Kind', id: 'kind' },
-        { label: 'Date Added', id: 'dateAdded' },
-        { label: 'Notes', id: 'notes', noSorting: true }
+        { label: 'CI Name', id: 'lowerName', valueTransform: stringLower },
+        { label: 'Text Number', id: 'textNumber'},
+        { label: 'Natural number', id: 'naturalNumber', textTransform: numberRanking },
+        { label: 'Percentage', id: 'percentage', textTransform: percentageMarkup },
+        { label: 'Unsortable pets', id: 'pets', noSorting: true }
       ]
     },
-
     // if you want sorting:
     sorting: true
   });
