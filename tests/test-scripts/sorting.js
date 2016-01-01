@@ -12,16 +12,30 @@ function sortedColumnContent(columnIndex, order) {
 
 function sliceForPagination(elements) {
   // Returns the correct number of elements to compare when pagination is defined
-  if (target.data('timbles').pagination !== undefined) {
-    var recordCount = target.data('timbles').pagination.recordsPerPage;
-    return elements.slice(0, recordCount);
-  }
-  return elements;
+  return elements.slice(0, tablePageSize());
 }
 
-QUnit.test('Clicking a column header sorts table by that column', function( assert) {
+function tablePageSize() {
+  // Returns the size of the table's pagination, or infinity if not paginated
+  if (target.data('timbles').pagination !== undefined) {
+    return target.data('timbles').pagination.recordsPerPage;
+  }
+  return Infinity;
+}
+
+QUnit.test('Detect single header row', function(assert) {
+  var numRows = target.find('tr.header-row').length;
+  assert.equal(numRows, 1);
+});
+
+QUnit.test('Correct number of non-header record rows', function(assert) {
+  var numRows = target.find('tr').not('.header-row').length;
+  assert.equal(numRows, Math.min(tablePageSize(), 5));
+});
+
+QUnit.test('Clicking a column header sorts table by that column', function(assert) {
   var $firstColumnHeader = target.find('thead tr th').eq(0);
-  assert.ok(!$firstColumnHeader.hasClass('sorted-asc'), 'Not pre-sorted');
+  assert.notOk($firstColumnHeader.hasClass('sorted-asc'), 'Not pre-sorted');
   $firstColumnHeader.click();
   assert.ok($firstColumnHeader.hasClass('sorted-asc'), 'Ascending');
   assert.equal(target.find('.sorted-asc').length, 1, 'One ascending sorted col');
@@ -34,7 +48,7 @@ QUnit.test('Clicking a column header sorts table by that column', function( asse
 
 QUnit.test('Applying sortColumn on a header sorted table by that column', function(assert) {
   var $firstColumnHeader = target.find('thead tr th').eq(0);
-  assert.ok(!$firstColumnHeader.hasClass('sorted-asc'), 'Not pre-sorted');
+  assert.notOk($firstColumnHeader.hasClass('sorted-asc'), 'Not pre-sorted');
   target.timbles('sortColumn', 0);
   assert.ok($firstColumnHeader.hasClass('sorted-asc'), 'Ascending');
   assert.equal(target.find('.sorted-asc').length, 1, 'One ascending sorted col');
@@ -49,8 +63,8 @@ QUnit.test('There is one unsortable header and sorting by it does nothing', func
   var $noSortColumns = $('.no-sort');
   assert.equal($noSortColumns.length, 1, 'There is one unsortable column');
   $noSortColumns.click();
-  assert.ok(!$noSortColumns.hasClass('sorted-asc'), 'Not sorted ascending');
-  assert.ok(!$noSortColumns.hasClass('sorted-desc'), 'Not sorted descending');
+  assert.notOk($noSortColumns.hasClass('sorted-asc'), 'Not sorted ascending');
+  assert.notOk($noSortColumns.hasClass('sorted-desc'), 'Not sorted descending');
 });
 
 QUnit.test('Sorting names with case as written', function(assert) {
