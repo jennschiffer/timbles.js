@@ -268,9 +268,9 @@
     generatePaginationTools : function() {
       var data = this.data(pluginName);
 
-      // create pagination container and place after table
-      data.$paginationToolsContainer = $('<div class="' + classes.paginationToolsContainer + '">');
-      this.after(data.$paginationToolsContainer);
+      data.$paginationToolsContainer = $('<div>')
+        .addClass(classes.paginationToolsContainer)
+        .insertAfter(this);
 
       if ( !data.pagination.nav ) {
         // by default, just show arrow nav
@@ -303,20 +303,23 @@
       data.$linkPrevPage = $('<button role="button">').text(copy.prevPageArrow);
       data.$linkNextPage = $('<button role="button">').text(copy.nextPageArrow);
       data.$linkLastPage = $('<button role="button">').text(copy.lastPageArrow);
-      data.$pageNumberTracker = $('<span>')
+      var $pageNumberTracker = $('<span>')
         .addClass('page-number-tracker')
         .text(copy.page + ' ')
         .append($('<span>').addClass('pointer-this-page').text(data.pagination.currentPage))
         .append(' ' + copy.of + ' ')
         .append($('<span>').addClass('pointer-last-page').text(data.pagination.lastPage));
 
-      data.$paginationNavArrows = $('<div>')
+      data.$pointerThisPage = $pageNumberTracker.find('.pointer-this-page');
+      data.$pointerLastPage = $pageNumberTracker.find('.pointer-last-page');
+      $('<div>')
         .addClass(classes.paginationNavArrows)
         .append(data.$linkFirstPage)
         .append(data.$linkPrevPage)
-        .append(data.$pageNumberTracker)
+        .append($pageNumberTracker)
         .append(data.$linkNextPage)
-        .append(data.$linkLastPage);
+        .append(data.$linkLastPage)
+        .appendTo(data.$paginationToolsContainer);
 
       // event listeners
       data.$linkFirstPage.click(function(){
@@ -338,38 +341,33 @@
       data.$linkLastPage.click(function(){
         methods.goToPage.call(this, data.pagination.lastPage);
       }.bind(this));
-
-      data.$paginationToolsContainer.append(data.$paginationNavArrows);
-      data.$pointerThisPage = data.$paginationToolsContainer.find('.pointer-this-page');
-      data.$pointerLastPage = data.$paginationToolsContainer.find('.pointer-last-page');
     },
 
     generatePaginationNavRowCountChoice : function() {
       var data = this.data(pluginName);
-      var optionCount = data.pagination.nav.rowCountChoice.length;
-      var arrayOfChoices = [];
 
-      for ( var i = 0; i < optionCount; i++ ) {
-        arrayOfChoices.push('<button role="button">' + data.pagination.nav.rowCountChoice[i] + '</button>');
-      }
+      data.$paginationNavRowCountChoice = $('<div>')
+        .addClass(classes.paginationNavRowCountChoice)
+        .appendTo(data.$paginationToolsContainer);
 
-      data.$paginationNavRowCountChoice = $('<div>').attr('class', classes.paginationNavRowCountChoice).append(arrayOfChoices);
+      $.each(data.pagination.nav.rowCountChoice, function() {
+        $('<button>')
+          .attr('role', 'button')
+          .text(this)
+          .appendTo(data.$paginationNavRowCountChoice);
+      });
 
       // event listeners
       data.$paginationNavRowCountChoice.find('button').click(function(event){
-        var $target = $(event.target);
+        var $target = $(event.target).addClass(classes.active)
         var newRowCount = $target.text();
-        // make clicked button only active one
-        data.$paginationNavRowCountChoice.find('button').removeClass(classes.active);
-        $target.addClass(classes.active);
+        $target.siblings().removeClass(classes.active);
 
         if ( newRowCount.toLowerCase() === 'all' ) {
           newRowCount = data.$records.length;
         }
         methods.enablePagination.call(this, parseInt(newRowCount));
       }.bind(this));
-
-      data.$paginationToolsContainer.append(data.$paginationNavRowCountChoice);
     },
 
     updatePaginationTools : function() {
