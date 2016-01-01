@@ -34,7 +34,7 @@ Let's say you have a table on your page already, all populated with data:
     <td>PNG Image</td>
     <td>August 31, 2014, 11:16 PM</td>
     <td>dhtmlconf logo</td>
-  </tr>      
+  </tr>
   <tr>
     <td>icla.pdf</td>
     <td>26 KB</td>
@@ -72,7 +72,7 @@ And here is the source code:
     <td>PNG Image</td>
     <td>August 31, 2014, 11:16 PM</td>
     <td>dhtmlconf logo</td>
-  </tr>      
+  </tr>
   <tr>
     <td>icla.pdf</td>
     <td>26 KB</td>
@@ -133,39 +133,38 @@ var $table = $('#example');
 $table.timbles({
 
   dataConfig: {
-    
+
       /**
       * There are two types of data that timbles currently accepts:
       * - a json filename
       * - an array of row objects
-      * 
-      * by default, timbles will look for a json file name, 
-      * so dataType is not required unless you are giving an array.
-      * Then you will need to set it to 'array'.
       */
-      
-    dataType: 'json', // right now data types can be 'array' or it defaults to 'json'
-    data: 'data.json', // the json file if dataType is 'json', an array if dataType is 'array'
+
+    data: 'data.json', // path to load json file from, or an array of row objects
     columns: [
-      
+
       /**
       * you have to set the column headers with the following required properties:
       * - label (string), the text between <th> and </th>
       * - id (string), the json object property attributed to the column
-      * 
+      *
       * and here are some optional properties:
-      * - noSorting (boolean), if set to true the column won't be sortable 
+      * - noSorting (boolean), if set to true the column won't be sortable
       *   if you have the non-column property sorting set to true
-      * - dataFilter (function), this function will be applied to the cell value, 
-      *   useful for when you want to add currency symbols, html, etc
+      * - textTransform (function), this function will be applied to the cell text
+      *   content. useful for when you want to add currency symbols, html, etc
+      *   (the old name for this function is `dataFilter`, we still support that one)
+      * - valueTransform (function), this function will be applied to the data-value
+      *   attribute, which is used for sorting. Useful if you want a column to
+      *   sort case insensitively.
       */
 
-      { label: 'Name', id: 'name' },
+      { label: 'Name', id: 'name', valueTransform: function(value) { return value.toLowerCase(); } },
       { label: 'Size', id: 'size' },
       { label: 'Kind', id: 'kind' },
       { label: 'Date Added', id: 'dateAdded' },
       { label: 'Notes', id: 'notes', noSorting: true }
-      { label: 'Price', id: 'price', dataFilter: function(value) { return '$' + value; } }
+      { label: 'Price', id: 'price', textTransform: function(value) { return '$' + value; } }
     ]
   }
   sorting: true, // if you want columns to be sortable
@@ -248,7 +247,7 @@ var $table = $('table');
 $table.timbles(
   pagination: {
     recordsPerPage: 5, // an integer value for how many records per page, for example 5
-    
+
     // for navigation tools, each nav object is appended to a "pagination" div container below the table in the order they are listed
     nav: {
       arrows: true, // the default first/prev/next/last arrow buttons for navigating

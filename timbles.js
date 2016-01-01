@@ -49,7 +49,7 @@
         var options = $.extend({}, defaults, opts);
         var data = {
           $this : $this,
-          dataConfig: options.dataConfig,
+          dataConfig: methods.parseDataConfig(options.dataConfig),
           sorting: options.sorting,
           pagination: options.pagination,
         };
@@ -71,6 +71,31 @@
           methods.setupExistingTable.call($this);
         }
       });
+    },
+
+    parseDataConfig : function(dataConfig) {
+      if (!(dataConfig instanceof Object)) {
+        return dataConfig;
+      }
+      else if (dataConfig.hasOwnProperty('columns')) {
+        $.each(dataConfig.columns, function(index, columnConfig) {
+          if (columnConfig.hasOwnProperty('dataFilter') &&
+              !columnConfig.hasOwnProperty('textTransform')) {
+            // If a dataFilter is defined (old-style) and no textTransform,
+            // use the dataFilter as textTransform
+            columnConfig.textTransform = columnConfig.dataFilter;
+          }
+          else {
+            // Add a do-nothing textTransform if none is provided
+            columnConfig.textTransform = function (obj) {return obj;};
+          }
+          if (!columnConfig.hasOwnProperty('valueTransform')) {
+            // Add a do-nothing valueTransform if none is provided
+            columnConfig.valueTransform = function (obj) {return obj;};
+          }
+        });
+      }
+      return dataConfig;
     },
 
     setupExistingTable : function() {
@@ -111,10 +136,10 @@
       // generate each row of data from json
       var rows;
 
-      if ( data.dataConfig.dataType === 'array' ) {
+      if ($.isArray(data.dataConfig.data)) {
         // no need for ajax call if data is local array
         methods.generateRowsFromData.call($this, data.dataConfig.data, data.dataConfig.columns, $this);
-        
+
         // start enabling any given features
         methods.enableFeaturesSetup.call($this);
       }
@@ -123,14 +148,6 @@
         $.getJSON( data.dataConfig.data, function(json) {
           methods.generateRowsFromData.call($this, json, data.dataConfig.columns, $this);
         }).then(function(){
-          // set up existing html table
-          data.$allRows = $this.find('tr');
-          data.$headerRow = $this.find('thead tr').eq(0).addClass(classes.headerRow);
-          data.$records = data.$allRows.not('.' + classes.headerRow);
-
-          // save all this great new data wowowow
-          $this.data(pluginName, data);
-
           // start enabling any given features
           methods.enableFeaturesSetup.call($this);
         });
@@ -142,17 +159,16 @@
       var data = $this.data(pluginName);
       if (!data) { return; }
 
-      $.each(rowData, function(index, row){
+      $.each(rowData, function(index, row) {
         var $currentRow = $('<tr>');
-        $.each(columnConfig, function(property, value){
-
-          // if there is a dataFilter function given, apply it to the value to display
-          var displayValue = ( value.dataFilter ) ? value.dataFilter(row[value.id]) : row[value.id];
-
-          // append new cell to the row
-          $currentRow.append('<td data-value="' + row[value.id] + '">' + displayValue + '</td>');
+        $.each(columnConfig, function(index, column) {
+          var cellValue = row[column.id],
+              $currentCell = $('<td>');
+          $currentCell.attr('data-value', column.valueTransform(cellValue));
+          $currentCell.text(column.textTransform(cellValue));
+          $currentCell.appendTo($currentRow);
         });
-        thisTable.append($currentRow);
+        $currentRow.appendTo(thisTable);
       });
 
       data.$allRows = $this.find('tr');
