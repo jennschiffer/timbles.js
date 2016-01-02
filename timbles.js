@@ -344,30 +344,32 @@
     },
 
     generatePaginationNavRowCountChoice : function() {
+      var pageSizeChangeEvent, pageSizeSelection;
       var data = this.data(pluginName);
 
-      data.$paginationNavRowCountChoice = $('<div>')
+      pageSizeSelection = $('<div>')
         .addClass(classes.paginationNavRowCountChoice)
         .appendTo(data.$paginationToolsContainer);
+
+      pageSizeChangeEvent = function(event) {
+        var $target = $(event.target).addClass(classes.active)
+        $target.siblings().removeClass(classes.active);
+        var pageSize = $target.text();
+
+        if ( pageSize.toLowerCase() === 'all' ) {
+          pageSize = data.$records.length;
+        }
+
+        methods.enablePagination.call(this, parseInt(pageSize));
+      }.bind(this);
 
       $.each(data.pagination.nav.rowCountChoice, function() {
         $('<button>')
           .attr('role', 'button')
           .text(this)
-          .appendTo(data.$paginationNavRowCountChoice);
+          .on('click', pageSizeChangeEvent)
+          .appendTo(pageSizeSelection);
       });
-
-      // event listeners
-      data.$paginationNavRowCountChoice.find('button').click(function(event){
-        var $target = $(event.target).addClass(classes.active)
-        var newRowCount = $target.text();
-        $target.siblings().removeClass(classes.active);
-
-        if ( newRowCount.toLowerCase() === 'all' ) {
-          newRowCount = data.$records.length;
-        }
-        methods.enablePagination.call(this, parseInt(newRowCount));
-      }.bind(this));
     },
 
     updatePaginationTools : function() {
