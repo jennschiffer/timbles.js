@@ -14,36 +14,36 @@
 var pluginName = 'timbles';
 
 var defaults = {
-  sortKey : null,
-  sortOrder : null,
+  sortKey: null,
+  sortOrder: null,
 };
 
 var classes = {
-  disabled : 'disabled',
-  active : 'active',
-  headerRow : 'header-row',
-  label : 'label',
-  sortASC : 'sorted-asc',
-  sortDESC : 'sorted-desc',
-  noSort : 'no-sort',
-  paginationToolsContainer : 'pagination',
-  paginationNavArrows : 'nav-arrows',
-  paginationNavRowCountChoice : 'row-count-choice'
+  disabled: 'disabled',
+  active: 'active',
+  headerRow: 'header-row',
+  label: 'label',
+  sortASC: 'sorted-asc',
+  sortDESC: 'sorted-desc',
+  noSort: 'no-sort',
+  paginationToolsContainer: 'pagination',
+  paginationNavArrows: 'nav-arrows',
+  paginationNavRowCountChoice: 'row-count-choice'
 };
 
 var copy = {
-  firstPageArrow : ' << ',
-  prevPageArrow : ' < ',
-  nextPageArrow : ' > ',
-  lastPageArrow : ' >> ',
-  page : 'page',
-  of : 'of'
+  firstPageArrow: ' << ',
+  prevPageArrow: ' < ',
+  nextPageArrow: ' > ',
+  lastPageArrow: ' >> ',
+  page: 'page',
+  of: 'of'
 };
 
 var methods = {
 
   /** initialize timble, er, i mean table **/
-  init : function(opts) {
+  init: function(opts) {
     return this.each(function() {
       var $this = $(this).addClass(pluginName);
       var options = $.extend({}, defaults, opts);
@@ -65,7 +65,7 @@ var methods = {
     });
   },
 
-  parseDataConfig : function(dataConfig) {
+  parseDataConfig: function(dataConfig) {
     if (!(dataConfig instanceof Object)) {
       return dataConfig;
     }
@@ -90,7 +90,7 @@ var methods = {
     return dataConfig;
   },
 
-  setupExistingTable : function() {
+  setupExistingTable: function() {
     var data = this.data(pluginName);
 
     // for each header cell, store its column number
@@ -104,7 +104,7 @@ var methods = {
     methods.enableFeaturesSetup.call(this);
   },
 
-  generateTableFromJson : function() {
+  generateTableFromJson: function() {
     var data = this.data(pluginName);
     var $headerRow = data.$headerRow = $('<tr>')
       .addClass(classes.headerRow)
@@ -138,7 +138,7 @@ var methods = {
     }
   },
 
-  generateRowsFromData : function(rowData, columnConfig) {
+  generateRowsFromData: function(rowData, columnConfig) {
     $.each(rowData, function(index, row) {
       // Add rows to the current table
       var $newRow = $('<tr>').appendTo(this);
@@ -153,7 +153,7 @@ var methods = {
     }.bind(this));
   },
 
-  enableFeaturesSetup : function() {
+  enableFeaturesSetup: function() {
     var data = this.data(pluginName);
     data.$records = this.find('tbody tr');
 
@@ -170,12 +170,12 @@ var methods = {
     }
   },
 
-  enableSorting : function() {
+  enableSorting: function() {
     this.find('th').not('.no-sort').on(
       'click', methods.sortColumnEvent.bind(this));
   },
 
-  sortColumn : function(key, order) {
+  sortColumn: function(key, order) {
     // Sort a column identified by its key in a given order
     // If `key` is numeric, it is treated as the column index to sort
     // If `order` is not given, this will do the same as clicking the header
@@ -188,7 +188,7 @@ var methods = {
     }
   },
 
-  sortColumnEvent : function(event, order) {
+  sortColumnEvent: function(event, order) {
     var data = this.data(pluginName);
 
     // determine order and update header sort classes
@@ -246,7 +246,7 @@ var methods = {
     }
   },
 
-  enablePagination : function(count) {
+  enablePagination: function(count) {
     var data = this.data(pluginName);
     // don't paginate if there are no records
     if (!data.$records || data.$records.length === 0 ) { return; }
@@ -265,7 +265,7 @@ var methods = {
     methods.goToPage.call(this, 1);
   },
 
-  generatePaginationTools : function() {
+  generatePaginationTools: function() {
     var data = this.data(pluginName);
 
     data.$paginationToolsContainer = $('<div>')
@@ -296,7 +296,7 @@ var methods = {
     methods.updatePaginationTools.call(this);
   },
 
-  generatePaginationNavArrows : function() {
+  generatePaginationNavArrows: function() {
     var data = this.data(pluginName);
 
     data.$linkFirstPage = $('<button role="button">').text(copy.firstPageArrow);
@@ -343,7 +343,7 @@ var methods = {
     }.bind(this));
   },
 
-  generatePaginationNavRowCountChoice : function() {
+  generatePaginationNavRowCountChoice: function() {
     var pageSizeChangeEvent, pageSizeSelection;
     var data = this.data(pluginName);
 
@@ -372,7 +372,7 @@ var methods = {
     });
   },
 
-  updatePaginationTools : function() {
+  updatePaginationTools: function() {
     var data = this.data(pluginName);
 
     function toggleButtons(disabled, buttons) {
@@ -395,7 +395,7 @@ var methods = {
     data.$pointerLastPage.text(data.pagination.lastPage);
   },
 
-  goToPage : function(page) {
+  goToPage: function(page) {
     var data = this.data(pluginName);
     var newFirstRowNum = (page - 1) * data.pagination.recordsPerPage;
     var newLastRowNum = Math.min(
