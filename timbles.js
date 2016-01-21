@@ -42,7 +42,7 @@ var copy = {
 
 var methods = {
 
-  /** initialize timble, er, i mean table **/
+  // Initialize timble, er, i mean table //
   init: function( opts ) {
     return this.each( function() {
       var $this = $( this ).addClass( pluginName );
@@ -55,11 +55,9 @@ var methods = {
       $this.data( pluginName, data );
 
       if ( data.dataConfig ) {
-        // generate table from JSON
         methods.generateTableFromJson.call( $this );
       }
       else {
-        // set up existing html table
         methods.setupExistingTable.call( $this );
       }
     } );
@@ -73,15 +71,18 @@ var methods = {
       $.each( dataConfig.columns, function( index, columnConfig ) {
         if ( columnConfig.hasOwnProperty( 'dataFilter' ) &&
              !columnConfig.hasOwnProperty( 'textTransform' ) ) {
+
           // If a dataFilter is defined (old-style) and no textTransform,
           // use the dataFilter as textTransform
           columnConfig.textTransform = columnConfig.dataFilter;
         }
         else if ( !columnConfig.hasOwnProperty( 'textTransform' ) ) {
+
           // Add a do-nothing textTransform if none is provided
           columnConfig.textTransform = function( obj ) { return obj; };
         }
         if ( !columnConfig.hasOwnProperty( 'valueTransform' ) ) {
+
           // Add a do-nothing valueTransform if none is provided
           columnConfig.valueTransform = function( obj ) { return obj; };
         }
@@ -93,14 +94,14 @@ var methods = {
   setupExistingTable: function() {
     var data = this.data( pluginName );
 
-    // for each header cell, store its column number
+    // For each header cell, store its column number
     var $headerRow = data.$headerRow = this.find( 'thead tr' ).eq( 0 )
       .addClass( classes.headerRow );
     $headerRow.find( 'th' ).each( function( index ) {
       $( this ).data( 'timbles-column-index', index );
     } );
 
-    // start enabling any given features
+    // Start enabling any given features
     methods.enableFeaturesSetup.call( this );
   },
 
@@ -110,7 +111,7 @@ var methods = {
       .addClass( classes.headerRow )
       .appendTo( $( '<thead>' ).appendTo( this ) );
 
-    // generate and add cell headers to header row
+    // Generate and add cell headers to header row
     $.each( data.dataConfig.columns, function( index, value ) {
       $( '<th>' )
         .attr( 'id', value.id )
@@ -121,18 +122,21 @@ var methods = {
     } );
 
     if ( $.isArray( data.dataConfig.data ) ) {
-      // no need for ajax call if data is local array
+
+      // No need for ajax call if data is local array
       methods.generateRowsFromData.call( this, data.dataConfig.data, data.dataConfig.columns );
 
-      // start enabling any given features
+      // Start enabling any given features
       methods.enableFeaturesSetup.call( this );
     }
     else {
-      // get external json file given
+
+      // Get external json file given
       $.getJSON( data.dataConfig.data, function( json ) {
         methods.generateRowsFromData.call( this, json, data.dataConfig.columns );
       }.bind( this ) ).then( function() {
-        // start enabling any given features
+
+        // Start enabling any given features
         methods.enableFeaturesSetup.call( this );
       }.bind( this ) );
     }
@@ -140,9 +144,11 @@ var methods = {
 
   generateRowsFromData: function( rowData, columnConfig ) {
     $.each( rowData, function( index, row ) {
+
       // Add rows to the current table
       var $newRow = $( '<tr>' ).appendTo( this );
       $.each( columnConfig, function( index, column ) {
+
         // Add cells to the current row
         var cellValue = row[ column.id ];
         $( '<td>' )
@@ -176,6 +182,7 @@ var methods = {
   },
 
   sortColumn: function( key, order ) {
+
     // Sort a column identified by its key in a given order
     // If `key` is numeric, it is treated as the column index to sort
     // If `order` is not given, this will do the same as clicking the header
@@ -191,7 +198,7 @@ var methods = {
   sortColumnEvent: function( event, order ) {
     var data = this.data( pluginName );
 
-    // determine order and update header sort classes
+    // Determine order and update header sort classes
     var $sortHeader = $( event.target );
     var sortColumn = $sortHeader.data( 'timbles-column-index' );
 
@@ -203,7 +210,7 @@ var methods = {
       .removeClass( classes.sortDESC );
     $sortHeader.addClass( ( order === 'asc' ) ? classes.sortASC : classes.sortDESC );
 
-    // determine column values to actually sort by
+    // Determine column values to actually sort by
     var sortMap = data.$records.map( function() {
       var cell = this.children[ sortColumn ];
       var dataValue = cell.getAttribute( 'data-value' );
@@ -219,7 +226,7 @@ var methods = {
       };
     } );
 
-    // sort the mapping by the extract column values
+    // Sort the mapping by the extract column values
     sortMap.sort( function( a, b ) {
       if ( a.value > b.value ) {
         return ( order === 'asc' ) ? 1 : -1;
@@ -230,7 +237,7 @@ var methods = {
       return 0;
     } );
 
-    // use sortMap to shuffle table rows to the correct order
+    // Use sortMap to shuffle table rows to the correct order
     // work on detached DOM for improved performance on large tables
     var tableBody = this.find( 'tbody' ).detach().get( 0 );
     sortMap.each( function() {
@@ -239,7 +246,7 @@ var methods = {
 
     $( tableBody ).appendTo( this );
 
-    // if table was paginated, reenable
+    // If table was paginated, reenable
     if ( data.pagination ) {
       data.$records = this.find( 'tbody tr' );
       methods.goToPage.call( this, 1 );
@@ -248,7 +255,8 @@ var methods = {
 
   enablePagination: function( count ) {
     var data = this.data( pluginName );
-    // don't paginate if there are no records
+
+    // If there are no records, abandon pagination
     if ( !data.$records || data.$records.length === 0 ) { return; }
 
     // Update pagination page size and count
@@ -273,26 +281,22 @@ var methods = {
       .insertAfter( this );
 
     if ( !data.pagination.nav ) {
-      // by default, just show arrow nav
+
+      // If no pagination is configured, default to showing arrows only
       methods.generatePaginationNavArrows.call( this );
     }
     else {
-      // iterate through nav object and add tools to footer
       for ( var navObject in data.pagination.nav ) {
         switch ( navObject ) {
-          // arrows
           case "arrows":
             methods.generatePaginationNavArrows.call( this );
             break;
-          // row count choice
           case "rowCountChoice":
             methods.generatePaginationNavRowCountChoice.call( this );
             break;
         }
       }
     }
-
-    // update tools
     methods.updatePaginationTools.call( this );
   },
 
@@ -321,7 +325,7 @@ var methods = {
       .append( data.$linkLastPage )
       .appendTo( data.$paginationToolsContainer );
 
-    // event listeners
+    // Register event listeners
     data.$linkFirstPage.click( function() {
       methods.goToPage.call( this, 1 );
     }.bind( this ) );
@@ -382,7 +386,8 @@ var methods = {
         this.attr( 'disabled', disabled );
       } );
     }
-    // set buttons inactive if appropriate
+
+    // Set buttons inactive if appropriate
     toggleButtons(
       data.pagination.currentPage === 1,
       [ data.$linkFirstPage, data.$linkPrevPage ] );
@@ -390,7 +395,7 @@ var methods = {
       data.pagination.currentPage === data.pagination.lastPage,
       [ data.$linkLastPage, data.$linkNextPage ] );
 
-    // update page number tracker
+    // Update page number tracker
     data.$pointerThisPage.text( data.pagination.currentPage );
     data.$pointerLastPage.text( data.pagination.lastPage );
   },
@@ -402,18 +407,18 @@ var methods = {
       newFirstRowNum + data.pagination.recordsPerPage,
       data.$records.length );
 
-    // check for valid page number
+    // Check for valid page number
     if ( page < 1 || page > data.pagination.lastPage ) {
       return;
     }
 
-    // update page number and display page's rows
+    // Update page number and display page's rows
     data.pagination.currentPage = page;
     data.$records.remove();
     this.find( 'tbody' ).append(
       data.$records.slice( newFirstRowNum, newLastRowNum ) );
 
-    // update pagination tools
+    // Update pagination tools
     methods.updatePaginationTools.call( this );
   },
 };
