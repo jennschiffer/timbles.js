@@ -56,8 +56,7 @@ var methods = {
 
       if ( data.dataConfig ) {
         methods.generateTableFromJson.call( $this );
-      }
-      else {
+      } else {
         methods.setupExistingTable.call( $this );
       }
     } );
@@ -66,8 +65,7 @@ var methods = {
   parseDataConfig: function( dataConfig ) {
     if ( !( dataConfig instanceof Object ) ) {
       return dataConfig;
-    }
-    else if ( dataConfig.hasOwnProperty( 'columns' ) ) {
+    } else if ( dataConfig.hasOwnProperty( 'columns' ) ) {
       $.each( dataConfig.columns, function( index, columnConfig ) {
         if ( columnConfig.hasOwnProperty( 'dataFilter' ) &&
              !columnConfig.hasOwnProperty( 'textTransform' ) ) {
@@ -75,8 +73,7 @@ var methods = {
           // If a dataFilter is defined (old-style) and no textTransform,
           // use the dataFilter as textTransform
           columnConfig.textTransform = columnConfig.dataFilter;
-        }
-        else if ( !columnConfig.hasOwnProperty( 'textTransform' ) ) {
+        } else if ( !columnConfig.hasOwnProperty( 'textTransform' ) ) {
 
           // Add a do-nothing textTransform if none is provided
           columnConfig.textTransform = function( obj ) { return obj; };
@@ -128,8 +125,7 @@ var methods = {
 
       // Start enabling any given features
       methods.enableFeaturesSetup.call( this );
-    }
-    else {
+    } else {
 
       // Get external json file given
       $.getJSON( data.dataConfig.data, function( json ) {
@@ -189,8 +185,7 @@ var methods = {
     if ( typeof key === 'number' ) {
       var data = this.data( pluginName );
       data.$headerRow.find( 'th' ).eq( key ).trigger( 'click', order );
-    }
-    else {
+    } else {
       this.find( '#' + key ).trigger( 'click', order );
     }
   },
@@ -216,8 +211,7 @@ var methods = {
       var dataValue = cell.getAttribute( 'data-value' );
       if ( dataValue === null ) {
         dataValue = cell.textContent || cell.innerText;
-      }
-      else if ( parseFloat( dataValue ).toString() === dataValue ) {
+      } else if ( parseFloat( dataValue ).toString() === dataValue ) {
         dataValue = parseFloat( dataValue );
       }
       return {
@@ -284,8 +278,7 @@ var methods = {
 
       // If no pagination is configured, default to showing arrows only
       methods.generatePaginationNavArrows.call( this );
-    }
-    else {
+    } else {
       for ( var navObject in data.pagination.nav ) {
         switch ( navObject ) {
           case 'arrows':
