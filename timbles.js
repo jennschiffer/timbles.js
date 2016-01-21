@@ -15,7 +15,7 @@ var pluginName = 'timbles';
 
 var defaults = {
   sortKey: null,
-  sortOrder: null,
+  sortOrder: null
 };
 
 var classes = {
@@ -50,7 +50,7 @@ var methods = {
       var data = {
         dataConfig: methods.parseDataConfig( options.dataConfig ),
         sorting: options.sorting,
-        pagination: options.pagination,
+        pagination: options.pagination
       };
       $this.data( pluginName, data );
 
@@ -186,7 +186,7 @@ var methods = {
     // Sort a column identified by its key in a given order
     // If `key` is numeric, it is treated as the column index to sort
     // If `order` is not given, this will do the same as clicking the header
-    if ( typeof key === "number" ) {
+    if ( typeof key === 'number' ) {
       var data = this.data( pluginName );
       data.$headerRow.find( 'th' ).eq( key ).trigger( 'click', order );
     }
@@ -288,10 +288,10 @@ var methods = {
     else {
       for ( var navObject in data.pagination.nav ) {
         switch ( navObject ) {
-          case "arrows":
+          case 'arrows':
             methods.generatePaginationNavArrows.call( this );
             break;
-          case "rowCountChoice":
+          case 'rowCountChoice':
             methods.generatePaginationNavRowCountChoice.call( this );
             break;
         }
@@ -356,7 +356,7 @@ var methods = {
       .appendTo( data.$paginationToolsContainer );
 
     pageSizeChangeEvent = function( event ) {
-      var $target = $( event.target ).addClass( classes.active )
+      var $target = $( event.target ).addClass( classes.active );
       $target.siblings().removeClass( classes.active );
       var pageSize = $target.text();
 
@@ -420,7 +420,7 @@ var methods = {
 
     // Update pagination tools
     methods.updatePaginationTools.call( this );
-  },
+  }
 };
 
 // Install timbles jQuery plugin
