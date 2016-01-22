@@ -157,7 +157,7 @@ var methods = {
 
   enableFeaturesSetup: function() {
     var data = this.data( pluginName );
-    data.$records = this.find( 'tbody tr' );
+    data.$records = this.find( 'tbody tr' ).get();
 
     if ( data.sorting ) {
       methods.enableSorting.call( this );
@@ -206,8 +206,8 @@ var methods = {
     $sortHeader.addClass( ( order === 'asc' ) ? classes.sortASC : classes.sortDESC );
 
     // Determine column values to actually sort by
-    var sortMap = data.$records.map( function() {
-      var cell = this.children[ sortColumn ];
+    var sortMap = $.map( data.$records, function( row ) {
+      var cell = row.children[ sortColumn ];
       var dataValue = cell.getAttribute( 'data-value' );
       if ( dataValue === null ) {
         dataValue = cell.textContent || cell.innerText;
@@ -215,7 +215,7 @@ var methods = {
         dataValue = parseFloat( dataValue );
       }
       return {
-        node: this,
+        node: row,
         value: dataValue
       };
     } );
@@ -231,19 +231,23 @@ var methods = {
       return 0;
     } );
 
-    // Use sortMap to shuffle table rows to the correct order
-    // work on detached DOM for improved performance on large tables
-    var tableBody = this.find( 'tbody' ).detach().get( 0 );
-    sortMap.each( function() {
-      tableBody.appendChild( this.node );
+    // Create new canonical row set sorted based on sortMap
+    data.$records = $.map( sortMap, function( row ) {
+      return row.node;
     } );
 
-    $( tableBody ).appendTo( this );
-
-    // If table was paginated, reenable
     if ( data.pagination ) {
-      data.$records = this.find( 'tbody tr' );
+
+      // If table was paginated, load content for first page
       methods.goToPage.call( this, 1 );
+    } else {
+
+      // If not, add sorted rows in order (on detached body for performance)
+      var tableBody = this.find( 'tbody' ).detach().get( 0 );
+      $.each( data.$records, function() {
+        tableBody.appendChild( this );
+      } );
+      this.append( tableBody );
     }
   },
 
@@ -407,7 +411,7 @@ var methods = {
 
     // Update page number and display page's rows
     data.pagination.currentPage = page;
-    data.$records.remove();
+    this.find( 'tbody tr' ).remove();
     this.find( 'tbody' ).append(
       data.$records.slice( newFirstRowNum, newLastRowNum ) );
 
