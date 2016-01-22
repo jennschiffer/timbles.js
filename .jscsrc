@@ -1,0 +1,6 @@
+{
+  "preset": "jquery",
+  "maxErrors": -1,
+  "validateIndentation": 2,
+  "validateQuoteMarks": { "mark": "'", "escape": true }
+}
