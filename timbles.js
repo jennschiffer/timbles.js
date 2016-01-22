@@ -157,7 +157,7 @@ var methods = {
 
   enableFeaturesSetup: function() {
     var data = this.data( pluginName );
-    data.$records = this.find( 'tbody tr' ).get();
+    data.tableRows = this.find( 'tbody tr' ).get();
 
     if ( data.sorting ) {
       methods.enableSorting.call( this );
@@ -206,7 +206,7 @@ var methods = {
     $sortHeader.addClass( ( order === 'asc' ) ? classes.sortASC : classes.sortDESC );
 
     // Determine column values to actually sort by
-    var sortMap = $.map( data.$records, function( row ) {
+    var sortMap = $.map( data.tableRows, function( row ) {
       var cell = row.children[ sortColumn ];
       var dataValue = cell.getAttribute( 'data-value' );
       if ( dataValue === null ) {
@@ -232,7 +232,7 @@ var methods = {
     } );
 
     // Create new canonical row set sorted based on sortMap
-    data.$records = $.map( sortMap, function( row ) {
+    data.tableRows = $.map( sortMap, function( row ) {
       return row.node;
     } );
 
@@ -244,7 +244,7 @@ var methods = {
 
       // If not, add sorted rows in order (on detached body for performance)
       var tableBody = this.find( 'tbody' ).detach().get( 0 );
-      $.each( data.$records, function() {
+      $.each( data.tableRows, function() {
         tableBody.appendChild( this );
       } );
       this.append( tableBody );
@@ -255,12 +255,12 @@ var methods = {
     var data = this.data( pluginName );
 
     // If there are no records, abandon pagination
-    if ( !data.$records || data.$records.length === 0 ) { return; }
+    if ( !data.tableRows || data.tableRows.length === 0 ) { return; }
 
     // Update pagination page size and count
     data.pagination.currentPage = 1;
     data.pagination.recordsPerPage = count;
-    data.pagination.lastPage = Math.ceil( data.$records.length / count );
+    data.pagination.lastPage = Math.ceil( data.tableRows.length / count );
 
     // Create tools if they don't exist yet
     if ( !data.$paginationToolsContainer ) {
@@ -358,7 +358,7 @@ var methods = {
       var pageSize = $target.text();
 
       if ( pageSize.toLowerCase() === 'all' ) {
-        pageSize = data.$records.length;
+        pageSize = data.tableRows.length;
       }
 
       methods.enablePagination.call( this, parseInt( pageSize ) );
@@ -402,7 +402,7 @@ var methods = {
     var newFirstRowNum = ( page - 1 ) * data.pagination.recordsPerPage;
     var newLastRowNum = Math.min(
       newFirstRowNum + data.pagination.recordsPerPage,
-      data.$records.length );
+      data.tableRows.length );
 
     // Check for valid page number
     if ( page < 1 || page > data.pagination.lastPage ) {
@@ -413,7 +413,7 @@ var methods = {
     data.pagination.currentPage = page;
     this.find( 'tbody tr' ).remove();
     this.find( 'tbody' ).append(
-      data.$records.slice( newFirstRowNum, newLastRowNum ) );
+      data.tableRows.slice( newFirstRowNum, newLastRowNum ) );
 
     // Update pagination tools
     methods.updatePaginationTools.call( this );
