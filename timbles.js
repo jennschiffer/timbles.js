@@ -254,8 +254,12 @@ var methods = {
   enablePagination: function( count ) {
     var data = this.data( pluginName );
 
-    // If there are no records, abandon pagination
-    if ( !data.tableRows || data.tableRows.length === 0 ) { return; }
+    // Without records, abandon pagination. Without pagination config, create empty
+    if ( !data.tableRows || data.tableRows.length === 0 ) {
+      return;
+    } else if ( !data.pagination ) {
+      data.pagination = {};
+    }
 
     // Update pagination page size and count
     data.pagination.currentPage = 1;
