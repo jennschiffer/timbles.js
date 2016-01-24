@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>timbles tests &bull; QUnit</title>
+  <link rel="stylesheet" href="qunit-1.20.0.css">
+</head>
+<body>
+  <div id="qunit"></div>
+  <div id="qunit-fixture"></div>
+
+  <div style="display: none">
+    <table id="target">
+      <thead>
+        <tr><th>City name</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Atsugi</td></tr>
+        <tr><td>Batman</td></tr>
+        <tr><td>Calamba</td></tr>
+        <tr><td>Dharan</td></tr>
+        <tr><td>Empangeni</td></tr>
+        <tr><td>Funabashi</td></tr>
+        <tr><td>Guaymas</td></tr>
+        <tr><td>Himeji</td></tr>
+        <tr><td>Ikorodu</td></tr>
+        <tr><td>Jacksonville</td></tr>
+        <tr><td>Kikwit</td></tr>
+        <tr><td>Latina</td></tr>
+        <tr><td>Marseille</td></tr>
+        <tr><td>Nasariya</td></tr>
+        <tr><td>Ontario</td></tr>
+        <tr><td>Poole</td></tr>
+        <tr><td>Qom</td></tr>
+        <tr><td>Richmond</td></tr>
+        <tr><td>Sokoto</td></tr>
+        <tr><td>Tsuruoka</td></tr>
+        <tr><td>Uruapan</td></tr>
+        <tr><td>Verona</td></tr>
+        <tr><td>Winston-Salem</td></tr>
+        <tr><td>Xico</td></tr>
+        <tr><td>Yakutsk</td></tr>
+        <tr><td>Zacatecas</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <script type="text/javascript" src="../jquery.js"></script>
+  <script type="text/javascript" src="../timbles.js"></script>
+  <script type="text/javascript">
+  $( function() {
+    $( '#target' ).timbles( {
+      sorting: true,
+      pagination: {
+        recordsPerPage: 5
+      }
+    } );
+  } );
+  </script>
+  <script src="qunit-1.20.0.js"></script>
+  <script src="test-scripts/pagination.js"></script>
+</body>
+</html>
