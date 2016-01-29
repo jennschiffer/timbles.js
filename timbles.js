@@ -28,7 +28,9 @@ var classes = {
   noSort: 'no-sort',
   paginationToolsContainer: 'pagination',
   paginationNavArrows: 'nav-arrows',
-  paginationNavRowCountChoice: 'row-count-choice'
+  paginationNavRowCountChoice: 'row-count-choice',
+  paginationNavigationButton: null,
+  paginationRowCountButton: null
 };
 
 var copy = {
@@ -305,7 +307,11 @@ var methods = {
 
   generatePaginationNavArrows: function() {
     var data = this.data( pluginName );
-    var $navButton = $( '<button>' ).attr( 'type', 'button' );
+    var $navButton = $( '<button>' )
+      .attr( 'type', 'button' )
+      .toggleClass(
+        data.classes.paginationNavigationButton,
+        data.classes.paginationNavigationButton );
 
     data.$linkFirstPage = $navButton.clone().text( data.copy.firstPageArrow );
     data.$linkPrevPage = $navButton.clone().text( data.copy.prevPageArrow );
@@ -377,6 +383,9 @@ var methods = {
         .on( 'click', pageSizeChangeEvent )
         .text( this )
         .toggleClass( data.classes.active, data.pagination.recordsPerPage === this )
+        .toggleClass(
+          data.classes.paginationRowCountButton,
+          data.classes.paginationRowCountButton )
         .appendTo( pageSizeSelection );
     } );
   },
