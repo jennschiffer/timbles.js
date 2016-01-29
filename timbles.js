@@ -328,23 +328,23 @@ var methods = {
       .appendTo( data.$paginationToolsContainer );
 
     // Register event listeners
-    data.$linkFirstPage.click( function() {
+    data.$linkFirstPage.on( 'click', function() {
       methods.goToPage.call( this, 1 );
     }.bind( this ) );
 
-    data.$linkPrevPage.click( function() {
+    data.$linkPrevPage.on( 'click', function() {
       if ( data.pagination.currentPage > 1 ) {
         methods.goToPage.call( this, data.pagination.currentPage - 1 );
       }
     }.bind( this ) );
 
-    data.$linkNextPage.click( function() {
+    data.$linkNextPage.on( 'click', function() {
       if ( data.pagination.currentPage < data.pagination.lastPage ) {
         methods.goToPage.call( this, data.pagination.currentPage + 1 );
       }
     }.bind( this ) );
 
-    data.$linkLastPage.click( function() {
+    data.$linkLastPage.on( 'click', function() {
       methods.goToPage.call( this, data.pagination.lastPage );
     }.bind( this ) );
   },
