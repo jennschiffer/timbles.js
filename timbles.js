@@ -48,6 +48,8 @@ var methods = {
       var $this = $( this ).addClass( pluginName );
       var options = $.extend( {}, defaults, opts );
       var data = {
+        classes: $.extend( {}, classes, options.classes ),
+        copy: $.extend( {}, copy, options.copy ),
         dataConfig: methods.parseDataConfig( options.dataConfig ),
         sorting: options.sorting,
         pagination: options.pagination
@@ -93,7 +95,7 @@ var methods = {
 
     // For each header cell, store its column number
     var $headerRow = data.$headerRow = this.find( 'thead tr' ).eq( 0 )
-      .addClass( classes.headerRow );
+      .addClass( data.classes.headerRow );
     $headerRow.find( 'th' ).each( function( index ) {
       $( this ).data( 'timbles-column-index', index );
     } );
@@ -105,14 +107,14 @@ var methods = {
   generateTableFromJson: function() {
     var data = this.data( pluginName );
     var $headerRow = data.$headerRow = $( '<tr>' )
-      .addClass( classes.headerRow )
+      .addClass( data.classes.headerRow )
       .appendTo( $( '<thead>' ).appendTo( this ) );
 
     // Generate and add cell headers to header row
     $.each( data.dataConfig.columns, function( index, value ) {
       $( '<th>' )
         .attr( 'id', value.id )
-        .addClass( value.noSorting ? classes.noSort : null )
+        .addClass( value.noSorting ? data.classes.noSort : null )
         .data( 'timbles-column-index', index )
         .text( value.label )
         .appendTo( $headerRow );
@@ -198,12 +200,12 @@ var methods = {
     var sortColumn = $sortHeader.data( 'timbles-column-index' );
 
     if ( !order ) {
-      order = $sortHeader.hasClass( classes.sortASC ) ? 'desc' : 'asc';
+      order = $sortHeader.hasClass( data.classes.sortASC ) ? 'desc' : 'asc';
     }
     data.$headerRow.find( 'th' )
-      .removeClass( classes.sortASC )
-      .removeClass( classes.sortDESC );
-    $sortHeader.addClass( ( order === 'asc' ) ? classes.sortASC : classes.sortDESC );
+      .removeClass( data.classes.sortASC )
+      .removeClass( data.classes.sortDESC );
+    $sortHeader.addClass( ( order === 'asc' ) ? data.classes.sortASC : data.classes.sortDESC );
 
     // Determine column values to actually sort by
     var sortMap = $.map( data.tableRows, function( row ) {
@@ -279,7 +281,7 @@ var methods = {
     var data = this.data( pluginName );
 
     data.$paginationToolsContainer = $( '<div>' )
-      .addClass( classes.paginationToolsContainer )
+      .addClass( data.classes.paginationToolsContainer )
       .insertAfter( this );
 
     if ( !data.pagination.nav ) {
@@ -305,21 +307,21 @@ var methods = {
     var data = this.data( pluginName );
     var $navButton = $( '<button>' ).attr( 'type', 'button' );
 
-    data.$linkFirstPage = $navButton.clone().text( copy.firstPageArrow );
-    data.$linkPrevPage = $navButton.clone().text( copy.prevPageArrow );
-    data.$linkNextPage = $navButton.clone().text( copy.nextPageArrow );
-    data.$linkLastPage = $navButton.clone().text( copy.lastPageArrow );
+    data.$linkFirstPage = $navButton.clone().text( data.copy.firstPageArrow );
+    data.$linkPrevPage = $navButton.clone().text( data.copy.prevPageArrow );
+    data.$linkNextPage = $navButton.clone().text( data.copy.nextPageArrow );
+    data.$linkLastPage = $navButton.clone().text( data.copy.lastPageArrow );
     var $pageNumberTracker = $( '<span>' )
       .addClass( 'page-number-tracker' )
-      .text( copy.page + ' ' )
+      .text( data.copy.page + ' ' )
       .append( $( '<span>' ).addClass( 'pointer-this-page' ).text( data.pagination.currentPage ) )
-      .append( ' ' + copy.of + ' ' )
+      .append( ' ' + data.copy.of + ' ' )
       .append( $( '<span>' ).addClass( 'pointer-last-page' ).text( data.pagination.lastPage ) );
 
     data.$pointerThisPage = $pageNumberTracker.find( '.pointer-this-page' );
     data.$pointerLastPage = $pageNumberTracker.find( '.pointer-last-page' );
     $( '<div>' )
-      .addClass( classes.paginationNavArrows )
+      .addClass( data.classes.paginationNavArrows )
       .append( data.$linkFirstPage )
       .append( data.$linkPrevPage )
       .append( $pageNumberTracker )
@@ -354,12 +356,12 @@ var methods = {
     var data = this.data( pluginName );
 
     pageSizeSelection = $( '<div>' )
-      .addClass( classes.paginationNavRowCountChoice )
+      .addClass( data.classes.paginationNavRowCountChoice )
       .appendTo( data.$paginationToolsContainer );
 
     pageSizeChangeEvent = function( event ) {
-      var $target = $( event.target ).addClass( classes.active );
-      $target.siblings().removeClass( classes.active );
+      var $target = $( event.target ).addClass( data.classes.active );
+      $target.siblings().removeClass( data.classes.active );
       var pageSize = $target.text();
 
       if ( pageSize.toLowerCase() === 'all' ) {
@@ -374,7 +376,7 @@ var methods = {
         .attr( 'type', 'button' )
         .on( 'click', pageSizeChangeEvent )
         .text( this )
-        .toggleClass( classes.active, data.pagination.recordsPerPage === this )
+        .toggleClass( data.classes.active, data.pagination.recordsPerPage === this )
         .appendTo( pageSizeSelection );
     } );
   },
@@ -384,7 +386,7 @@ var methods = {
 
     function toggleButtons( buttons, disabled ) {
       $.each( buttons, function() {
-        this.toggleClass( classes.disabled, disabled );
+        this.toggleClass( data.classes.disabled, disabled );
         this.attr( 'disabled', disabled );
       } );
     }
