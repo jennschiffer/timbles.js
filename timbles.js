@@ -46,24 +46,21 @@ var methods = {
 
   // Initialize timble, er, i mean table //
   init: function( opts ) {
-    return this.each( function() {
-      var $this = $( this ).addClass( pluginName );
-      var options = $.extend( {}, defaults, opts );
-      var data = {
-        classes: $.extend( {}, classes, options.classes ),
-        copy: $.extend( {}, copy, options.copy ),
-        dataConfig: methods.parseDataConfig( options.dataConfig ),
-        sorting: options.sorting,
-        pagination: options.pagination
-      };
-      $this.data( pluginName, data );
+    var options = $.extend( {}, opts );
+    var data = {
+      classes: $.extend( {}, classes, options.classes ),
+      copy: $.extend( {}, copy, options.copy ),
+      dataConfig: methods.parseDataConfig( options.dataConfig ),
+      sorting: options.sorting,
+      pagination: options.pagination
+    };
+    this.data( pluginName, data ).addClass( pluginName );
 
-      if ( data.dataConfig ) {
-        methods.generateTableFromJson.call( $this );
-      } else {
-        methods.setupExistingTable.call( $this );
-      }
-    } );
+    if ( data.dataConfig ) {
+      methods.generateTableFromJson.call( this );
+    } else {
+      methods.setupExistingTable.call( this );
+    }
   },
 
   parseDataConfig: function( dataConfig ) {
@@ -438,12 +435,16 @@ var methods = {
 
 // Install timbles jQuery plugin
 $.fn[ pluginName ] = function( method ) {
-  if ( methods.hasOwnProperty( method ) ) {
+  if ( $.isPlainObject( method ) || method === undefined ) {
+    return this.each( function() {
+      methods.init.call( $( this ), method );
+    } );
+  } else if ( methods.hasOwnProperty( method ) ) {
+    var actualMethod = methods[ method ];
     var methodArgs = Array.prototype.slice.call( arguments, 1 );
-    return methods[ method ].apply( this, methodArgs );
-  }
-  if ( typeof method === 'object' || !method ) {
-    return methods.init.apply( this, arguments );
+    return this.each( function() {
+      actualMethod.apply( $( this ), methodArgs );
+    } );
   }
   $.error( 'The method ' + method + ' literally does not exist. Good job.' );
 };
