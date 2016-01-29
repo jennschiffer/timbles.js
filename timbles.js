@@ -382,21 +382,20 @@ var methods = {
   updatePaginationTools: function() {
     var data = this.data( pluginName );
 
-    function toggleButtons( disabled, buttons ) {
+    function toggleButtons( buttons, disabled ) {
       $.each( buttons, function() {
-        var classToggler = ( disabled ) ? this.addClass : this.removeClass;
-        classToggler( classes.disabled );
+        this.toggleClass( classes.disabled, disabled );
         this.attr( 'disabled', disabled );
       } );
     }
 
     // Set buttons inactive if appropriate
     toggleButtons(
-      data.pagination.currentPage === 1,
-      [ data.$linkFirstPage, data.$linkPrevPage ] );
+      [ data.$linkFirstPage, data.$linkPrevPage ],
+      data.pagination.currentPage === 1 );
     toggleButtons(
-      data.pagination.currentPage === data.pagination.lastPage,
-      [ data.$linkLastPage, data.$linkNextPage ] );
+      [ data.$linkLastPage, data.$linkNextPage ],
+      data.pagination.currentPage === data.pagination.lastPage );
 
     // Update page number tracker
     data.$pointerThisPage.text( data.pagination.currentPage );
