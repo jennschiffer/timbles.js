@@ -13,11 +13,6 @@
 
 var pluginName = 'timbles';
 
-var defaults = {
-  sortKey: null,
-  sortOrder: null
-};
-
 var classes = {
   disabled: 'disabled',
   active: 'active',
