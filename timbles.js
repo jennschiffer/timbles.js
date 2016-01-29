@@ -303,11 +303,12 @@ var methods = {
 
   generatePaginationNavArrows: function() {
     var data = this.data( pluginName );
+    var $navButton = $( '<button>' ).attr( 'type', 'button' );
 
-    data.$linkFirstPage = $( '<button role="button">' ).text( copy.firstPageArrow );
-    data.$linkPrevPage = $( '<button role="button">' ).text( copy.prevPageArrow );
-    data.$linkNextPage = $( '<button role="button">' ).text( copy.nextPageArrow );
-    data.$linkLastPage = $( '<button role="button">' ).text( copy.lastPageArrow );
+    data.$linkFirstPage = $navButton.clone().text( copy.firstPageArrow );
+    data.$linkPrevPage = $navButton.clone().text( copy.prevPageArrow );
+    data.$linkNextPage = $navButton.clone().text( copy.nextPageArrow );
+    data.$linkLastPage = $navButton.clone().text( copy.lastPageArrow );
     var $pageNumberTracker = $( '<span>' )
       .addClass( 'page-number-tracker' )
       .text( copy.page + ' ' )
@@ -370,9 +371,9 @@ var methods = {
 
     $.each( data.pagination.nav.rowCountChoice, function() {
       $( '<button>' )
-        .attr( 'role', 'button' )
-        .text( this )
+        .attr( 'type', 'button' )
         .on( 'click', pageSizeChangeEvent )
+        .text( this )
         .appendTo( pageSizeSelection );
     } );
   },
