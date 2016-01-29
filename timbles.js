@@ -374,6 +374,7 @@ var methods = {
         .attr( 'type', 'button' )
         .on( 'click', pageSizeChangeEvent )
         .text( this )
+        .toggleClass( classes.active, data.pagination.recordsPerPage === this )
         .appendTo( pageSizeSelection );
     } );
   },
