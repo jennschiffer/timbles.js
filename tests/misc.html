@@ -34,6 +34,30 @@
       </tbody>
     </table>
 
+    <table class="multi-target" id="multi-target-one">
+      <thead>
+        <tr><th>Letter</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>A</td></tr>
+        <tr><td>B</td></tr>
+        <tr><td>C</td></tr>
+        <tr><td>D</td></tr>
+      </tbody>
+    </table>
+
+    <table class="multi-target" id="multi-target-two">
+      <thead>
+        <tr><th>Letter</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>E</td></tr>
+        <tr><td>F</td></tr>
+        <tr><td>G</td></tr>
+        <tr><td>H</td></tr>
+      </tbody>
+    </table>
+
   </div>
   <script type="text/javascript" src="../jquery.js"></script>
   <script type="text/javascript" src="../timbles.js"></script>
@@ -88,6 +112,16 @@
       paginationContainer.find( '.row-count-choice button' ).each( function() {
         assert.ok( $( this ).hasClass( rowCountClass ), 'row count button has class' );
       } );
+    } );
+
+    QUnit.test( 'Methods can be chained and target multiple tables', function( assert ) {
+      var multiTable = $( '.multi-target' )
+        .timbles()
+        .timbles( 'enablePagination', 1 )
+        .timbles( 'goToPage', 2 );
+      assert.equal( multiTable.length, 2, 'Actually selected two tables' );
+      assert.equal( $( '#multi-target-one tbody td' ).text(), 'B', 'First table followed' );
+      assert.equal( $( '#multi-target-two tbody td' ).text(), 'F', 'Second table followed' );
     } );
 
   </script>
