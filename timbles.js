@@ -17,10 +17,11 @@ var classes = {
   disabled: 'disabled',
   active: 'active',
   headerRow: 'header-row',
-  label: 'label',
   sortASC: 'sorted-asc',
   sortDESC: 'sorted-desc',
   noSort: 'no-sort',
+  navigationCurrentPage: 'pointer-this-page',
+  navigationLastPage: 'pointer-last-page',
   paginationToolsContainer: 'pagination',
   paginationNavArrows: 'nav-arrows',
   paginationNavRowCountChoice: 'row-count-choice',
@@ -309,15 +310,19 @@ var methods = {
     data.$linkPrevPage = $navButton.clone().text( data.copy.prevPageArrow );
     data.$linkNextPage = $navButton.clone().text( data.copy.nextPageArrow );
     data.$linkLastPage = $navButton.clone().text( data.copy.lastPageArrow );
+    data.$pointerThisPage = $( '<span>' )
+        .addClass( classes.navigationCurrentPage )
+        .text( data.pagination.currentPage );
+    data.$pointerLastPage = $( '<span>' )
+        .addClass( classes.navigationLastPage )
+        .text( data.pagination.lastPage );
     var $pageNumberTracker = $( '<span>' )
       .addClass( 'page-number-tracker' )
       .text( data.copy.page + ' ' )
-      .append( $( '<span>' ).addClass( 'pointer-this-page' ).text( data.pagination.currentPage ) )
+      .append( data.$pointerThisPage )
       .append( ' ' + data.copy.of + ' ' )
-      .append( $( '<span>' ).addClass( 'pointer-last-page' ).text( data.pagination.lastPage ) );
+      .append( data.$pointerLastPage );
 
-    data.$pointerThisPage = $pageNumberTracker.find( '.pointer-this-page' );
-    data.$pointerLastPage = $pageNumberTracker.find( '.pointer-last-page' );
     $( '<div>' )
       .addClass( data.classes.paginationNavArrows )
       .append( data.$linkFirstPage )
