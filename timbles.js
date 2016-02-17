@@ -210,7 +210,7 @@ var methods = {
       var cell = row.children[ sortColumn ];
       var dataValue = cell.getAttribute( 'data-value' );
       if ( dataValue === null ) {
-        dataValue = cell.textContent || cell.innerText;
+        dataValue = cell.textContent || cell.innerText || '';
       } else if ( parseFloat( dataValue ).toString() === dataValue ) {
         dataValue = parseFloat( dataValue );
       }

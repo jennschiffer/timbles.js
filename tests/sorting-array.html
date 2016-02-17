@@ -27,14 +27,16 @@ $(function() {
       textNumber: "#11",
       naturalNumber: 11,
       percentage: 1,
-      pets: "Gold fish"
+      pets: "Gold fish",
+      sparse: "One"
     }, {
       name: "Arthur fforde",
       lowerName: "Arthur fforde",
       textNumber: "#120",
       naturalNumber: 120,
       percentage: 0.05,
-      pets: "Crickets"
+      pets: "Crickets",
+      sparse: "One"
     },
     {
       name: "Ezra Pound",
@@ -42,7 +44,8 @@ $(function() {
       textNumber: "#5",
       naturalNumber: 5,
       percentage: 0,
-      pets: "Rabbit"
+      pets: "Rabbit",
+      sparse: ""
     },
     {
       name: "Robert Frost",
@@ -50,7 +53,8 @@ $(function() {
       textNumber: "#500",
       naturalNumber: 500,
       percentage: 0.4545,
-      pets: "Dog"
+      pets: "Dog",
+      sparse: ""
     },
     {
       name: "Arthur Rimbaud",
@@ -58,7 +62,8 @@ $(function() {
       textNumber: "#19",
       naturalNumber: 19,
       percentage: -1,
-      pets: "Cat"
+      pets: "Cat",
+      sparse: "Two"
     }
   ];
 
@@ -88,7 +93,8 @@ $(function() {
         { label: 'Text Number', id: 'textNumber'},
         { label: 'Natural number', id: 'naturalNumber', textTransform: numberRanking },
         { label: 'Percentage', id: 'percentage', textTransform: percentageMarkup },
-        { label: 'Unsortable pets', id: 'pets', noSorting: true }
+        { label: 'Unsortable pets', id: 'pets', noSorting: true },
+        { label: 'Sparse column', id: 'sparse' }
       ]
     },
     // if you want sorting:
