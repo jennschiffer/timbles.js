@@ -146,3 +146,23 @@ QUnit.test( 'Sorting reals with zero (percentages)', function( assert ) {
       sliceForPagination( expected ),
       'Descending order' );
 } );
+
+QUnit.test( 'Sorting unsortable column does nothing', function( assert ) {
+  assert.deepEqual(
+      sortedColumnContent( 5, 'asc' ),
+      sortedColumnContent( 5, 'desc' ),
+      'Ascending/descending sorted content is the same' );
+} );
+
+QUnit.test( 'Sorting sparsely filled columns', function( assert ) {
+  var expected = [ '', '', 'One', 'One', 'Two' ];
+  assert.deepEqual(
+      sortedColumnContent( 6 ),
+      sliceForPagination( expected ),
+      'Ascending order' );
+  expected.reverse();
+  assert.deepEqual(
+      sortedColumnContent( 6, 'desc' ),
+      sliceForPagination( expected ),
+      'Descending order' );
+} );
