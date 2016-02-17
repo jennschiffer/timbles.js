@@ -303,11 +303,12 @@ var methods = {
 
   generatePaginationNavArrows: function() {
     var data = this.data( pluginName );
+    var $navButton = $( '<button>' ).attr( 'type', 'button' );
 
-    data.$linkFirstPage = $( '<button role="button">' ).text( copy.firstPageArrow );
-    data.$linkPrevPage = $( '<button role="button">' ).text( copy.prevPageArrow );
-    data.$linkNextPage = $( '<button role="button">' ).text( copy.nextPageArrow );
-    data.$linkLastPage = $( '<button role="button">' ).text( copy.lastPageArrow );
+    data.$linkFirstPage = $navButton.clone().text( copy.firstPageArrow );
+    data.$linkPrevPage = $navButton.clone().text( copy.prevPageArrow );
+    data.$linkNextPage = $navButton.clone().text( copy.nextPageArrow );
+    data.$linkLastPage = $navButton.clone().text( copy.lastPageArrow );
     var $pageNumberTracker = $( '<span>' )
       .addClass( 'page-number-tracker' )
       .text( copy.page + ' ' )
@@ -327,23 +328,23 @@ var methods = {
       .appendTo( data.$paginationToolsContainer );
 
     // Register event listeners
-    data.$linkFirstPage.click( function() {
+    data.$linkFirstPage.on( 'click', function() {
       methods.goToPage.call( this, 1 );
     }.bind( this ) );
 
-    data.$linkPrevPage.click( function() {
+    data.$linkPrevPage.on( 'click', function() {
       if ( data.pagination.currentPage > 1 ) {
         methods.goToPage.call( this, data.pagination.currentPage - 1 );
       }
     }.bind( this ) );
 
-    data.$linkNextPage.click( function() {
+    data.$linkNextPage.on( 'click', function() {
       if ( data.pagination.currentPage < data.pagination.lastPage ) {
         methods.goToPage.call( this, data.pagination.currentPage + 1 );
       }
     }.bind( this ) );
 
-    data.$linkLastPage.click( function() {
+    data.$linkLastPage.on( 'click', function() {
       methods.goToPage.call( this, data.pagination.lastPage );
     }.bind( this ) );
   },
@@ -370,9 +371,10 @@ var methods = {
 
     $.each( data.pagination.nav.rowCountChoice, function() {
       $( '<button>' )
-        .attr( 'role', 'button' )
-        .text( this )
+        .attr( 'type', 'button' )
         .on( 'click', pageSizeChangeEvent )
+        .text( this )
+        .toggleClass( classes.active, data.pagination.recordsPerPage === this )
         .appendTo( pageSizeSelection );
     } );
   },
@@ -380,21 +382,20 @@ var methods = {
   updatePaginationTools: function() {
     var data = this.data( pluginName );
 
-    function toggleButtons( disabled, buttons ) {
+    function toggleButtons( buttons, disabled ) {
       $.each( buttons, function() {
-        var classToggler = ( disabled ) ? this.addClass : this.removeClass;
-        classToggler( classes.disabled );
+        this.toggleClass( classes.disabled, disabled );
         this.attr( 'disabled', disabled );
       } );
     }
 
     // Set buttons inactive if appropriate
     toggleButtons(
-      data.pagination.currentPage === 1,
-      [ data.$linkFirstPage, data.$linkPrevPage ] );
+      [ data.$linkFirstPage, data.$linkPrevPage ],
+      data.pagination.currentPage === 1 );
     toggleButtons(
-      data.pagination.currentPage === data.pagination.lastPage,
-      [ data.$linkLastPage, data.$linkNextPage ] );
+      [ data.$linkLastPage, data.$linkNextPage ],
+      data.pagination.currentPage === data.pagination.lastPage );
 
     // Update page number tracker
     data.$pointerThisPage.text( data.pagination.currentPage );

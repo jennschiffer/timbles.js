@@ -59,6 +59,14 @@ QUnit.test( 'Correct number of total pages ...', function( assert ) {
   assert.equal( pageNumber.text(), '6', '... in page navigation block' );
 } );
 
+QUnit.test( 'Correct button (dis|en)able state on first page', function( assert ) {
+  var navigationButtons = target.next().find( '.nav-arrows button' );
+  assert.ok( navigationButtons.eq( 0 ).attr( 'disabled' ), 'First button disabled' );
+  assert.ok( navigationButtons.eq( 1 ).attr( 'disabled' ), 'Previous button disabled' );
+  assert.notOk( navigationButtons.eq( 2 ).attr( 'disabled' ), 'Next button enabled' );
+  assert.notOk( navigationButtons.eq( 3 ).attr( 'disabled' ), 'Last button enabled' );
+} );
+
 /* Tests of navigation and related behavior
  *
  */
@@ -88,7 +96,7 @@ QUnit.test( 'Go to second page by clicking nav button', function( assert ) {
   );
 } );
 
-QUnit.test( 'Go to page by using goToPage method', function( assert ) {
+QUnit.test( 'Go to last page by using goToPage method', function( assert ) {
   var paginationData = target.data( 'timbles' ).pagination;
   var pageNumber = target.next().find( '.pointer-this-page' );
   var expectedPageContent = [ 'Zacatecas' ];
@@ -101,6 +109,14 @@ QUnit.test( 'Go to page by using goToPage method', function( assert ) {
     expectedPageContent,
     'Correct content and length for page'
   );
+} );
+
+QUnit.test( 'Correct button (dis|en)able state on last page', function( assert ) {
+  var navigationButtons = target.next().find( '.nav-arrows button' );
+  assert.notOk( navigationButtons.eq( 0 ).attr( 'disabled' ), 'First button enabled' );
+  assert.notOk( navigationButtons.eq( 1 ).attr( 'disabled' ), 'Previous button enabled' );
+  assert.ok( navigationButtons.eq( 2 ).attr( 'disabled' ), 'Next button disabled' );
+  assert.ok( navigationButtons.eq( 3 ).attr( 'disabled' ), 'Last button disabled' );
 } );
 
 QUnit.test( 'Sorting resets to first page', function( assert ) {
