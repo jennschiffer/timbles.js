@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>timbles tests &bull; QUnit</title>
+  <link rel="stylesheet" href="qunit-1.20.0.css">
+</head>
+<body>
+  <div id="qunit"></div>
+  <div id="qunit-fixture"></div>
+  <div style="display: none">
+
+    <table id="pagination-default-classes">
+      <thead>
+        <tr><th>Header</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Row 1</td></tr>
+        <tr><td>Row 2</td></tr>
+        <tr><td>Row 3</td></tr>
+        <tr><td>Row 4</td></tr>
+      </tbody>
+    </table>
+
+    <table id="pagination-custom-classes">
+      <thead>
+        <tr><th>Header</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Row 1</td></tr>
+        <tr><td>Row 2</td></tr>
+        <tr><td>Row 3</td></tr>
+        <tr><td>Row 4</td></tr>
+      </tbody>
+    </table>
+
+    <table class="multi-target" id="multi-target-one">
+      <thead>
+        <tr><th>Letter</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>A</td></tr>
+        <tr><td>B</td></tr>
+        <tr><td>C</td></tr>
+        <tr><td>D</td></tr>
+      </tbody>
+    </table>
+
+    <table class="multi-target" id="multi-target-two">
+      <thead>
+        <tr><th>Letter</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>E</td></tr>
+        <tr><td>F</td></tr>
+        <tr><td>G</td></tr>
+        <tr><td>H</td></tr>
+      </tbody>
+    </table>
+
+  </div>
+  <script type="text/javascript" src="../jquery.js"></script>
+  <script type="text/javascript" src="../timbles.js"></script>
+  <script src="qunit-1.20.0.js"></script>
+  <script type="text/javascript">
+    QUnit.test( 'Accessing nonexisting method raises error', function( assert ) {
+      assert.throws(
+        function() { $.fn.timbles( 'nothingHere' ); },
+        /Error(.*?nothingHere.*?)/,
+        'Accessing a nonexisting method/member throws an error.' );
+    } );
+
+    QUnit.test( 'Navigation and rowCount buttons have no classes by default', function( assert ) {
+      var paginationConfig = {
+        nav: { arrows: true, rowCountChoice: [ 5, 10 ] },
+        recordsPerPage: 100  // Ensure all navigation is disabled
+      };
+      var paginationContainer = $( '#pagination-default-classes' )
+        .timbles( { pagination: paginationConfig } )
+        .next();
+
+      // Verify pagination buttons have no additional classes
+      assert.expect( 6 );
+      paginationContainer.find( '.nav-arrows button' ).each( function() {
+        assert.equal( $( this ).attr( 'class' ), 'disabled', 'nav button has no extra class' );
+      } );
+      paginationContainer.find( '.row-count-choice button' ).each( function() {
+        assert.notOk( $( this ).attr( 'class' ), 'row count button has no class' );
+      } );
+    } );
+
+    QUnit.test( 'Navigation and rowCount button classes are configurable', function( assert ) {
+      var navigationClass = 'page-nav-button';
+      var rowCountClass = 'row-count-button';
+
+      // Initialize with changed class names
+      var paginationContainer = $( '#pagination-custom-classes' )
+        .timbles( {
+          classes: {
+            paginationNavigationButton: navigationClass,
+            paginationRowCountButton: rowCountClass
+          },
+          pagination: { nav: { arrows: true, rowCountChoice: [ 5, 10 ] } }
+        } )
+        .next();
+
+      // Verify pagination buttons are created with these classes
+      assert.expect( 6 );
+      paginationContainer.find( '.nav-arrows button' ).each( function() {
+        assert.ok( $( this ).hasClass( navigationClass ), 'nav button has class' );
+      } );
+      paginationContainer.find( '.row-count-choice button' ).each( function() {
+        assert.ok( $( this ).hasClass( rowCountClass ), 'row count button has class' );
+      } );
+    } );
+
+    QUnit.test( 'Methods can be chained and target multiple tables', function( assert ) {
+      var multiTable = $( '.multi-target' )
+        .timbles()
+        .timbles( 'enablePagination', 1 )
+        .timbles( 'goToPage', 2 );
+      assert.equal( multiTable.length, 2, 'Actually selected two tables' );
+      assert.equal( $( '#multi-target-one tbody td' ).text(), 'B', 'First table followed' );
+      assert.equal( $( '#multi-target-two tbody td' ).text(), 'F', 'Second table followed' );
+    } );
+
+  </script>
+</body>
+</html>
