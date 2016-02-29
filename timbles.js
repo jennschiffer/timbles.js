@@ -103,8 +103,8 @@ var methods = {
         }
 
         // Determine cell size and update table column count
-        rowSpan = parseInt( $cell.attr( 'rowspan' ) ) || 1;
-        colSpan = parseInt( $cell.attr( 'colspan' ) ) || 1;
+        rowSpan = parseInt( $cell.attr( 'rowspan' ), 10 ) || 1;
+        colSpan = parseInt( $cell.attr( 'colspan' ), 10 ) || 1;
         colCount = Math.max( colIndex + colSpan, colCount );
 
         // Add cell to all 'grid spots' it occupies so we can detect spans
@@ -411,7 +411,7 @@ var methods = {
         pageSize = data.tableRows.length;
       }
 
-      methods.enablePagination.call( this, parseInt( pageSize ) );
+      methods.enablePagination.call( this, parseInt( pageSize, 10 ) );
     }.bind( this );
 
     $.each( data.pagination.nav.rowCountChoice, function() {
