@@ -16,7 +16,7 @@ var pluginName = 'timbles';
 var classes = {
   disabled: 'disabled',
   active: 'active',
-  headerRow: 'header-row',
+  sortHeader: 'timbles-sort-header',
   sortASC: 'sorted-asc',
   sortDESC: 'sorted-desc',
   noSort: 'no-sort',
@@ -88,10 +88,8 @@ var methods = {
   setupExistingTable: function() {
     var data = this.data( pluginName );
 
-    // For each header cell, store its column number
-    var $headerRow = data.$headerRow = this.find( 'thead tr' ).eq( 0 )
-      .addClass( data.classes.headerRow );
-    $headerRow.find( 'th' ).each( function( index ) {
+    // Select column headers and add column index to them
+    data.$headers = this.find( 'thead th' ).each( function( index ) {
       $( this ).data( 'timbles-column-index', index );
     } );
 
@@ -101,19 +99,18 @@ var methods = {
 
   generateTableFromJson: function() {
     var data = this.data( pluginName );
-    var $headerRow = data.$headerRow = $( '<tr>' )
-      .addClass( data.classes.headerRow )
-      .appendTo( $( '<thead>' ).appendTo( this ) );
+    var $headerRow = $( '<tr>' ).appendTo( $( '<thead>' ).appendTo( this ) );
 
-    // Generate and add cell headers to header row
-    $.each( data.dataConfig.columns, function( index, value ) {
-      $( '<th>' )
+    // Generate header cells and create jQuery object from them
+    data.$headers = $( $.map( data.dataConfig.columns, function( value, index ) {
+      return $( '<th>' )
         .attr( 'id', value.id )
         .addClass( value.noSorting ? data.classes.noSort : null )
         .data( 'timbles-column-index', index )
         .text( value.label )
-        .appendTo( $headerRow );
-    } );
+        .appendTo( $headerRow )
+        .get( 0 );
+    } ) );
 
     if ( $.isArray( data.dataConfig.data ) ) {
 
@@ -170,8 +167,10 @@ var methods = {
   },
 
   enableSorting: function() {
-    this.find( 'th' ).not( '.no-sort' ).on(
-      'click', methods.sortColumnEvent.bind( this ) );
+    var data = this.data( pluginName );
+    data.$headers.not( '.' + data.classes.noSort )
+      .addClass( data.classes.sortHeader )
+      .on( 'click', methods.sortColumnEvent.bind( this ) );
   },
 
   sortColumn: function( key, order ) {
@@ -181,7 +180,7 @@ var methods = {
     // If `order` is not given, this will do the same as clicking the header
     if ( typeof key === 'number' ) {
       var data = this.data( pluginName );
-      data.$headerRow.find( 'th' ).eq( key ).trigger( 'click', order );
+      data.$headers.eq( key ).trigger( 'click', order );
     } else {
       this.find( '#' + key ).trigger( 'click', order );
     }
@@ -197,7 +196,7 @@ var methods = {
     if ( !order ) {
       order = $sortHeader.hasClass( data.classes.sortASC ) ? 'desc' : 'asc';
     }
-    data.$headerRow.find( 'th' )
+    data.$headers
       .removeClass( data.classes.sortASC )
       .removeClass( data.classes.sortDESC );
     $sortHeader.addClass( ( order === 'asc' ) ? data.classes.sortASC : data.classes.sortDESC );

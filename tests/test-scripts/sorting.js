@@ -26,14 +26,14 @@ function tablePageSize() {
   return Infinity;
 }
 
-QUnit.test( 'Detect single header row', function( assert ) {
-  var numRows = target.find( 'tr.header-row' ).length;
-  assert.equal( numRows, 1 );
+QUnit.test( 'Count number of sort-enabled header cells', function( assert ) {
+  var sortHeaders = target.find( 'th.timbles-sort-header' ).length;
+  assert.equal( sortHeaders, 6 );
 } );
 
-QUnit.test( 'Correct number of non-header record rows', function( assert ) {
-  var numRows = target.find( 'tr' ).not( '.header-row' ).length;
-  assert.equal( numRows, Math.min( tablePageSize(), 5 ) );
+QUnit.test( 'Correct number of rows in the table body', function( assert ) {
+  var bodyRows = target.find( 'tbody tr' ).length;
+  assert.equal( bodyRows, Math.min( tablePageSize(), 5 ) );
 } );
 
 QUnit.test( 'Clicking a column header sorts table by that column', function( assert ) {
