@@ -37,7 +37,7 @@ QUnit.test( 'Correct number of rows in the table body', function( assert ) {
 } );
 
 QUnit.test( 'Clicking a column header sorts table by that column', function( assert ) {
-  var $firstColumnHeader = target.find( 'thead tr th' ).eq( 0 );
+  var $firstColumnHeader = target.find( '#name' );
   assert.notOk( $firstColumnHeader.hasClass( 'sorted-asc' ), 'Not pre-sorted' );
   $firstColumnHeader.click();
   assert.ok( $firstColumnHeader.hasClass( 'sorted-asc' ), 'Ascending' );
@@ -50,9 +50,9 @@ QUnit.test( 'Clicking a column header sorts table by that column', function( ass
 } );
 
 QUnit.test( 'Applying sortColumn on a header sorted table by that column', function( assert ) {
-  var $firstColumnHeader = target.find( 'thead tr th' ).eq( 0 );
+  var $firstColumnHeader = target.find( '#name' );
   assert.notOk( $firstColumnHeader.hasClass( 'sorted-asc' ), 'Not pre-sorted' );
-  target.timbles( 'sortColumn', 0 );
+  target.timbles( 'sortColumn', 'name' );
   assert.ok( $firstColumnHeader.hasClass( 'sorted-asc' ), 'Ascending' );
   assert.equal( target.find( '.sorted-asc' ).length, 1, 'One ascending sorted col' );
   assert.equal( target.find( '.sorted-desc' ).length, 0, 'No descdending sorted cols' );
