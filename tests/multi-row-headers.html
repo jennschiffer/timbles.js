@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>timbles tests &bull; QUnit</title>
+  <link rel="stylesheet" href="qunit-1.20.0.css">
+</head>
+<body>
+  <div id="qunit"></div>
+  <div id="qunit-fixture"></div>
+
+  <table id="target" border="1" style="display:none;">
+    <thead>
+      <tr>
+        <th id="names" colspan="2">Names</th>
+        <th id="cities" rowspan="2">Cities</th>
+        <th id="numbers" colspan="3">Numbers</th>
+      </tr>
+      <tr>
+        <th id="names-first" >First</th>
+        <th id="names-last" >Last</th>
+        <th id="numbers-low" >Low</th>
+        <th id="numbers-high" >High</th>
+        <th id="numbers-nosort" class="no-sort">Stable</th>
+      </tr>
+    </thead>
+    <tr>
+      <td>Clyde</td>
+      <td>Barrow</td>
+      <td>Madrid</td>
+      <td data-value="4">4</td>
+      <td data-value="372" >372</td>
+      <td>20</td>
+    </tr>
+    <tr>
+      <td>Butch</td>
+      <td>Cassidy</td>
+      <td>Paris</td>
+      <td data-value="1">1</td>
+      <td data-value="924">924</td>
+      <td>44</td>
+    </tr>
+    <tr>
+      <td>Jesse</td>
+      <td>James</td>
+      <td>Moscow</td>
+      <td data-value="7">7</td>
+      <td data-value="563">563</td>
+      <td>31</td>
+    </tr>
+    <tr>
+      <td>John</td>
+      <td>Dillinger</td>
+      <td>Rome</td>
+      <td data-value="5">5</td>
+      <td data-value="1004">1004</td>
+      <td>16</td>
+    </tr>
+  </table>
+
+  <script type="text/javascript" src="../jquery.js"></script>
+  <script type="text/javascript" src="../timbles.js"></script>
+  <script type="text/javascript">
+    $( function() {
+      $( '#target' ).timbles( {
+        sorting: true
+      } );
+    } );
+  </script>
+  <script src="qunit-1.20.0.js"></script>
+  <script>
+    var target = $( '#target' );
+
+    function columnContent( columnIndex ) {
+      return target.find( 'tbody tr' ).map( function() {
+        return $( this ).children().eq( columnIndex ).text();
+      } ).get();
+    }
+
+    QUnit.test( 'Sorting colspanned column headers does nothing', function( assert ) {
+      target.timbles( 'sortColumn', 'names' )
+      sortedNamesOnce = target.find( 'tbody td' ).text()
+      target.timbles( 'sortColumn', 'names' )
+      sortedNamesTwice = target.find( 'tbody td' ).text()
+      assert.equal( sortedNamesOnce, sortedNamesTwice, 'Names column' );
+
+      target.timbles( 'sortColumn', 'numbers' )
+      sortedNumbersOnce = target.find( 'tbody td' ).text()
+      target.timbles( 'sortColumn', 'numbers' )
+      sortedNumbersTwice = target.find( 'tbody td' ).text()
+      assert.equal( sortedNumbersOnce, sortedNumbersTwice, 'Numbers column' );
+    } );
+
+    QUnit.test( 'Rowspanned cities header sorts as expected', function( assert ) {
+      expected = [
+          'Madrid',
+          'Moscow',
+          'Paris',
+          'Rome'
+      ]
+
+      target.find( '#cities' ).click();
+      assert.deepEqual( columnContent( 2 ), expected, 'Ascending, using click event' );
+
+      expected.reverse();
+      target.timbles( 'sortColumn', 2 );
+      assert.deepEqual( columnContent( 2 ), expected, 'Descending, using sortColumn with index' );
+    } );
+
+    QUnit.test( 'Sorting names columns works as intended', function( assert ) {
+      expectedFirst = [
+          'Butch',
+          'Clyde',
+          'Jesse',
+          'John'
+      ]
+      expectedLast = [
+          'Barrow',
+          'Cassidy',
+          'Dillinger',
+          'James'
+      ]
+
+      target.find( '#names-first' ).click();
+      assert.deepEqual( columnContent( 0 ), expectedFirst, 'Ascending, using click event' );
+      target.timbles( 'sortColumn', 'names-last' );
+      assert.deepEqual( columnContent( 1 ), expectedLast, 'Ascending, using sortColumn with ID' );
+
+      expectedFirst.reverse();
+      expectedLast.reverse();
+      target.timbles( 'sortColumn', 'names-first' , 'desc');
+      assert.deepEqual( columnContent( 0 ), expectedFirst, 'Descending, using sortColumn with ID' );
+      target.timbles( 'sortColumn', 1 , 'desc');
+      assert.deepEqual( columnContent( 1 ), expectedLast, 'Descending, using sortColumn with index' );
+    } );
+
+    QUnit.test( 'Number columns sorted by their numeric value', function( assert ) {
+      expectedLow = ['1', '4', '5', '7'];
+      expectedHigh = ['372', '563', '924', '1004'];
+
+      target.find( '#numbers-low' ).click();
+      assert.deepEqual( columnContent( 3 ), expectedLow, 'Ascending, using click event' );
+      target.timbles( 'sortColumn', 'numbers-high' );
+      assert.deepEqual( columnContent( 4 ), expectedHigh, 'Ascending, using sortColumn with ID' );
+
+      expectedLow.reverse();
+      expectedHigh.reverse();
+      target.timbles( 'sortColumn', 'numbers-low', 'desc' );
+      assert.deepEqual( columnContent( 3 ), expectedLow, 'Descending, using sortColumn with ID' );
+      target.timbles( 'sortColumn', 4, 'desc' );
+      assert.deepEqual( columnContent( 4 ), expectedHigh, 'Descending, using sortColumn with index' );
+    } );
+
+    QUnit.test( 'Columns marked "no-sort" do not sort', function( assert ) {
+      initial = target.find( 'tbody td' ).text()
+      target.find( '#numbers-nosort' ).click();
+      assert.equal( target.find( 'tbody td' ).text(), initial, 'Unchanged after first sort attempt' );
+      target.timbles( 'sortColumn', 'numbers-nosort', 'desc' );
+      assert.equal( target.find( 'tbody td' ).text(), initial, 'Unchanged after descending sort attempt' );
+    } );
+
+  </script>
+</body>
+</html>
