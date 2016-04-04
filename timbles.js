@@ -370,7 +370,7 @@ var methods = {
         pageSize = data.tableRows.length;
       }
 
-      methods.enablePagination.call( this, parseInt( pageSize ) );
+      methods.enablePagination.call( this, parseInt( pageSize, 10 ) );
     }.bind( this );
 
     $.each( data.pagination.nav.rowCountChoice, function() {
