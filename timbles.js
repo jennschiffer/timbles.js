@@ -116,6 +116,7 @@ var methods = {
 
   generateTableFromJson: function() {
     var data = this.data( pluginName );
+    var generateRows = methods.generateRowsFromData.bind( this, data.dataConfig.columns );
     var $headerRow = $( '<tr>' ).appendTo( $( '<thead>' ).appendTo( this ) );
 
     // Generate header cells and create jQuery object from them
@@ -127,23 +128,17 @@ var methods = {
         .appendTo( $headerRow );
     } );
 
+    // Fill table with provided or linked (JSON) data, then configure it
     if ( $.isArray( data.dataConfig.data ) ) {
-
-      // No need for ajax call if data is local array
-      methods.generateRowsFromData.call( this, data.dataConfig.data, data.dataConfig.columns );
-
-      // Continue configuring the table and enable features
+      generateRows( data.dataConfig.data );
       methods.configureTable.call( this );
     } else {
-
-      // Get external json file given, once loaded and created, configure the table
-      $.getJSON( data.dataConfig.data, function( json ) {
-        methods.generateRowsFromData.call( this, json, data.dataConfig.columns );
-      }.bind( this ) ).then( methods.configureTable.bind( this ) );
+      $.getJSON( data.dataConfig.data, generateRows )
+        .then( methods.configureTable.bind( this ) );
     }
   },
 
-  generateRowsFromData: function( rowData, columnConfig ) {
+  generateRowsFromData: function( columnConfig, rowData ) {
     $.each( rowData, function( index, row ) {
 
       // Add rows to the current table
