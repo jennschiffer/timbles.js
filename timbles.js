@@ -104,33 +104,27 @@ var methods = {
     var $headerRow = $( '<tr>' ).appendTo( $( '<thead>' ).appendTo( this ) );
 
     // Generate header cells and create jQuery object from them
-    data.$headers = $( $.map( data.dataConfig.columns, function( value, index ) {
-      return $( '<th>' )
+    $.each( data.dataConfig.columns, function( index, value ) {
+      $( '<th>' )
         .attr( 'id', value.id )
         .addClass( value.noSorting ? data.classes.noSort : null )
-        .data( 'timbles-column-index', index )
         .text( value.label )
-        .appendTo( $headerRow )
-        .get( 0 );
-    } ) );
+        .appendTo( $headerRow );
+    } );
 
     if ( $.isArray( data.dataConfig.data ) ) {
 
       // No need for ajax call if data is local array
       methods.generateRowsFromData.call( this, data.dataConfig.data, data.dataConfig.columns );
 
-      // Start enabling any given features
-      methods.enableFeaturesSetup.call( this );
+      // Continue configuring the table and enable features
+      methods.configureTable.call( this );
     } else {
 
-      // Get external json file given
+      // Get external json file given, once loaded and created, configure the table
       $.getJSON( data.dataConfig.data, function( json ) {
         methods.generateRowsFromData.call( this, json, data.dataConfig.columns );
-      }.bind( this ) ).then( function() {
-
-        // Start enabling any given features
-        methods.enableFeaturesSetup.call( this );
-      }.bind( this ) );
+      }.bind( this ) ).then( methods.configureTable.bind( this ) );
     }
   },
 
