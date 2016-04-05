@@ -88,15 +88,30 @@ var methods = {
   configureTable: function() {
     var data = this.data( pluginName );
     data.$headers = methods.selectColumnHeaders.call( this );
+    data.tableRows = methods.selectTableBody.call( this );
 
     // Start enabling any given features
-    methods.enableFeaturesSetup.call( this );
+    if ( data.sorting ) {
+      methods.enableSorting.call( this );
+
+      if ( data.sorting.keyId ) {
+        methods.sortColumn.call( this, data.sorting.keyId, data.sorting.order );
+      }
+    }
+
+    if ( data.pagination ) {
+      methods.enablePagination.call( this, data.pagination.recordsPerPage );
+    }
   },
 
   selectColumnHeaders: function() {
     return this.find( 'thead th' ).each( function( index, cell ) {
       $( cell ).data( 'timbles-column-index', index );
     } );
+  },
+
+  selectTableBody: function() {
+    return this.find( 'tbody tr' ).get();
   },
 
   generateTableFromJson: function() {
@@ -143,23 +158,6 @@ var methods = {
           .appendTo( this );
       }.bind( $newRow ) );
     }.bind( this ) );
-  },
-
-  enableFeaturesSetup: function() {
-    var data = this.data( pluginName );
-    data.tableRows = this.find( 'tbody tr' ).get();
-
-    if ( data.sorting ) {
-      methods.enableSorting.call( this );
-
-      if ( data.sorting.keyId ) {
-        methods.sortColumn.call( this, data.sorting.keyId, data.sorting.order );
-      }
-    }
-
-    if ( data.pagination ) {
-      methods.enablePagination.call( this, data.pagination.recordsPerPage );
-    }
   },
 
   enableSorting: function() {
