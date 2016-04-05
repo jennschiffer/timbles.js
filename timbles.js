@@ -55,7 +55,7 @@ var methods = {
     if ( data.dataConfig ) {
       methods.generateTableFromJson.call( this );
     } else {
-      methods.setupExistingTable.call( this );
+      methods.configureTable.call( this );
     }
   },
 
@@ -85,16 +85,18 @@ var methods = {
     return dataConfig;
   },
 
-  setupExistingTable: function() {
+  configureTable: function() {
     var data = this.data( pluginName );
-
-    // Select column headers and add column index to them
-    data.$headers = this.find( 'thead th' ).each( function( index ) {
-      $( this ).data( 'timbles-column-index', index );
-    } );
+    data.$headers = methods.selectColumnHeaders.call( this );
 
     // Start enabling any given features
     methods.enableFeaturesSetup.call( this );
+  },
+
+  selectColumnHeaders: function() {
+    return this.find( 'thead th' ).each( function( index, cell ) {
+      $( cell ).data( 'timbles-column-index', index );
+    } );
   },
 
   generateTableFromJson: function() {
