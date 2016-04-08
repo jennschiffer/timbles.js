@@ -437,4 +437,8 @@ $.fn[ pluginName ] = function( method ) {
   $.error( 'The method ' + method + ' literally does not exist. Good job.' );
 };
 
+$.fn[ pluginName ].classes = classes;
+$.fn[ pluginName ].copy = copy;
+$.fn[ pluginName ].methods = methods;
+
 } )( jQuery );
