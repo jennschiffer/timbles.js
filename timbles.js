@@ -93,10 +93,6 @@ var methods = {
     // Start enabling any given features
     if ( data.sorting ) {
       methods.enableSorting.call( this );
-
-      if ( data.sorting.keyId ) {
-        methods.sortColumn.call( this, data.sorting.keyId, data.sorting.order );
-      }
     }
 
     if ( data.pagination ) {
@@ -160,6 +156,10 @@ var methods = {
     data.$headers.not( '.' + data.classes.noSort )
       .addClass( data.classes.sortHeader )
       .on( 'click', methods.sortColumnEvent.bind( this ) );
+
+    if ( data.sorting && data.sorting.keyId ) {
+      methods.sortColumn.call( this, data.sorting.keyId, data.sorting.order );
+    }
   },
 
   sortColumn: function( key, order ) {
