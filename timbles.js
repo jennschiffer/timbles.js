@@ -55,7 +55,7 @@ var methods = {
     if ( data.dataConfig ) {
       methods.generateTableFromJson.call( this );
     } else {
-      methods.setupExistingTable.call( this );
+      methods.configureTable.call( this );
     }
   },
 
@@ -85,54 +85,60 @@ var methods = {
     return dataConfig;
   },
 
-  setupExistingTable: function() {
+  configureTable: function() {
     var data = this.data( pluginName );
-
-    // Select column headers and add column index to them
-    data.$headers = this.find( 'thead th' ).each( function( index ) {
-      $( this ).data( 'timbles-column-index', index );
-    } );
+    data.$headers = methods.selectColumnHeaders.call( this );
+    data.tableRows = methods.selectTableBody.call( this );
 
     // Start enabling any given features
-    methods.enableFeaturesSetup.call( this );
+    if ( data.sorting ) {
+      methods.enableSorting.call( this );
+
+      if ( data.sorting.keyId ) {
+        methods.sortColumn.call( this, data.sorting.keyId, data.sorting.order );
+      }
+    }
+
+    if ( data.pagination ) {
+      methods.enablePagination.call( this, data.pagination.recordsPerPage );
+    }
+  },
+
+  selectColumnHeaders: function() {
+    return this.find( 'thead th' ).each( function( index, cell ) {
+      $( cell ).data( 'timbles-column-index', index );
+    } );
+  },
+
+  selectTableBody: function() {
+    return this.find( 'tbody tr' ).get();
   },
 
   generateTableFromJson: function() {
     var data = this.data( pluginName );
+    var generateRows = methods.generateRowsFromData.bind( this, data.dataConfig.columns );
     var $headerRow = $( '<tr>' ).appendTo( $( '<thead>' ).appendTo( this ) );
 
     // Generate header cells and create jQuery object from them
-    data.$headers = $( $.map( data.dataConfig.columns, function( value, index ) {
-      return $( '<th>' )
+    $.each( data.dataConfig.columns, function( index, value ) {
+      $( '<th>' )
         .attr( 'id', value.id )
         .addClass( value.noSorting ? data.classes.noSort : null )
-        .data( 'timbles-column-index', index )
         .text( value.label )
-        .appendTo( $headerRow )
-        .get( 0 );
-    } ) );
+        .appendTo( $headerRow );
+    } );
 
+    // Fill table with provided or linked (JSON) data, then configure it
     if ( $.isArray( data.dataConfig.data ) ) {
-
-      // No need for ajax call if data is local array
-      methods.generateRowsFromData.call( this, data.dataConfig.data, data.dataConfig.columns );
-
-      // Start enabling any given features
-      methods.enableFeaturesSetup.call( this );
+      generateRows( data.dataConfig.data );
+      methods.configureTable.call( this );
     } else {
-
-      // Get external json file given
-      $.getJSON( data.dataConfig.data, function( json ) {
-        methods.generateRowsFromData.call( this, json, data.dataConfig.columns );
-      }.bind( this ) ).then( function() {
-
-        // Start enabling any given features
-        methods.enableFeaturesSetup.call( this );
-      }.bind( this ) );
+      $.getJSON( data.dataConfig.data, generateRows )
+        .then( methods.configureTable.bind( this ) );
     }
   },
 
-  generateRowsFromData: function( rowData, columnConfig ) {
+  generateRowsFromData: function( columnConfig, rowData ) {
     $.each( rowData, function( index, row ) {
 
       // Add rows to the current table
@@ -147,23 +153,6 @@ var methods = {
           .appendTo( this );
       }.bind( $newRow ) );
     }.bind( this ) );
-  },
-
-  enableFeaturesSetup: function() {
-    var data = this.data( pluginName );
-    data.tableRows = this.find( 'tbody tr' ).get();
-
-    if ( data.sorting ) {
-      methods.enableSorting.call( this );
-
-      if ( data.sorting.keyId ) {
-        methods.sortColumn.call( this, data.sorting.keyId, data.sorting.order );
-      }
-    }
-
-    if ( data.pagination ) {
-      methods.enablePagination.call( this, data.pagination.recordsPerPage );
-    }
   },
 
   enableSorting: function() {
@@ -370,7 +359,7 @@ var methods = {
         pageSize = data.tableRows.length;
       }
 
-      methods.enablePagination.call( this, parseInt( pageSize ) );
+      methods.enablePagination.call( this, parseInt( pageSize, 10 ) );
     }.bind( this );
 
     $.each( data.pagination.nav.rowCountChoice, function() {
@@ -447,5 +436,9 @@ $.fn[ pluginName ] = function( method ) {
   }
   $.error( 'The method ' + method + ' literally does not exist. Good job.' );
 };
+
+$.fn[ pluginName ].classes = classes;
+$.fn[ pluginName ].copy = copy;
+$.fn[ pluginName ].methods = methods;
 
 } )( jQuery );
