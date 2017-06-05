@@ -19,6 +19,7 @@ var classes = {
   sortHeader: 'timbles-sort-header',
   sortASC: 'sorted-asc',
   sortDESC: 'sorted-desc',
+  inverseSort: 'inverse-sort',
   noSort: 'no-sort',
   navigationCurrentPage: 'pointer-this-page',
   navigationLastPage: 'pointer-last-page',
@@ -120,6 +121,7 @@ var methods = {
       $( '<th>' )
         .attr( 'id', value.id )
         .addClass( value.noSorting ? data.classes.noSort : null )
+        .addClass( value.inverseSort ? data.classes.inverseSort : null )
         .text( value.label )
         .appendTo( $headerRow );
     } );
@@ -183,7 +185,15 @@ var methods = {
     var sortColumn = $sortHeader.data( 'timbles-column-index' );
 
     if ( !order ) {
-      order = $sortHeader.hasClass( data.classes.sortASC ) ? 'desc' : 'asc';
+      if ( $sortHeader.hasClass( data.classes.sortASC ) ) {
+        order = 'desc';
+      } else if ( $sortHeader.hasClass( data.classes.sortDESC ) ) {
+        order = 'asc';
+      } else if ( $sortHeader.hasClass( data.classes.inverseSort ) ) {
+        order = 'desc';
+      } else {
+        order = 'asc';
+      }
     }
     data.$headers
       .removeClass( data.classes.sortASC )
