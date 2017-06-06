@@ -6,7 +6,8 @@
     "naturalNumber": 11,
     "percentage": 1,
     "pets": "Gold fish",
-    "sparse": "One"
+    "sparse": "One",
+    "inverse": "Macao"
   },
   {
     "name": "Arthur fforde",
@@ -15,7 +16,8 @@
     "naturalNumber": 120,
     "percentage": 0.05,
     "pets": "Crickets",
-    "sparse": "One"
+    "sparse": "One",
+    "inverse": "Zimbabwe"
   },
   {
     "name": "Ezra Pound",
@@ -24,7 +26,8 @@
     "naturalNumber": 5,
     "percentage": 0,
     "pets": "Rabbit",
-    "sparse": ""
+    "sparse": "",
+    "inverse": ""
   },
   {
     "name": "Robert Frost",
@@ -33,7 +36,8 @@
     "naturalNumber": 500,
     "percentage": 0.4545,
     "pets": "Dog",
-    "sparse": ""
+    "sparse": "",
+    "inverse": "Brazil"
   },
   {
     "name": "Arthur Rimbaud",
@@ -42,6 +46,7 @@
     "naturalNumber": 19,
     "percentage": -1,
     "pets": "Cat",
-    "sparse": "Two"
+    "sparse": "Two",
+    "inverse": "Honduras"
   }
 ]

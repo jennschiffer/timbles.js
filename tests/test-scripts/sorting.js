@@ -2,13 +2,19 @@
 
 var target = $( '#target' );
 
+function getColumnContent( columnIndex ) {
+  /* Returns an array with the column contents
+   */
+  return target.find( 'tbody tr' ).map( function() {
+    return $( this ).children().eq( columnIndex ).text();
+  } ).get();
+}
+
 function sortedColumnContent( columnIndex, order ) {
   /* Sorts by the given column and returns an array with the column contents
    */
   target.timbles( 'sortColumn', columnIndex, order || 'asc' );
-  return target.find( 'tbody tr' ).map( function() {
-    return $( this ).children().eq( columnIndex ).text();
-  } ).get();
+  return getColumnContent( columnIndex );
 }
 
 function sliceForPagination( elements ) {
@@ -28,7 +34,7 @@ function tablePageSize() {
 
 QUnit.test( 'Count number of sort-enabled header cells', function( assert ) {
   var sortHeaders = target.find( 'th.timbles-sort-header' ).length;
-  assert.equal( sortHeaders, 6 );
+  assert.equal( sortHeaders, 7 );
 } );
 
 QUnit.test( 'Correct number of rows in the table body', function( assert ) {
@@ -165,4 +171,19 @@ QUnit.test( 'Sorting sparsely filled columns', function( assert ) {
       sortedColumnContent( 6, 'desc' ),
       sliceForPagination( expected ),
       'Descending order' );
+} );
+
+QUnit.test( 'Sorting inverse-sorted columns', function( assert ) {
+  var expected = [ 'Zimbabwe', 'Macao', 'Honduras', 'Brazil', '' ];
+  target.timbles( 'sortColumn', 7 );
+  assert.deepEqual(
+      getColumnContent( 7 ),
+      sliceForPagination( expected ),
+      'Descending order' );
+  expected.reverse();
+  target.timbles( 'sortColumn', 7 );
+  assert.deepEqual(
+      getColumnContent( 7 ),
+      sliceForPagination( expected ),
+      'Ascending order' );
 } );
