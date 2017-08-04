@@ -58,6 +58,17 @@
       </tbody>
     </table>
 
+    <table id="nested-column-header">
+      <thead>
+        <tr><th><span><strong>Header</strong></span></th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Z</td></tr>
+        <tr><td>Y</td></tr>
+        <tr><td>X</td></tr>
+      </tbody>
+    </table>
+
   </div>
   <script type="text/javascript" src="../jquery.js"></script>
   <script type="text/javascript" src="../timbles.js"></script>
@@ -122,6 +133,12 @@
       assert.equal( multiTable.length, 2, 'Actually selected two tables' );
       assert.equal( $( '#multi-target-one tbody td' ).text(), 'B', 'First table followed' );
       assert.equal( $( '#multi-target-two tbody td' ).text(), 'F', 'Second table followed' );
+    } );
+
+    QUnit.test( 'Nested column headers sort as normal', function( assert ) {
+      var target = $( '#nested-column-header' ).timbles( { sorting: true } );
+      target.find( 'th strong' ).click();
+      assert.equal( target.find( 'td' ).eq( 0 ).text(), 'X');
     } );
 
   </script>

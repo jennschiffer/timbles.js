@@ -181,7 +181,7 @@ var methods = {
     var data = this.data( pluginName );
 
     // Determine order and update header sort classes
-    var $sortHeader = $( event.target );
+    var $sortHeader = $( event.currentTarget );
     var sortColumn = $sortHeader.data( 'timbles-column-index' );
 
     if ( !order ) {
