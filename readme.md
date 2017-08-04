@@ -264,6 +264,7 @@ It will add a very simple first/prev/next/last pagination navigation on the bott
 When you sort ascending, the `sort-asc` class is added to the `<th>` header. If you sort descending, the `sort-desc` class is added to the `<th>` header. So you can, like, use CSS to add arrows whenever those classes are set and that's p cool I think.
 
 ## Changelog
+* 1.1.6 fixes bug with nested columns header clicks
 * 1.1.5 add initial inverse sort support
 * 1.1.4 prepare to plug in (a refactor for future features)
 * 1.1.3 pagination refactor, testing refactor, so much faster!
